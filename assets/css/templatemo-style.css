@@ -809,3 +809,7 @@ section.contact-me {
         margin-bottom: 20px;
     }
 }
+
+.text{
+	text-align:justify;
+}
