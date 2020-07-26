@@ -1,1 +1,2 @@
-Im just trying basic web design things. 
+Im just trying basic web design techniques.
+
