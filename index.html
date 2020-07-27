@@ -10,12 +10,7 @@
     <meta name="description" content="Portfolio" />
     <meta name="author" content="Anirudha" />
 	<link rel="icon" type="image/jpg" href="assets/images/logo.png" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900"
-      rel="stylesheet"
-    />
-	<link href="https://google-developers.appspot.com/maps/documentation/javascript/examples/default.css" rel="stylesheet">
-
+  
     <title>My Portfolio</title>
 
     <!-- Bootstrap core CSS -->
@@ -732,7 +727,9 @@
             
           </div>
 		  <p><b>My Village</b></p>
-		  				<div id="map_canvas" style="height: 500px"></div>
+		  				<div>
+	<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2479.9344241300673!2d74.73902971786046!3d13.461076962648825!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x378f281f07c46d66!2z4LKc4LKo4LKVIC0g4LK44LK-4LKV4LOH4LKk!5e0!3m2!1sen!2sin!4v1595811168357!5m2!1sen!2sin" width="960" height="450" frameborder="5"  allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+	</div>
 						<br>
 						<br>			
           <div class="row">
@@ -813,8 +810,7 @@
     <script src="assets/js/owl-carousel.js"></script>
     <script src="assets/js/lightbox.js"></script>
     <script src="assets/js/custom.js"></script>
-	 <script src="https://maps.googleapis.com/maps/api/js"></script>
-    <script src="assets/js/where.js"></script>
+
     <script>
       //according to loftblog tut
       $(".main-menu li:first").addClass("active");
@@ -866,43 +862,5 @@
       });
     </script>
 	
-	
-
-
-<script>
-
-      function initialize() {
-       
-        var myLatlng = new google.maps.LatLng(13.4619845,74.738344)
-        var mapOptions = {
-          zoom: 3,
-          center: myLatlng,
-          mapTypeId: google.maps.MapTypeId.HYBRID
-        }
-        var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-
-        i = 0;
-        var markers = [];
-        for ( pos in myData ) {
-            i = i + 1;
-            var row = myData[pos];
-		    window.console && console.log(row);
-            // if ( i < 3 ) { alert(row); }
-            var newLatlng = new google.maps.LatLng(row[0], row[1]);
-            var marker = new google.maps.Marker({
-                position: newLatlng,
-                map: map,
-                title: row[2]
-            });
-            markers.push(marker);
-<!-- New options for MarkerClusterer function to display markers -->
-	    var options = {
-			imagePath: 'http://rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m'
-			}	
-        }
-<!-- New var -->
-	var markerCluster = new MarkerClusterer(map, markers, options);
-      }
-    </script>
   </body>
 </html>
