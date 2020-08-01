@@ -817,3 +817,21 @@ section.contact-me {
 	aria-hidden: false ;
 	tabindex: 10;
 }
+
+
+/* Simple Border Button */
+.border-neon {
+    background-color: transparent;
+    border: 2px solid pink;
+    color: pink;
+    -webkit-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+ 
+.border-neon:hover, .border-neon:focus {
+    -webkit-box-shadow: inset 0px 0px 8px 3px #ff94b8;
+    box-shadow: 0px 0px 10px 3px #ff94b8, inset 0px 0px 10px 3px #ff94b8;
+    border-color: #fff;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff94b8, 0 0 40px #ff94b8, 0 0 50px #ff94b8, 0 0 60px #ff94b8, 0 0 70px #ff94b8
+}
+
