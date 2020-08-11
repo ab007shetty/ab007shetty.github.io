@@ -534,7 +534,7 @@ section.my-work .section-heading {
 }
 
 .lazyloading {
-    background: #f7f7f7 url(//afarkas.github.io/lazysizes/assets/imgs/loader.gif) no-repeat center;
+    background: #f7f7f7 url(https://afarkas.github.io/lazysizes/assets/imgs/loader.gif) no-repeat center;
     min-height: 60px;
 }
 
@@ -834,4 +834,17 @@ section.contact-me {
     border-color: #fff;
     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff94b8, 0 0 40px #ff94b8, 0 0 50px #ff94b8, 0 0 60px #ff94b8, 0 0 70px #ff94b8
 }
+
+
+/* Left & Right Post */
+
+
+
+.center-image img{
+	width:100%;
+    border-radius: 5px;
+	    
+}
+
+
 

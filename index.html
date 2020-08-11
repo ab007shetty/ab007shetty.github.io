@@ -204,10 +204,17 @@
 			  </span>
 			  <br/>
 			<br/>
-		  <div class="left-image">                            
-      <a href="resume.pdf" target="_blank">
-			<img src="assets/images/resume.jpg"  alt="My Resume"  />
+		  <div class="center-image" >	  	                            
+      <a href="resume.pdf" target="_blank"   >
+			<img src="assets/images/resume.jpg"  alt="My Resume" onload="loadImage()" />
+			
+			<script>
+			function loadImage() {
+			alert("Click on the Resume to View & Download");
+			}
+			</script>
 	  </a> 
+	  
         </div>
 		</div>
 		</div>
@@ -1097,9 +1104,9 @@
     <script src="assets/js/owl-carousel.js"></script>
     <script src="assets/js/lightbox.js"></script>
     <script src="assets/js/custom.js"></script>
-
+	
     <script>
-      //according to loftblog tut
+     
       $(".main-menu li:first").addClass("active");
 
       var showSection = function showSection(section, isAnimate) {
