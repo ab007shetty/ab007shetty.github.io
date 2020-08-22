@@ -245,6 +245,7 @@ em {
 */
 
 .logo {
+	width:73%;
   border-top: 4px solid #ff0000;
   padding:  40px 0 22px 0;
   font-size: 48px;
@@ -259,7 +260,7 @@ em {
 }
 
 .primary-nav {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 400;
   letter-spacing: 2px;
   text-transform: uppercase;
