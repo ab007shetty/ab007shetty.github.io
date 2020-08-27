@@ -1,0 +1,160 @@
+.row-header{
+	margin: 0px auto;
+	padding:0px auto;
+}
+
+.row-content{
+	margin: 0px auto;
+	padding: 50px 0px 50px 0px;
+	border-bottom:1px ridge;
+	min-height:400px;
+}
+
+.footer{
+	background-color:#d1c4e9;
+	margin: 0px auto;
+	padding: 20px 0px 20px 0px;
+}
+	
+.jumbotron{
+	padding:70px 30px 70px 30px;
+	margin: 0px auto;
+	background:#9575cd;
+	color: floralwhite;
+}
+
+.address{
+	font-size:80%;
+	margin: 0px;
+	color: #0f0f0f;
+}
+
+body{
+	padding: 50px 0px 0px 0px;
+	z-index: 0;
+}
+
+.navbar-dark{
+	background-color: #512da8;
+}
+
+
+/*
+  ========================================
+  news
+  ========================================
+*/
+	.news{
+		font: white;
+		display:inline-block;
+	}
+
+
+.wrap-img{
+		
+            float: right;
+            margin: 5px; 
+			 padding: 10px 10px 10px 10px;
+        }
+		
+.wrap-p { 
+			margin: 15px;
+            text-align: justify; 
+            font-size: 25px; 
+			letter-spacing:2px;
+		
+			line-height:30px;
+        } 
+		
+				@keyframes ticker {
+				0% { transform: translate3d(0, 0, 0); }
+				100% { transform: translate3d(-100%, 0, 0); }
+			}
+			.tcontainer{
+				width: 100%;
+				overflow: hidden;
+			}
+			.ticker-wrap {
+        width: 100%;
+        padding-left: 100%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        color: rgb(255, 8, 8);
+        font-weight: 600;
+       word-spacing: 0em;
+				
+			}
+			.ticker-move {
+				display: inline-block;
+				white-space: nowrap;
+				padding-right: 100%;
+				animation-iteration-count: infinite;
+				animation-timing-function: linear;
+				animation-name: ticker;
+				animation-duration: 40s;
+			}
+			.ticker-move:hover{
+				animation-play-state: paused;
+			}
+			.ticker-item{
+				display: inline-block;
+				padding: 0 2rem;
+			}
+
+
+
+		
+
+/* Simple Border Button */
+.border-neon {
+    background-color: transparent;
+    border: 2px solid pink;
+    color: yellow;
+    -webkit-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+ 
+.border-neon:hover, .border-neon:focus {
+    -webkit-box-shadow: inset 0px 0px 8px 3px #ff94b8;
+    box-shadow: 0px 0px 10px 3px #ff94b8, inset 0px 0px 10px 3px #ff94b8;
+    border-color: #fff;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff94b8, 0 0 40px #ff94b8, 0 0 50px #ff94b8, 0 0 60px #ff94b8, 0 0 70px #ff94b8
+}
+		
+
+
+/*
+  ========================================
+  corousel
+  ========================================
+*/
+
+.carousel {
+    background:#512DA8;
+}
+
+.carousel-item {
+  height: 300px;
+}
+
+.carousel-item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 300px;
+}
+
+
+.bg {
+  /* The image used */
+  background-image: url("../images/banner.jpg");
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
