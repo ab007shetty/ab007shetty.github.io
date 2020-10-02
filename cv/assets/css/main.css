@@ -1,0 +1,311 @@
+.row-header{
+	margin: 0px auto;
+	padding:0px auto;
+}
+
+.row-content{
+	margin: 0px auto;
+	padding: 50px 0px 50px 0px;
+	border-bottom:1px ridge;
+	min-height:400px;
+}
+
+.footer{
+	background:#9575cd;
+	color: floralwhite;
+	margin: 0px auto;
+	padding: 20px 0px 20px 0px;
+}
+	
+.jumbotron{
+	padding:70px 30px 70px 30px;
+	margin: 0px auto;
+	background:#9575cd;
+	color: floralwhite;
+}
+
+.address{
+	font-size:80%;
+	margin: 0px;
+	color: #0f0f0f;
+}
+
+body{
+	padding: 50px 0px 0px 0px;
+	z-index: 0;
+}
+
+.navbar-dark{
+	background-color: #512da8;
+}
+
+
+
+/* Simple Border Button */
+.border-neon {
+    background-color: transparent;
+    border: 2px solid pink;
+    color: yellow;
+    -webkit-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+ 
+.border-neon:hover, .border-neon:focus {
+    -webkit-box-shadow: inset 0px 0px 8px 3px #ff94b8;
+    box-shadow: 0px 0px 10px 3px #ff94b8, inset 0px 0px 10px 3px #ff94b8;
+    border-color: #fff;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff94b8, 0 0 40px #ff94b8, 0 0 50px #ff94b8, 0 0 60px #ff94b8, 0 0 70px #ff94b8
+}
+		
+
+
+.bg {
+  /* The image used */
+  background-image: url("../images/bg.jpg");
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+.social-network {
+    margin-top: 60px;
+}
+
+.social-network span {
+    margin: 0 3px;
+}
+
+ .social-network span a {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    text-align: center;
+    line-height: 40px;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 14px;
+    transition: all 0.5s;
+}
+
+ .social-network span a:hover {
+    background-color: #fff;
+    color: #a43f49;
+}
+
+
+
+.section-heading {
+    text-align: center;
+    padding: 80px 45px;
+}
+
+.section-heading h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.section-heading .line-dec {
+    width: 60px;
+    height: 3px;
+    background-color: #a43f49;
+    margin: 10px auto;
+}
+
+.section-heading span {
+    margin-top: 5px;
+    font-size: 16px;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+/* Left & Right Post */
+
+.right-image-post {
+    margin-top: 60px;
+    padding-top: 60px;
+    border-top: 2px solid rgba(250, 250, 250, 0.1);
+}
+
+.left-image img,
+.right-image img {
+    border-radius: 5px;
+	width:100%;
+}
+
+.right-image-post h4,
+.left-image-post h4 {
+    margin-top: 30px;
+}
+
+.right-image-post p,
+.left-image-post p {
+    margin-top: 20px;
+}
+
+.right-image-post .white-button,
+.left-image-post .white-button {
+    margin-top: 30px;
+}
+
+
+@media screen and (max-width: 1280px) {
+    .menu {
+        left: 0%;
+    }
+
+    .right-image-post h4,
+    .left-image-post h4 {
+        margin-top: 0px;
+    }
+
+    .right-image-post p,
+    .left-image-post p {
+        margin-top: 15px;
+    }
+
+    .right-image-post .white-button,
+    .left-image-post .white-button {
+        margin-top: 25px;
+    }
+
+}
+
+.map{
+	width: 100% ;
+	height: 450px ;
+	
+	border: 2%;
+	border-color:red;
+	frameborder: 5 ;
+	allowfullscreen:true ;
+	aria-hidden: false ;
+	tabindex: 10;
+}
+
+.text{
+	text-align:justify;
+}
+
+
+/* Services */
+
+.my-services .col-md-6 {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.service-item {
+    margin-bottom: 10px;
+    padding: 50px;
+    background-color: rgba(250, 250, 250, 0.1);
+    transition: all 0.5s;
+}
+
+.service-item h4 {
+    transition: all 0.5s;
+}
+
+.service-item p {
+    transition: all 0.5s;
+}
+
+.service-item:hover {
+    background-color: rgba(250, 250, 250, 1);
+}
+
+.service-item:hover h4 {
+    color: #1e1e1e;
+}
+
+.service-item:hover p {
+    color: #4a4a4a;
+}
+
+.service-item .service-icon {
+    width: 70px;
+    height: 70px;
+    display: inline-block;
+    margin-bottom: 30px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: all 0.5s;
+}
+
+.service-item .first-service-icon {
+    background-image: url(../images/first-white-icon.png);
+}
+
+.service-item:hover .first-service-icon {
+    background-image: url(../images/first-main-icon.png);
+}
+
+.service-item .second-service-icon {
+    background-image: url(../images/second-white-icon.png);
+}
+
+.service-item:hover .second-service-icon {
+    background-image: url(../images/second-main-icon.png);
+}
+
+.service-item .third-service-icon {
+    background-image: url(../images/third-white-icon.png);
+}
+
+.service-item:hover .third-service-icon {
+    background-image: url(../images/third-main-icon.png);
+}
+
+.service-item .fourth-service-icon {
+    background-image: url(../images/fourth-white-icon.png);
+}
+
+.service-item:hover .fourth-service-icon {
+    background-image: url(../images/fourth-main-icon.png);
+}
+
+/* Buttons */
+
+.white-button a {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #fff;
+    color: #a43f49;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.5s;
+}
+
+.white-button a:hover {
+    background-color: #a43f49;
+    color: #fff;
+}
+
+button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #a43f49;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.5s;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+button:hover {
+    outline: none;
+    background-color: #a43f49;
+    color: #fff;
+}
