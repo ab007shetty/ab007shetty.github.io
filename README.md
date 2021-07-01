@@ -1,3 +1,3 @@
-# Portfolio
+### Click Here to Visit All Static Sites: <https://ab007shetty.github.io/all>
 
-View the site on GitHub at: https://abshetty.me
+<img src="all/readme.png" width="100%">
