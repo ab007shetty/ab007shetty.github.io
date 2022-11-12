@@ -25,35 +25,7 @@
 	
 	<link rel="stylesheet" href="https://s.pageclip.co/v1/pageclip.css" media="screen">
 	
-<script>
-//some default pre init
-var PB = PB || {};PB.q = PB.q || [];PB.events = PB.events || [];
 
-//PushBots ApplicationId (required)
-PB.app_id = "60ca159820fcc95e8f3b9cd6";
-//Your domain name, must be HTTPS or localhost  (required)
-PB.domain = "https://ab007shetty.github.io";
-//Update and uncomment it if you are using custom safari certificate for your app
-PB.safari_push_id = "web.com.pushbots.safaripush";
-//****************************************
-
-PB.logging_enabled = true;
-PB.auto_subscribe = true;
-
-//Custom worker and manifest URL
-//PB.worker_url = PB.domain + "/pushbots-worker.js";
-
-//Welcome notification message
-PB.welcome = {title:"Welcome ",message:"Thanks for subscribing!", url :PB.domain};
-
-function sendNotification(){
-      PB.register();
-      PB.q.push(["sendNotification", {title:"Hey ",message:"Why not?", url :"https://ab007shetty.github.io"}]);
-}
-
-</script>
-
-<script src="//cdn.pushbots.com/js/sdk.min.js" type="text/javascript" onload="PB.init()" async></script>
   </head>
 
   <body onload="initialize()">
@@ -69,14 +41,15 @@ function sendNotification(){
             </div>
             <div class="author-content">
               <h4>Anirudha B Shetty</h4>
-              <span>Future Engineer</span>
+              <span>Learner</span>
             </div>
             <nav class="main-nav" >
               <ul class="main-menu">
-                <li><a href="#section1">About Me</a></li>
+                <li><a href="#about">About Me</a></li>
+				<li><a href="#qualifications">Qualifications</a></li>
                 <li><a href="#section2">What I’m good at</a></li>
                 <li><a href="#section3">My Resume</a></li>
-				<li><a href="#section4">Accomplishments</a></li>
+				<li><a href="#section4">Certificates</a></li>
                 <li><a href="#section5">Contact Me</a></li>
               </ul>
             </nav>
@@ -106,18 +79,16 @@ function sendNotification(){
         </div>
       </div>
 
-      <section class="section about-me" data-section="section1">
+      <section class="section about-me" data-section="about">
         <div class="container">
           <div class="section-heading">
             <h2>About Me</h2>
             <div class="line-dec"></div>
             <span>
-			I'm an aspiring Computer Science Engineer & Web developer from Udupi, Karnataka.  
-			I'm self-taught, currently working on refining my skills towards becoming a fullstack Developer.
+			I'm a Computer Science Engineer & Full Stack Web Developer from Udupi, Karnataka.  
 			  </span> 
           </div>
-		  
-		  
+		 		  
           <div class="left-image-post">
             <div class="row">
               <div class="col-md-6">
@@ -127,39 +98,111 @@ function sendNotification(){
               </div>
               <div class="col-md-6">
                 <div class="right-text text">
-                  <h4>Computer Science Engineer</h4>
+                  <h3 class="">Computer Science Engineer</h3>
                   <p>
-                    I'm Currently studying B.E in Computer Science at Shri Madhwa Vadiraja Institute of Technology, Bantakal.
-					As a Engineer Web Development, Software Development, Coding are the essential critiria for any IT Inrastructure.
+					Hii, My name is Anirudha B Shetty and I am currently working as a SAP SD Consultant at Infosys.
+					</p>
+					 <p>
+					My area of Interests are Full Stack Web development, Android, UI Design, Programming and also Cybersecurity, Blockchain etc.
                   </p>
-                 
-                </div>
-              </div>
-            </div>
-          </div>
-		  
-		  
-          <div class="right-image-post">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="left-text text">
-                  <h4>Gamer / E-Sports</h4>
-                  <p>
-					In India Currently Gaming / E-Sports is a Growing Sector, As a Gamer I always had a dream of Playing Games 
-					In a Competitive level. If I'm not an Engineer I will definately end up as Gamer or Streamer, It's MY DREAM!!!
-                  </p>
-               
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="right-image">
-                  <img src="assets/images/right.jpg" alt="PS4 Controller" />
+				   <p>
+					I have been coding for around 3 years now. I love to build full stack web applications that are lightweight and gorgeous.                  </p>
+					 <a href="#contact" class="mt-4 btn btn-outline-info btn-md font-weight-bold">Connect with me</a>		 
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+	  
+
+
+
+	  <section class="section about-me" data-section="qualifications">
+	  
+          <div class="section-heading">
+            <h2>Qualifications</h2>
+            <div class="line-dec"></div>
+            <span>
+I am currently working as a SAP SD Consultant at Infosys.			  </span> 
+          </div>
+		 		  
+
+  <div class="container">
+  
+    <!--first section-->
+    <div class="row align-items-center how-it-works d-flex">
+      <div class="col-2 text-center bottom d-inline-flex justify-content-center align-items-center">
+        <div class="circle font-weight-bold">3</div>
+      </div>
+      <div class="col-6">
+       <h5> 2021	&nbsp; <span class=" badge bg-info"> 7.38 CGPA</span></h5> 		
+		<h6> B.E in Computer Science  </h6>
+        <p>        
+		  Shri Madhwa Vadiraja Institute of Technology
+        </p>
+	  </div>
+    </div>
+	
+    <!--path between 1-2-->
+    <div class="row timeline">
+      <div class="col-2">
+        <div class="corner top-right"></div>
+      </div>
+      <div class="col-8">
+        <hr/>
+      </div>
+      <div class="col-2">
+        <div class="corner left-bottom"></div>
+      </div>
+    </div>
+	
+	
+    <!--second section-->
+    <div class="row align-items-center justify-content-end how-it-works d-flex">
+      <div class="col-6 text-right">
+       <h5>2017	 &nbsp; <span class=" badge bg-info"> 87.83%</span></h5> 		
+		<h6> Pre University Course  </h6>
+        <p>        
+		  Viveka PU College
+        </p>
+	  </div>
+      <div class="col-2 text-center full d-inline-flex justify-content-center align-items-center">
+        <div class="circle font-weight-bold">2</div>
+      </div>
+    </div>
+	
+    <!--path between 2-3-->
+    <div class="row timeline">
+      <div class="col-2">
+        <div class="corner right-bottom"></div>
+      </div>
+      <div class="col-8">
+        <hr/>
+      </div>
+      <div class="col-2">
+        <div class="corner top-left"></div>
+      </div>
+    </div>
+	
+	
+    <!--third section-->
+    <div class="row align-items-center how-it-works d-flex">
+      <div class="col-2 text-center top d-inline-flex justify-content-center align-items-center">
+        <div class="circle font-weight-bold">1</div>
+      </div>
+      <div class="col-6">
+       <h5>2015 	&nbsp;<span class=" badge bg-info"> 96.16%</span></h5> 		
+		<h6> High School </h6>
+        <p>        
+		  Maryknoll High School
+        </p>
+	  </div>
+    </div>
+  </div>
+      </section>
+	  
+	  
 
       <section class="section my-services" data-section="section2">
         <div class="container">
@@ -167,10 +210,7 @@ function sendNotification(){
             <h2>What I’m good at?</h2>
             <div class="line-dec"></div>
             <span
-              >I'm an All-Rounder, I have interest in most of the sectors and also have some basic knowledge .
-			  Currently I'm focusing on Creating fullstack applications that are not just useful, but also meaningful.
-			  I strive to add flavor to my work in creating fully functional apps, efficiency in writing code, speed optimization,
-			  and seamless user experience with design that is pleasing to the eye. I'm continuously learning and always pushing towards mastering my craft.
+              >My Strength is - continuous learning and always pushing towards mastering my craft.
 			  </span>
           </div>
 		  
@@ -179,11 +219,13 @@ function sendNotification(){
             <div class="col-md-6">
               <div class="service-item">
                 <div class="first-service-icon service-icon"></div>
-                <h4>HTML5 &amp; CSS3</h4>
-                <p class="text">
-				I'm interested in meeting and collaborating with other professionals to develop both small and large 
-				scale projects that can help improve the work force in productivity among other things. 
-                </p>
+                <h4>Full Stack Web Development </h4>
+				<ul class="list-group ">
+				  <li class="list-group-item list-group-item-action list-group-item-secondary bg-warning text-white">MongoDB, Express, Bootstrap, Node.js</li>
+				  <li class="list-group-item list-group-item-action list-group-item-secondary bg-white text-dark">PHP, Bootstrap, MySQL </li>
+				  <li class="list-group-item list-group-item-action list-group-item-secondary bg-white text-dark"> Django, Bootstrap, Python, SQLite</li>
+				  <li class="list-group-item list-group-item-action list-group-item-secondary bg-success text-white">ASP.Net, SQL Server, C#, Visual Studio</li>			
+				</ul>
               </div>
             </div>
 			
@@ -191,11 +233,26 @@ function sendNotification(){
             <div class="col-md-6">
               <div class="service-item">
                 <div class="second-service-icon service-icon"></div>
-                <h4>Python</h4>
-                <p class="text">
-                  Python is One of the most popular Scripting language and it is heavily used in IT automation.
-				  I will write small scripts to enhance the Performance and also it will help in reducing human effort,cost and time. 
-                </p>
+                <h4>Programming</h4>
+                <ul class="list-group bg-dark text-dark">
+				  <li class="list-group-item list-group-item-action list-group-item-info bg-warning text-white">Python, JavaScript</li>
+				  <li class="list-group-item list-group-item-action list-group-item-secondary bg-white text-dark">HTML5, CSS3, SQL</li>
+				  <li class="list-group-item list-group-item-action list-group-item-secondary bg-white text-dark">C, C++, Java, C#</li>
+				  <li class="list-group-item list-group-item-action list-group-item-secondary bg-success text-white">ABAP</li>							  
+				</ul>
+              </div>
+            </div>
+			
+			  <div class="col-md-6">
+              <div class="service-item">
+                <div class="fourth-service-icon service-icon"></div>
+                <h4> Cloud Computing</h4>
+                <ul class="list-group bg-dark text-dark">
+				  <li class="list-group-item list-group-item-action list-group-item-info bg-warning text-white">Google Cloud Platform</li>
+				  <li class="list-group-item list-group-item-action list-group-item-secondary bg-white text-dark">Amazon Web Services</li>
+				  <li class="list-group-item list-group-item-action list-group-item-secondary bg-white text-dark">Microsoft Azure</li>
+					<li class="list-group-item list-group-item-action list-group-item-secondary bg-success text-white">Heroku, Pythonanywhere</li>				  
+				</ul>
               </div>
             </div>
 			
@@ -203,25 +260,17 @@ function sendNotification(){
             <div class="col-md-6">
               <div class="service-item">
                 <div class="third-service-icon service-icon"></div>
-                <h4>IT-Support</h4>
-                <p class="text">
-                  IT-Support is the foundation for any IT Company.
-				  I can troubleshoot or fix Most of the Hardware and Software related Problems associated with Android, Windows and Linux.
-                </p>
+                <h4>Others</h4>
+                <ul class="list-group ">
+				  <li class="list-group-item list-group-item-action list-group-item-secondary bg-warning text-white">IT Support</li>
+				  <li class="list-group-item list-group-item-action list-group-item-secondary bg-white text-dark">Big Data Analysis</li>	
+				  <li class="list-group-item list-group-item-action list-group-item-secondary bg-white text-dark">DBMS, Android, OpenGL</li>
+				  <li class="list-group-item list-group-item-action list-group-item-secondary bg-success text-white">Cybersecurity, Blockchain, SAP</li>			
+				</ul>
               </div>
             </div>
-			
-			
-            <div class="col-md-6">
-              <div class="service-item">
-                <div class="fourth-service-icon service-icon"></div>
-                <h4>Google Cloud Platform</h4>
-                <p class="text">
-                  I'm successfully completed Six Specializations just based on Google Cloud Platform on Coursera. 
-				  And I also looking forward to take Google Cloud Architect Professional Certificate Exam.
-                </p>
-              </div>
-            </div>
+					
+          
           </div>
         </div>
       </section>
@@ -233,7 +282,7 @@ function sendNotification(){
             <h2>My Resume</h2>
             <div class="line-dec"></div>
             <span
-              >"The best way to predict the future is to create it." — Abraham Lincoln
+              >" Don't be sad for not getting something which you deserved. Because you also got something which is most deserved by someone else. " — AB Shetty
 			  </span>
 			  <br/>
 			<br/>
@@ -255,7 +304,7 @@ function sendNotification(){
       <section class="section my-work" data-section="section4">
         <div class="container">
           <div class="section-heading">
-            <h2>My Accomplishments</h2>
+            <h2>Certificates</h2>
             <div class="line-dec"></div>
             <span
               >Here are some Certificates i got from various online Courses, Webniars and other participations.</span
@@ -884,7 +933,7 @@ function sendNotification(){
 
 	<!--  =====================================        end -->			
 
-      <section class="section contact-me" data-section="section5">
+      <section class="section contact-me" data-section="section5" id="contact">
         <div class="container">
           <div class="section-heading">
             <h2>Contact Me</h2>
