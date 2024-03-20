@@ -104,8 +104,8 @@ html {
 }
 
 .main-nav li a {
-    height: 70px;
-    line-height: 70px;
+    height: 60px;
+    line-height: 60px;
     display: inline-block;
     font-size: 16px;
     font-weight: 700;
@@ -124,7 +124,7 @@ html {
 /* Sidebar Menu */
 
 .menu .image {
-    margin-top: 60px;
+    margin-top: 3px;
 }
 
 .menu .image img {
@@ -135,7 +135,7 @@ html {
 }
 
 .menu .author-content {
-    margin: 40px 0px 60px 0px;
+    margin: 10px 0px 20px 0px;
 }
 
 .menu .author-content h4 {
@@ -149,19 +149,20 @@ html {
 }
 
 .menu .social-network {
-    margin-top: 60px;
+    margin-top: 30px;
+	margin-bottom: 30px;
 }
 
 .menu .social-network ul li {
-    margin: 0 3px;
+    margin: 3px 3px;
 }
 
 .menu .social-network ul li a {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     display: inline-block;
     text-align: center;
-    line-height: 40px;
+    line-height: 36px;
     background-color: rgba(0, 0, 0, 0.2);
     color: #fff;
     font-size: 14px;
@@ -175,7 +176,7 @@ html {
 
 .menu .copyright-text {
     position: relative;
-    margin-top: 60px;
+    margin-top: 20px;
 }
 
 .menu .copyright-text p {
@@ -184,7 +185,7 @@ html {
     width: 100%;
     padding-left: 30px;
     padding-right: 30px;
-    padding-top: 30px;
+    padding-top: 10px;
     font-size: 13px;
 }
 
@@ -752,7 +753,7 @@ section.contact-me {
     }
 
     .menu .image {
-        margin-top: 40px;        
+        margin-top: 10px;        
     }
 
     .menu .image img {
@@ -761,7 +762,7 @@ section.contact-me {
     }
 
     .menu .author-content {
-        margin: 20px 0px 40px 0px;
+        margin: 10px 0px 20px 0px;
     }
 
     .menu .container {
