@@ -1,2 +1,2 @@
-# portfolio
-My Personal Website built with React.js
+# React Portfolio Starter
+A clean starter template for a full-stack developer portfolio.
