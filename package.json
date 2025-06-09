@@ -2,22 +2,26 @@
   "name": "portfolio",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://ab007shetty.github.io/",
   "dependencies": {
+    "framer-motion": "^7.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
+    "react-icons": "^4.4.0",
     "react-router-dom": "^6.3.0",
-    "framer-motion": "^7.6.0",
-    "react-icons": "^4.4.0"
+    "react-scripts": "5.0.1"
   },
   "devDependencies": {
-    "tailwindcss": "^3.0.23",
+    "autoprefixer": "^10.4.1",
+    "gh-pages": "^6.3.0",
     "postcss": "^8.4.5",
-    "autoprefixer": "^10.4.1"
+    "tailwindcss": "^3.0.23"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build"
+       "predeploy": "npm run build",
+       "deploy": "gh-pages -d build",
+       "start": "react-scripts start",
+       "build": "react-scripts build"
   },
   "browserslist": {
     "production": [
