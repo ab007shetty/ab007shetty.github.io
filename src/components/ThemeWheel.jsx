@@ -81,16 +81,26 @@ export default function ThemeWheel({
     }, 400);
   }
 
-  // Spinner geometry (smaller, thick, spinner-like arms)
-  const SIZE = 180;
-  const CENTER = SIZE / 2;
-  const ARM_RADIUS = 61;
-  const ARM_CIRCLE_RADIUS = 27;
-  const ARM_BTN_SIZE = 40;
-  const CENTER_RADIUS = 28;
-  const BEARING_RADIUS = 15;
+  // Responsive size
+  // Default: 180px; Mobile: 75px
+  const [size, setSize] = useState(180);
+  useEffect(() => {
+    function handleResize() {
+      setSize(window.innerWidth <= 750 ? 75 : 180);
+    }
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-  // Button/arm positions and theme
+  const SIZE = size;
+  const CENTER = SIZE / 2;
+  const ARM_RADIUS = SIZE * 0.34;
+  const ARM_CIRCLE_RADIUS = SIZE * 0.15;
+  const ARM_BTN_SIZE = SIZE * 0.22;
+  const CENTER_RADIUS = SIZE * 0.16;
+  const BEARING_RADIUS = SIZE * 0.083;
+
   const arms = themeOrder.map((t, idx) => {
     const angle = idx * 120 - 90; // Top arm at -90deg
     const rad = (angle * Math.PI) / 180;
@@ -99,7 +109,6 @@ export default function ThemeWheel({
     return { t, cx, cy, idx, angle, rad };
   });
 
-  // Center logo gradient
   const AB_LOGO_GRADIENT = customCursor
     ? "radial-gradient(circle, #22c55e 60%, #15803d 100%)"
     : "radial-gradient(circle, #ed1c24 60%, #a60b0f 100%)";
@@ -109,7 +118,6 @@ export default function ThemeWheel({
     if (!disableCursorToggle && setCustomCursor) setCustomCursor((v) => !v);
   }
 
-  // Highlight for active theme
   const getArmHighlight = (t) =>
     theme === t
       ? {
@@ -125,21 +133,17 @@ export default function ThemeWheel({
           background: "#f1f5f9cc",
         };
 
-  // SVG Paths for spinner arms, each arm is a thick "bone" with a slight bulge and color/motif
   function SpinnerArm({ t, idx, rad }) {
     const armLen = ARM_RADIUS - CENTER_RADIUS + 4;
-    // Coordinates for motif
     const motifX = CENTER + (armLen / 2) * Math.cos(rad);
     const motifY = CENTER + (armLen / 2) * Math.sin(rad);
 
-    // SVG motif only, not React icons
     let motif = null;
     if (t === "icy") {
-      // Simple SVG snowflake
       motif = (
         <g>
           <g
-            transform={`translate(${motifX},${motifY}) scale(0.65)`}
+            transform={`translate(${motifX},${motifY}) scale(${size <= 75 ? 0.42 : 0.65})`}
             opacity="0.7"
           >
             <g stroke="#e0fcff" strokeWidth="1.6" strokeLinecap="round">
@@ -157,7 +161,7 @@ export default function ThemeWheel({
           <circle
             cx={motifX}
             cy={motifY}
-            r={7}
+            r={size <= 75 ? 3 : 7}
             fill="url(#hotArmGrad)"
             stroke="#ffe047"
             strokeWidth="1"
@@ -170,9 +174,9 @@ export default function ThemeWheel({
         <g>
           <path
             d={`
-              M ${motifX - 7} ${motifY}
-              a 7 7 0 1 0 14 0
-              a 5 7 0 1 1 -14 0
+              M ${motifX - (size <= 75 ? 3.5 : 7)} ${motifY}
+              a ${size <= 75 ? 3.5 : 7} ${size <= 75 ? 3.5 : 7} 0 1 0 ${size <= 75 ? 7 : 14} 0
+              a ${size <= 75 ? 2.5 : 5} ${size <= 75 ? 3.5 : 7} 0 1 1 -${size <= 75 ? 7 : 14} 0
             `}
             fill="#fff"
             opacity="0.22"
@@ -214,7 +218,7 @@ export default function ThemeWheel({
               : "url(#armGraddark)"
           }
           stroke="#222"
-          strokeWidth="2"
+          strokeWidth={size <= 75 ? 1 : 2}
           style={{ filter: "drop-shadow(0 0 6px #2224)" }}
         />
         {motif}
@@ -227,9 +231,12 @@ export default function ThemeWheel({
       style={{
         width: SIZE,
         height: SIZE,
+        minWidth: 60,
+        minHeight: 60,
         userSelect: "none",
         position: "relative",
       }}
+      className="themewheel-responsive"
       onMouseEnter={() => !introSpinning && setSpinning(false)}
       onMouseLeave={() => !introSpinning && setSpinning(true)}
     >
@@ -263,7 +270,7 @@ export default function ThemeWheel({
             r={ARM_CIRCLE_RADIUS}
             fill={themeColors[t]}
             stroke="#222"
-            strokeWidth="3"
+            strokeWidth={size <= 75 ? 1.5 : 3}
             style={{ filter: "drop-shadow(0 0 4px #2226)" }}
           />
         ))}
@@ -273,10 +280,10 @@ export default function ThemeWheel({
             key={i + "bearing"}
             cx={cx}
             cy={cy}
-            r={ARM_CIRCLE_RADIUS - 8}
+            r={ARM_CIRCLE_RADIUS - (size <= 75 ? 4.5 : 8)}
             fill="#111"
             stroke="#333"
-            strokeWidth="2"
+            strokeWidth={size <= 75 ? 0.8 : 2}
           />
         ))}
         {/* Bearings holes (white) */}
@@ -285,7 +292,7 @@ export default function ThemeWheel({
             key={i + "hole"}
             cx={cx}
             cy={cy}
-            r={ARM_CIRCLE_RADIUS - 15}
+            r={ARM_CIRCLE_RADIUS - (size <= 75 ? 8.5 : 15)}
             fill="#fff"
           />
         ))}
@@ -296,7 +303,7 @@ export default function ThemeWheel({
           r={CENTER_RADIUS}
           fill="#e53935"
           stroke="#b71c1c"
-          strokeWidth="4"
+          strokeWidth={size <= 75 ? 2 : 4}
         />
         {/* Center "bearing" accent */}
         <circle
@@ -305,9 +312,8 @@ export default function ThemeWheel({
           r={BEARING_RADIUS}
           fill="#d32f2f"
           stroke="#900"
-          strokeWidth="2"
+          strokeWidth={size <= 75 ? 1.1 : 2}
         />
-        {/* Motifs are now SVG-only! */}
       </svg>
       {/* Theme icons as buttons */}
       <div
@@ -359,19 +365,19 @@ export default function ThemeWheel({
           </button>
         ))}
       </div>
-      {/* Center "AB" logo, always clickable and stylish, never spins */}
+      {/* Center "AB" logo, toggle cursor */}
       <button
         aria-label="Toggle Cursor"
-        title="DONT CLICK"
+        title="Toggle custom cursor"
         onClick={handleLogoClick}
         style={{
           position: "absolute",
-          left: CENTER - 22,
-          top: CENTER - 22,
-          width: 44,
-          height: 44,
+          left: CENTER - (size <= 75 ? 15 : 22),
+          top: CENTER - (size <= 75 ? 15 : 22),
+          width: size <= 75 ? 30 : 44,
+          height: size <= 75 ? 30 : 44,
           fontWeight: 900,
-          fontSize: 22,
+          fontSize: size <= 75 ? 14 : 22,
           letterSpacing: "-0.06em",
           color: "#fff",
           background: AB_LOGO_GRADIENT,
@@ -398,6 +404,18 @@ export default function ThemeWheel({
       >
         AB
       </button>
+      <style>
+        {`
+        @media (max-width: 750px) {
+          .themewheel-responsive {
+            width: 75px !important;
+            height: 75px !important;
+            min-width: 60px !important;
+            min-height: 60px !important;
+          }
+        }
+        `}
+      </style>
     </div>
   );
 }

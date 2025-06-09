@@ -1,32 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
-import { SiCoursera, SiGooglescholar, SiQwiklabs } from "react-icons/si";
-import { GiMonkey } from "react-icons/gi";
-import { BiSearch } from "react-icons/bi";
 import { useTheme } from "../ThemeContext";
-
-// AD Scientific Index: fallback to "AD" text styled as a logo
-function AdScientificIndexLogo({ className = "" }) {
-  return (
-    <span
-      className={`flex items-center justify-center font-extrabold text-2xl md:text-3xl ${className}`}
-      style={{
-        fontFamily: "'Inter', 'Arial Black', Arial, sans-serif",
-        letterSpacing: "-0.08em",
-        fontStyle: "italic",
-        width: "1em",
-        height: "1em",
-        lineHeight: "1",
-      }}
-      aria-label="AD Scientific Index"
-      title="AD Scientific Index"
-    >
-      AD
-    </span>
-  );
-}
 
 const images = [
   "/images/profile1.png",
@@ -34,109 +7,31 @@ const images = [
   "/images/profile3.png",
 ];
 
-const emailInitial = "ab007shetty";
-const emailDomains = [
-  { domain: "gmail.com", colorKey: "highlightDomain" },
-  { domain: "outlook.com", colorKey: "highlightDomain2" },
-  { domain: "icloud.com", colorKey: "highlightDomain3" },
-];
-
 const accentsMap = {
   icy: {
     highlight: "text-cyan-200",
-    highlightDomain: "text-cyan-400",
-    highlightDomain2: "text-pink-400",
-    highlightDomain3: "text-lime-400",
-    atColor: "text-white",
-    outline: "theme-outline",
-    buttonPrimary: "bg-cyan-500/90 hover:bg-cyan-400/80 text-white",
-    buttonSecondary: "bg-white/80 text-cyan-700 hover:bg-white/60",
     shadow: "shadow-lg border-white/20",
     text: "text-cyan-50/80",
-    iconHover: "hover:text-cyan-300",
+    buttonPrimary: "bg-cyan-500/90 hover:bg-cyan-400/80 text-white",
+    buttonSecondary: "bg-white/80 text-cyan-700 hover:bg-white/60",
   },
   hot: {
     highlight: "text-yellow-400",
-    highlightDomain: "text-yellow-500",
-    highlightDomain2: "text-pink-400",
-    highlightDomain3: "text-lime-400",
-    atColor: "text-white",
-    outline: "theme-outline",
-    buttonPrimary: "bg-yellow-400/90 hover:bg-yellow-300/80 text-yellow-900",
-    buttonSecondary: "bg-white/90 text-yellow-700 hover:bg-yellow-100",
     shadow: "shadow-lg border-yellow-300/20",
     text: "text-yellow-950/80",
-    iconHover: "hover:text-yellow-400",
+    buttonPrimary: "bg-yellow-400/90 hover:bg-yellow-300/80 text-yellow-900",
+    buttonSecondary: "bg-white/90 text-yellow-700 hover:bg-yellow-100",
   },
   dark: {
     highlight: "text-blue-300",
-    highlightDomain: "text-blue-400",
-    highlightDomain2: "text-pink-400",
-    highlightDomain3: "text-lime-400",
-    atColor: "text-white",
-    outline: "theme-outline",
-    buttonPrimary: "bg-blue-600/90 hover:bg-blue-500/80 text-white",
-    buttonSecondary: "bg-white/80 text-blue-900 hover:bg-blue-100/80",
     shadow: "shadow-lg border-blue-900/20",
     text: "text-blue-200/80",
-    iconHover: "hover:text-blue-300",
+    buttonPrimary: "bg-blue-600/90 hover:bg-blue-500/80 text-white",
+    buttonSecondary: "bg-white/80 text-blue-900 hover:bg-blue-100/80",
   }
 };
 
-const socials = [
-  {
-    href: "https://github.com/ab007shetty",
-    icon: <FaGithub />,
-    label: "GitHub"
-  },
-  {
-    href: "https://linkedin.com/in/ab007shetty",
-    icon: <FaLinkedin />,
-    label: "LinkedIn"
-  },
-  {
-    href: "https://x.com/ab007shetty",
-    icon: <FaXTwitter />,
-    label: "X"
-  },
-  {
-    href: "https://www.instagram.com/a.b.shetty",
-    icon: <FaInstagram />,
-    label: "Instagram"
-  },
-  {
-    href: "https://www.coursera.org/user/9a1f6f65c70233a4cbf41887f48e0c06",
-    icon: <SiCoursera />,
-    label: "Coursera"
-  },
-  {
-    href: "https://scholar.google.com/citations?user=i1vJxMYAAAAJ",
-    icon: <SiGooglescholar />,
-    label: "Google Scholar"
-  },
-  {
-    href: "https://www.qwiklabs.com/public_profiles/a71f17d6-36af-4e30-b70f-8771bf211324",
-    icon: <SiQwiklabs />,
-    label: "Qwiklabs"
-  },
-  {
-    href: "https://monkeytype.com/profile/abshetty",
-    icon: <GiMonkey />,
-    label: "Typing Monkey"
-  },
-  {
-    href: "https://www.adscientificindex.com/scientist/anirudha-b-shetty/4804035",
-    icon: <AdScientificIndexLogo />,
-    label: "AD Scientific Index"
-  },
-  {
-    href: "https://bit.ly/3IJ8Ds3",
-    icon: <BiSearch />,
-    label: "Google Search"
-  }
-];
-
-export default function LandingContent({ accent }) {
+export default function LandingContent() {
   const { theme } = useTheme();
   const accents = accentsMap[theme] || accentsMap.icy;
 
@@ -147,211 +42,184 @@ export default function LandingContent({ accent }) {
     return () => clearInterval(interval);
   }, []);
 
-  // Email domain animation
-  const [domainIdx, setDomainIdx] = useState(0);
-  useEffect(() => {
-    const interval = setInterval(
-      () => setDomainIdx(idx => (idx + 1) % emailDomains.length),
-      2100
-    );
-    return () => clearInterval(interval);
-  }, []);
-
-  // Compose sideways email, bottom-left, using writing-mode: sideways-lr
-  const getSidewaysEmail = () => {
-    const domainObj = emailDomains[domainIdx];
-    return (
-      <span
-        className={`transition-colors font-mono text-2xl md:text-3xl cursor-pointer flex-nowrap ${accents.outline} email-outline`}
-        style={{
-          writingMode: "sideways-lr",
-          textOrientation: "mixed",
-          letterSpacing: "0.06em",
-          userSelect: "text",
-          padding: "0.1em 0.15em",
-          lineHeight: "1.05"
-        }}
-        title={`${emailInitial}@${domainObj.domain}`}
-      >
-        <span className={`${accents.highlight} ${accents.outline}`}>{emailInitial}</span>
-        <span className={`mx-1 ${accents.atColor} font-bold`} style={{textShadow: "none"}}>@</span>
-        <span className={`${accents[domainObj.colorKey]} animate-email-domain ${accents.outline}`}>{domainObj.domain}</span>
-      </span>
-    );
-  };
-
-  // Both image and text section will use this consistent sizing
-  const sectionBoxStyle = {
-    flex: "1 1 0%",
-    minWidth: "22rem",
-    minHeight: "26rem",
-    height: "100%",
-    width: "100%",
-    maxWidth: "32rem",
-    maxHeight: "34rem"
-  };
-
+  // Sizing for image and text
+  // On desktop: side by side, text comes from right
+  // On mobile: stacked, but image still large
   return (
-    <>
-      <Navbar />
-
-      {/* Social icons at right (vertical, top to down, thick line touches the top) */}
-      <div className="fixed z-30 flex flex-col items-center"
+    <main
+      className="relative z-20 flex flex-col lg:flex-row items-center justify-center min-h-[90vh] px-2 md:px-8 py-8 space-y-8 lg:space-y-0 lg:space-x-24"
+      style={{ width: "100vw", minHeight: "82vh" }}
+    >
+      {/* Profile image */}
+      <div
+        className="flex items-center justify-center profile-pic-container"
         style={{
-          top: 0,
-          right: 'min(3vw, 2rem)',
+          flex: "0 0 auto",
+          minWidth: "390px",
+          minHeight: "390px",
+          width: "100%",
+          height: "100%",
+          maxWidth: "650px",
+          maxHeight: "650px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
         }}
       >
-        <div className="w-[7px] h-10 bg-current rounded-full opacity-60 theme-outline" />
-        <div className="flex flex-col gap-5 mt-2 items-center" style={{lineHeight: "1.05"}}>
-          {socials.map((s, i) => (
-            <a
-              key={s.label}
-              href={s.href}
-              target="_blank"
-              rel="noreferrer"
-              className={`transition-transform duration-200 hover:scale-125 text-3xl md:text-4xl mb-1 ${accents.iconHover} ${accents.highlight} icon-outline`}
+        <div
+          className="rounded-3xl overflow-hidden bg-transparent relative flex items-center justify-center"
+          style={{
+            width: "100%",
+            height: "100%",
+            minHeight: 340,
+            minWidth: 340,
+            maxWidth: 650,
+            maxHeight: 650,
+            aspectRatio: "1/1",
+          }}
+        >
+          {images.map((src, i) => (
+            <img
+              key={src}
+              src={src}
+              alt={`Profile ${i + 1}`}
+              className={`
+                absolute rounded-3xl w-full h-full object-contain object-center
+                profile-img-fade
+                ${imgIdx === i ? "opacity-100 z-10" : "opacity-0 z-0"}
+              `}
               style={{
-                transitionDelay: `${i * 90}ms`,
-                padding: "0.10em",
-                display: "flex",
-                lineHeight: "1.05"
+                transition: "opacity 2.4s cubic-bezier(.4,0,.2,1)",
+                background: "transparent",
+                borderRadius: "1.5rem"
               }}
-              aria-label={s.label}
-              title={s.label}
-            >
-              {s.icon}
-            </a>
+            />
           ))}
         </div>
       </div>
-
-      {/* Email at left, sideways from bottom left, thick line at the bottom, equal distance from left */}
-      <div className="fixed z-30 flex flex-col items-center"
+      {/* Text */}
+      <div
+        className={`text-center lg:text-left bg-white/10 rounded-3xl p-10 md:p-12 backdrop-blur-xl ${accents.shadow} drop-shadow-lg flex items-center landing-text-animate`}
         style={{
-          bottom: 0,
-          left: 'min(3vw, 2rem)',
+          flex: "1 1 0%",
+          maxWidth: 580,
+          minWidth: 390,
+          minHeight: 390,
+          fontSize: "1.18rem"
         }}
       >
-        {getSidewaysEmail()}
-        <div className="w-[7px] h-10 bg-current rounded-full opacity-60 theme-outline mt-2" />
-      </div>
-
-      <main className="relative z-20 flex flex-col lg:flex-row items-center justify-center min-h-[88vh] px-4 md:px-12 pt-20 pb-8 space-y-12 lg:space-y-0 lg:space-x-24">
-        {/* Animated Profile Photo - Same height/width as content, slow fade animation, no glossy wrap */}
-        <div
-          className="flex items-center justify-center"
-          style={sectionBoxStyle}
-        >
-          <div
-            className="rounded-3xl overflow-hidden bg-transparent relative flex items-center justify-center"
+        <div className="w-full">
+          <h1
+            className="font-bold mb-2 drop-shadow-lg"
             style={{
-              ...sectionBoxStyle,
-              aspectRatio: "1/1",
-              background: "transparent",
-              boxShadow: "none", // remove shadow/glossy
+              fontSize: "2.5rem",
+              lineHeight: 1.1,
+              letterSpacing: "-0.02em",
+              whiteSpace: "nowrap", // keeps it in one line
+              overflow: "hidden",
+              textOverflow: "ellipsis"
             }}
           >
-            {images.map((src, i) => (
-              <img
-                key={src}
-                src={src}
-                alt={`Profile ${i + 1}`}
-                className={`
-                  absolute rounded-3xl w-full h-full object-contain object-center
-                  profile-img-fade
-                  ${imgIdx === i ? "opacity-100 z-10" : "opacity-0 z-0"}
-                `}
-                style={{
-                  transition: "opacity 2.4s cubic-bezier(.4,0,.2,1)", // very smooth and slow
-                  background: "transparent",
-                  borderRadius: "1.5rem"
-                }}
-              />
-            ))}
+            Namaste, 🙏
+            <br />
+            I'm{" "}
+            <span
+              className={accents.highlight + " font-bold"}
+              style={{
+                fontSize: "2.8rem",
+                letterSpacing: "-0.02em",
+                whiteSpace: "nowrap",
+                display: "inline-block",
+                verticalAlign: "middle"
+              }}
+            >
+              Anirudha B Shetty
+            </span>
+          </h1>
+          <p className={`text-xl md:text-xl mb-2 ${accents.text}`}>
+            I love giving life to wild dreams.
+          </p>
+          <p className={`text-lg md:text-xl mb-6 ${accents.text}`}>
+            & More than that, I also don't know what I really am...
+          </p>
+          <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
+            <a
+              href="/resume.pdf"
+              download
+              className={`px-8 py-4 rounded-md font-semibold transition backdrop-blur-sm shadow ${accents.buttonPrimary}`}
+            >
+              Download Resume
+            </a>
+            <button
+  type="button"
+  className={`px-8 py-4 rounded-md font-semibold transition shadow ${accents.buttonSecondary}`}
+  onClick={() => {
+    const contactSection = document.getElementById("contact");
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth" });
+    }
+  }}
+>
+  Contact Me
+</button>
           </div>
         </div>
-        {/* Text */}
-        <div
-          className={`text-center lg:text-left max-w-xl bg-white/10 rounded-3xl p-8 backdrop-blur-xl ${accents.shadow} drop-shadow-lg flex items-center`}
-          style={{
-            ...sectionBoxStyle,
-            boxShadow: "none", // remove shadow/glossy
-          }}
-        >
-          <div className="w-full">
-            <h1 className="text-4xl md:text-5xl font-bold mb-2 drop-shadow-lg">
-              Namaste, 🙏
-              <br />
-              I'm
-              <div className={accents.highlight + " block mt-1 mb-2 text-4xl md:text-5xl font-bold"}>
-                Anirudha B Shetty
-              </div>
-            </h1>
-            <p className={`text-lg md:text-xl mb-2 ${accents.text}`}>
-              I love giving life to wild dreams. 
-            </p>
-            <p className={`text-base md:text-lg mb-6 ${accents.text}`}>
-              & To be Honest, I don't know what I really am...
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <a
-                href="/resume.pdf"
-                download
-                className={`px-6 py-3 rounded-md font-semibold transition backdrop-blur-sm shadow ${accents.buttonPrimary}`}
-              >
-                Download Resume
-              </a>
-              <a
-                href="/contact"
-                className={`px-6 py-3 rounded-md font-semibold transition shadow ${accents.buttonSecondary}`}
-              >
-                Contact Me
-              </a>
-            </div>
-          </div>
-        </div>
-      </main>
+      </div>
       <style>
         {`
-        /* Outline for text (both theme and icons, email) */
-        .theme-outline, .icon-outline, .email-outline, .theme-outline * {
-          text-shadow:
-            -2px -2px 0 #000,
-            2px -2px 0 #000,
-            -2px 2px 0 #000,
-            2px 2px 0 #000,
-            0px 2px 0 #000,
-            2px 0px 0 #000,
-            0px -2px 0 #000,
-            -2px 0px 0 #000;
-        }
-        .icon-outline svg {
-          filter: drop-shadow(0 0 1.5px #000) drop-shadow(0 0 2px #000);
-        }
-        .email-outline {
-          letter-spacing: 0.09em;
-        }
-        /* Very smooth and slow fade for profile images */
         .profile-img-fade {
           transition: opacity 2.4s cubic-bezier(.4,0,.2,1);
         }
-        @keyframes slide-up {
-          0% { opacity:0; transform: translateY(30px);}
-          100% { opacity:1; transform: translateY(0);}
+        @media (max-width: 1023px) {
+          .profile-pic-container {
+            min-width: 270px !important;
+            min-height: 270px !important;
+            max-width: 350px !important;
+            max-height: 350px !important;
+          }
         }
-        .animate-slide-up {
-          animation: slide-up 0.7s cubic-bezier(.25,.46,.45,.94) both;
+        @media (max-width: 750px) {
+          .profile-pic-container {
+            min-width: 80vw !important;
+            min-height: 80vw !important;
+            max-width: 90vw !important;
+            max-height: 90vw !important;
+          }
+          .profile-img-fade {
+            max-width: 100vw !important;
+            max-height: 100vw !important;
+          }
+          .landing-text-animate {
+            margin-top: 2.5rem !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            max-width: 98vw !important;
+            padding: 1.5rem !important;
+          }
         }
-        @keyframes email-domain {
-          0% { opacity: 0; transform: translateY(-12px);}
-          100% { opacity: 1; transform: translateY(0);}
+        @media (max-width: 640px) {
+          .profile-pic-container {
+            min-width: 92vw !important;
+            min-height: 92vw !important;
+            max-width: 99vw !important;
+            max-height: 99vw !important;
+          }
         }
-        .animate-email-domain {
-          animation: email-domain 0.5s both;
+        .landing-text-animate {
+          animation: slideInRight 0.9s cubic-bezier(.25,.8,.25,1) both;
+        }
+        @keyframes slideInRight {
+          from {
+            opacity: 0;
+            transform: translateX(80px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
         }
         `}
       </style>
-    </>
+    </main>
   );
 }

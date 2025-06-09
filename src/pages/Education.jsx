@@ -1,21 +1,9 @@
-import React from 'react';
-
-function Education() {
+import React from "react";
+export default function Education() {
   return (
-    <section className="container mx-auto px-6 py-16">
-      <h2 className="text-3xl font-bold mb-6">Education</h2>
-      <ul className="border-l-2 border-green-500 pl-4">
-        <li className="mb-8">
-          <h3 className="text-xl font-semibold">M.S. in Computer Science</h3>
-          <p className="text-gray-600">University of Example, 2020</p>
-        </li>
-        <li>
-          <h3 className="text-xl font-semibold">B.S. in Information Technology</h3>
-          <p className="text-gray-600">College of Examples, 2018</p>
-        </li>
-      </ul>
-    </section>
+    <div className="w-full flex flex-col items-center justify-center py-32">
+      <h2 className="text-4xl font-bold mb-6">Education</h2>
+      <p className="text-lg text-gray-700 dark:text-gray-200">Your education content here.</p>
+    </div>
   );
 }
-
-export default Education;
