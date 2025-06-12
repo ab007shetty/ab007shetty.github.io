@@ -1,19 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaHome, FaProjectDiagram, FaGraduationCap, FaEnvelope, FaUserTie } from "react-icons/fa";
+import { FaHome, FaProjectDiagram, FaGraduationCap, FaEnvelope, FaUserTie, FaUser, FaAward } from "react-icons/fa";
 import { GiSkills } from "react-icons/gi";
 import { useTheme } from "../ThemeContext";
 
 // Section icons for nav
 const sectionIcons = {
   home: <FaHome />,
+  about: <FaUserTie />, // Added about with FaUserTie icon (alternatively, use FaUser)
   skills: <GiSkills />,
   experience: <FaUserTie />,
-  education: <FaGraduationCap />,
+  certifications: <FaAward />, // Added certifications with FaAward icon (alternatively, use FaGraduationCap)
   projects: <FaProjectDiagram />,
   contact: <FaEnvelope />,
 };
 
-// Theme styles for nav
 const themeNavbarStyles = {
   icy: {
     bg: "bg-white/20 backdrop-blur-lg",
@@ -48,17 +48,20 @@ const themeNavbarStyles = {
 };
 
 export default function Navbar({ sections = [], onNavClick }) {
+  // Filter out the footer section
+  const filteredSections = sections.filter(section => section.id !== "footer");
+
   const { theme } = useTheme();
   const themeStyle = themeNavbarStyles[theme] || themeNavbarStyles.icy;
-  const [activeSection, setActiveSection] = useState(sections[0]?.id || "home");
+  const [activeSection, setActiveSection] = useState(filteredSections[0]?.id || "home");
   const navRefs = useRef({});
 
   // Scroll spy: update activeSection based on scroll
   useEffect(() => {
     function handler() {
       const offset = window.innerHeight / 3;
-      let current = sections[0]?.id || "home";
-      for (const { id } of sections) {
+      let current = filteredSections[0]?.id || "home";
+      for (const { id } of filteredSections) {
         const el = document.getElementById(id);
         if (el && el.getBoundingClientRect().top < offset) {
           current = id;
@@ -69,7 +72,7 @@ export default function Navbar({ sections = [], onNavClick }) {
     window.addEventListener("scroll", handler, { passive: true });
     handler();
     return () => window.removeEventListener("scroll", handler);
-  }, [sections]);
+  }, [filteredSections]);
 
   // Animated highlight using transform for smoothness
   const [highlightStyle, setHighlightStyle] = useState({});
@@ -85,7 +88,7 @@ export default function Navbar({ sections = [], onNavClick }) {
         transition: "transform 0.5s cubic-bezier(.65,-0.01,.27,1.01), width 0.45s cubic-bezier(.65,-0.01,.27,1.01), background 0.38s",
       });
     }
-  }, [activeSection, sections]);
+  }, [activeSection, filteredSections]);
 
   // Mobile menu state
   const [menuOpen, setMenuOpen] = useState(false);
@@ -115,7 +118,7 @@ export default function Navbar({ sections = [], onNavClick }) {
               willChange: "transform,width",
             }}
           />
-          {sections.map(({ id, label }) => {
+          {filteredSections.map(({ id, label }) => {
             const active = activeSection === id;
             return (
               <button
@@ -211,7 +214,7 @@ export default function Navbar({ sections = [], onNavClick }) {
           </svg>
         </button>
         <nav className="flex flex-col items-start space-y-4 mt-10">
-          {sections.map(({ id, label }) => {
+          {filteredSections.map(({ id, label }) => {
             const active = activeSection === id;
             return (
               <button

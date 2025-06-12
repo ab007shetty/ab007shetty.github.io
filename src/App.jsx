@@ -2,6 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import SocialsAndEmail from "./components/SocialsAndEmail";
 import LandingContent from "./pages/LandingContent";
+import About from "./pages/About";
+import Projects from "./pages/Projects";
+import Certifications from "./pages/Certifications";
+import Contact from "./pages/Contact";
 import ThemeBackground from "./components/ThemeBackground";
 import ThemeWheel from "./components/ThemeWheel";
 import ThemeCursors from "./components/ThemeCursors";
@@ -10,11 +14,10 @@ import { ThemeProvider } from "./ThemeContext";
 
 const SECTIONS = [
   { id: "home", label: "Home" },
-  { id: "skills", label: "Skills" },
-  { id: "experience", label: "Experience" },
-  { id: "education", label: "Education" },
+  { id: "about", label: "About" },
   { id: "projects", label: "Projects" },
-  { id: "contact", label: "Contact" }
+  { id: "certifications", label: "Certifications" },
+  { id: "contact", label: "Contact" },
 ];
 
 export default function App() {
@@ -73,27 +76,42 @@ export default function App() {
       ) : (
         <>
           <Navbar sections={SECTIONS} onNavClick={scrollToSection} />
-          {/* ThemeWheel with margin */}
-          <div style={{
-            position: "fixed",
-            top: 32,  // 32px margin from top
-            left: 32, // 32px margin from left
-            zIndex: 1010
-          }}>
-            <ThemeWheel customCursor={customCursor} setCustomCursor={setCustomCursor} />
-          </div>
-          <SocialsAndEmail />
+          {/* ThemeWheel at the top only on landing (home) section */}
+          {activeSection === "home" && (
+            <div style={{
+              position: "fixed",
+              top: 32,  // 32px margin from top
+              left: 32, // 32px margin from left
+              zIndex: 1010
+            }}>
+              <ThemeWheel customCursor={customCursor} setCustomCursor={setCustomCursor} />
+            </div>
+          )}
+          {/* SocialsAndEmail only on landing (home) section */}
+          {activeSection === "home" && <SocialsAndEmail />}
           <div className="snap-y snap-mandatory overflow-y-auto min-h-screen" style={{ scrollBehavior: "smooth" }}>
             {SECTIONS.map(({ id, label }) => (
               <section
                 key={id}
                 id={id}
                 ref={sectionRefs[id]}
-                className={`min-h-screen flex items-center justify-center snap-start`}
+                className={`min-h-screen flex items-center justify-center snap-start ${
+                  id === "contact" ? "pb-0" : ""
+                }`}
               >
                 {id === "home" ? (
                   <div className={`flex w-full h-full items-center justify-center transition-all duration-700 ${isLeavingLanding ? "opacity-0 translate-y-24 pointer-events-none" : "opacity-100 translate-y-0"}`}>
                     <LandingContent />
+                  </div>
+                ) : id === "about" ? (
+                  <About />
+                ) : id === "projects" ? (
+                  <Projects />
+                ) : id === "certifications" ? (
+                  <Certifications />
+                ) : id === "contact" ? (
+                  <div className="w-full">
+                    <Contact />
                   </div>
                 ) : (
                   <div className="w-full flex flex-col items-center">

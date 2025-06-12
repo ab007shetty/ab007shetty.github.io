@@ -1,9 +1,634 @@
-import React from "react";
-export default function Projects() {
+import React, { useState, useRef, useEffect } from "react";
+import {
+  FaGithub, FaExternalLinkAlt, FaCodeBranch, FaStar, FaChevronLeft, FaChevronRight, FaRocket, FaFilter, FaCode
+} from "react-icons/fa";
+import {
+  SiReact, SiNodedotjs, SiMongodb, SiBootstrap, SiPython, SiPhp, SiDjango, SiMysql, SiScikitlearn, SiPandas, SiOpencv, SiFirebase
+} from "react-icons/si";
+// Replace below with your real ThemeContext import
+import { useTheme } from "../ThemeContext";
+
+// ========== Theme Styles ==========
+const themeStyles = {
+  icy: {
+    cardBg: "bg-white/10 backdrop-blur-xl border-white/20",
+    cardHover: "hover:bg-white/20 hover:border-cyan-300/40 hover:shadow-cyan-400/30",
+    text: "text-gray-800",
+    textSecondary: "text-gray-600",
+    accent: "text-cyan-600",
+    button: "bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-800 border-cyan-400/40",
+    badge: "bg-cyan-100/30 text-cyan-800 border-cyan-300/40",
+    glow: "shadow-cyan-400/20",
+    filterActive: "bg-cyan-500/30 text-cyan-800 border-cyan-400/60",
+    bg: "" // No background color
+  },
+  hot: {
+    cardBg: "bg-yellow-50/10 backdrop-blur-xl border-yellow-300/20",
+    cardHover: "hover:bg-yellow-50/20 hover:border-yellow-400/40 hover:shadow-yellow-400/30",
+    text: "text-yellow-900",
+    textSecondary: "text-yellow-800",
+    accent: "text-yellow-600",
+    button: "bg-yellow-400/20 hover:bg-yellow-400/30 text-yellow-900 border-yellow-500/40",
+    badge: "bg-yellow-100/30 text-yellow-900 border-yellow-400/40",
+    glow: "shadow-yellow-400/20",
+    filterActive: "bg-yellow-500/30 text-yellow-900 border-yellow-500/60",
+    bg: ""
+  },
+  dark: {
+    cardBg: "bg-gray-900/10 backdrop-blur-xl border-gray-700/20",
+    cardHover: "hover:bg-gray-900/20 hover:border-blue-500/40 hover:shadow-blue-400/30",
+    text: "text-gray-100",
+    textSecondary: "text-gray-300",
+    accent: "text-blue-400",
+    button: "bg-blue-600/20 hover:bg-blue-600/30 text-blue-200 border-blue-500/40",
+    badge: "bg-blue-900/30 text-blue-200 border-blue-500/40",
+    glow: "shadow-blue-400/20",
+    filterActive: "bg-blue-600/30 text-blue-200 border-blue-500/60",
+    bg: ""
+  }
+};
+
+// ========== Tech Icons ==========
+const techIcons = {
+  React: <SiReact className="text-blue-500" />,
+  "Node.js": <SiNodedotjs className="text-green-600" />,
+  MongoDB: <SiMongodb className="text-green-500" />,
+  Bootstrap: <SiBootstrap className="text-purple-700" />,
+  Python: <SiPython className="text-yellow-500" />,
+  PHP: <SiPhp className="text-indigo-400" />,
+  Django: <SiDjango className="text-green-900" />,
+  SQLite: <SiMysql className="text-blue-700" />,
+  "OpenCV": <SiOpencv className="text-blue-400" />,
+  "Scikit-learn": <SiScikitlearn className="text-yellow-600" />,
+  Pandas: <SiPandas className="text-black" />,
+  Firebase: <SiFirebase className="text-yellow-500" />,
+  MySQL: <SiMysql className="text-blue-700" />,
+  Ajax: <FaCode className="text-orange-500" />,
+  Postman: <FaCode className="text-orange-600" />,
+  "Tailwind CSS": <SiReact className="text-teal-500" />
+};
+
+// ========== Projects (with relevant Unsplash images) ==========
+const projects = [
+  // ... (same as your previous project list)
+  {
+    id: 1,
+    title: "Blog App",
+    description: "Django blog app with GitHub OAuth login, users can upload text and images, comment, and favorite posts.",
+    image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=600&q=80",
+    technologies: ["Django", "Bootstrap", "Python", "SQLite"],
+    status: "Completed",
+    github: "https://github.com/ab007shetty/blog-app",
+    live: "https://blogapp-demo.vercel.app",
+    forks: 16,
+    stars: 44
+  },
+  {
+    id: 2,
+    title: "EAttendance – Attendance Management System",
+    description: "Real-time student attendance system using face recognition module, built on dlib's ResNet-34 model.",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
+    technologies: ["Node.js", "MongoDB", "Bootstrap", "OpenCV", "Python"],
+    status: "Completed",
+    github: "https://github.com/ab007shetty/eattendance",
+    live: "https://eattendance-demo.netlify.app",
+    forks: 8,
+    stars: 29
+  },
+  {
+    id: 3,
+    title: "Crop Management System",
+    description: "ML-based system that predicts crops, recommends fertilizers, and provides rainfall and yield forecasts.",
+    image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600&q=80",
+    technologies: ["PHP", "Bootstrap", "Python", "Pandas", "Scikit-learn"],
+    status: "Completed",
+    github: "https://github.com/ab007shetty/crop-management",
+    live: "https://crop-management-demo.herokuapp.com",
+    forks: 12,
+    stars: 37
+  },
+  {
+    id: 4,
+    title: "EClassroom",
+    description: "Django based Student Teacher portal for communication and submitting assignments.",
+    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9d1?auto=format&fit=crop&w=600&q=80",
+    technologies: ["Django", "Bootstrap", "Python", "SQLite"],
+    status: "Completed",
+    github: "https://github.com/ab007shetty/eclassroom",
+    live: "https://eclassroom-demo.onrender.com",
+    forks: 9,
+    stars: 22
+  },
+  {
+    id: 5,
+    title: "Facial landmarks Detection",
+    description: "Facial landmark detector using dlib to estimate 68 (x, y) coordinates to map facial structures.",
+    image: "https://images.unsplash.com/photo-1555421689-491a97ff2040?auto=format&fit=crop&w=600&q=80",
+    technologies: ["Python", "OpenCV"],
+    status: "Completed",
+    github: "https://github.com/ab007shetty/facial-landmarks-detection",
+    live: "https://facial-landmarks-demo.streamlit.app",
+    forks: 5,
+    stars: 17
+  },
+  {
+    id: 6,
+    title: "ViMusic – Web based Music Player",
+    description: "Web-based solution for ViMusic Android player. Features: Favorites, playlists, DB import/export, Firebase login.",
+    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=600&q=80",
+    technologies: ["Node.js", "React", "Tailwind CSS", "Firebase", "SQLite"],
+    status: "Completed",
+    github: "https://github.com/ab007shetty/vimusic-web",
+    live: "https://vimusic-web-demo.vercel.app",
+    forks: 21,
+    stars: 51
+  },
+  {
+    id: 7,
+    title: "Gemini – Chatbot",
+    description: "Single page serverless site for Google's AI language and vision model.",
+    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=600&q=80",
+    technologies: ["Ajax", "Postman", "Python"],
+    status: "Completed",
+    github: "https://github.com/ab007shetty/gemini-chatbot",
+    live: "https://gemini-chatbot-demo.pages.dev",
+    forks: 7,
+    stars: 18
+  },
+  {
+    id: 8,
+    title: "Life Share – Blood Bank Management System",
+    description: "Node.js-based API server connecting donors and recipients, with multi-language support and chatbot.",
+    image: "https://images.unsplash.com/photo-1615461066159-fea0960485d5?auto=format&fit=crop&w=600&q=80",
+    technologies: ["Node.js", "Bootstrap", "MongoDB"],
+    status: "Completed",
+    github: "https://github.com/ab007shetty/life-share",
+    live: "https://life-share-demo.railway.app",
+    forks: 11,
+    stars: 24
+  },
+  {
+    id: 9,
+    title: "Quiz Master – Online Quiz Management System",
+    description: "Real-time quiz platform for schools with live scores, leaderboards, OTP-based, Domain restricted login.",
+    image: "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?auto=format&fit=crop&w=600&q=80",
+    technologies: ["PHP", "Bootstrap", "MySQL"],
+    status: "Completed",
+    github: "https://github.com/ab007shetty/quiz-master",
+    live: "https://quiz-master-demo.000webhostapp.com",
+    forks: 10,
+    stars: 28
+  },
+  {
+    id: 10,
+    title: "Tweet Align",
+    description: "ML model predicting political alignment (left/right) based on users' tweets and likes.",
+    image: "https://images.unsplash.com/photo-1611605698335-8b1569810432?auto=format&fit=crop&w=600&q=80",
+    technologies: ["Python", "Scikit-learn", "Pandas"],
+    status: "Ongoing",
+    github: "https://github.com/ab007shetty/tweet-align",
+    live: "https://tweet-align-demo.huggingface.co",
+    forks: 3,
+    stars: 12
+  },
+  {
+    id: 11,
+    title: "Chowkabara",
+    description: "Digitize a native board game into an online multiplayer experience.",
+    image: "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?auto=format&fit=crop&w=600&q=80",
+    technologies: ["Node.js", "React"],
+    status: "Ongoing",
+    github: "https://github.com/ab007shetty/chowkabara",
+    live: "https://chowkabara-game.netlify.app",
+    forks: 2,
+    stars: 8
+  }
+];
+
+// ========== Statuses ==========
+const statuses = [
+  "All",
+  "Completed",
+  "Ongoing"
+];
+
+// ========== Component ==========
+const Projects = () => {
+  const { theme } = useTheme();
+  const styles = themeStyles[theme] || themeStyles.icy;
+
+  const [activeStatus, setActiveStatus] = useState("All");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const containerRef = useRef(null);
+  const startXRef = useRef(0);
+  const isDraggingRef = useRef(false);
+
+  const filteredProjects = projects.filter(p => activeStatus === "All" ? true : p.status === activeStatus);
+
+  const nextSlide = () => {
+    if (isTransitioning || filteredProjects.length === 0) return;
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => (prev + 1) % filteredProjects.length);
+    setTimeout(() => setIsTransitioning(false), 430);
+  };
+
+  const prevSlide = () => {
+    if (isTransitioning || filteredProjects.length === 0) return;
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => (prev - 1 + filteredProjects.length) % filteredProjects.length);
+    setTimeout(() => setIsTransitioning(false), 430);
+  };
+
+  const goToSlide = (index) => {
+    if (isTransitioning || index === currentIndex) return;
+    setIsTransitioning(true);
+    setCurrentIndex(index);
+    setTimeout(() => setIsTransitioning(false), 430);
+  };
+
+  // Gesture handlers
+  const handleStart = (e) => {
+    if (isTransitioning) return;
+    isDraggingRef.current = true;
+    const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+    startXRef.current = clientX;
+  };
+
+  const handleMove = (e) => {
+    if (!isDraggingRef.current || isTransitioning) return;
+    e.preventDefault();
+    const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+    const diff = startXRef.current - clientX;
+    if (Math.abs(diff) > 70) {
+      if (diff > 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+      isDraggingRef.current = false;
+    }
+  };
+
+  const handleEnd = () => {
+    isDraggingRef.current = false;
+  };
+
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [activeStatus]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'ArrowRight') nextSlide();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+    // eslint-disable-next-line
+  }, [isTransitioning, filteredProjects.length]);
+
+  // Card position and styling
+  const getCardStyle = (index) => {
+    if (filteredProjects.length === 0) return { display: 'none' };
+    const totalCards = filteredProjects.length;
+    let position = (index - currentIndex + totalCards) % totalCards;
+    if (position > totalCards / 2) {
+      position = position - totalCards;
+    }
+    let transition = "transform 0.43s cubic-bezier(.7,0,.3,1), opacity 0.33s cubic-bezier(.7,0,.3,1), filter 0.43s";
+    // Center card (no blur/fog)
+    if (position === 0) {
+      return {
+        filter: "none",
+        boxShadow: "0 8px 36px 0 rgba(0,0,0,0.12), 0 1.5px 8px 0 rgba(0,0,0,0.08)",
+        transform: 'translateX(-50%) translateY(-20px) scale(1.12) rotateY(0deg) translateZ(60px)',
+        zIndex: 50,
+        opacity: 1,
+        left: '50%',
+        background: "inherit",
+        transition
+      };
+    } else if (position === 1) {
+      return {
+        filter: "blur(1.0px) brightness(0.97)",
+        transform: 'translateX(-50%) translateY(10px) scale(0.84) rotateY(-18deg) translateZ(0px)',
+        zIndex: 30,
+        opacity: 0.7,
+        left: '68%',
+        transition
+      };
+    } else if (position === -1) {
+      return {
+        filter: "blur(1.0px) brightness(0.97)",
+        transform: 'translateX(-50%) translateY(10px) scale(0.84) rotateY(18deg) translateZ(0px)',
+        zIndex: 30,
+        opacity: 0.7,
+        left: '32%',
+        transition
+      };
+    } else if (position === 2) {
+      return {
+        filter: "blur(1.8px) brightness(0.93)",
+        transform: 'translateX(-50%) translateY(30px) scale(0.63) rotateY(-36deg) translateZ(-30px)',
+        zIndex: 20,
+        opacity: 0.4,
+        left: '80%',
+        transition
+      };
+    } else if (position === -2) {
+      return {
+        filter: "blur(1.8px) brightness(0.93)",
+        transform: 'translateX(-50%) translateY(30px) scale(0.63) rotateY(36deg) translateZ(-30px)',
+        zIndex: 20,
+        opacity: 0.4,
+        left: '20%',
+        transition
+      };
+    } else {
+      return {
+        filter: "none",
+        transform: 'translateX(-50%) translateY(40px) scale(0.4) rotateY(0deg) translateZ(-60px)',
+        zIndex: 10,
+        opacity: 0,
+        left: '50%',
+        transition
+      };
+    }
+  };
+
+  const ProjectCard = ({ project, index }) => {
+    const cardStyle = getCardStyle(index);
+    const totalCards = filteredProjects.length;
+    let position = (index - currentIndex + totalCards) % totalCards;
+    if (position > totalCards / 2) {
+      position = position - totalCards;
+    }
+    const isCenter = position === 0;
+    return (
+      <div
+        className={`
+          absolute top-0 w-[320px] h-[450px]
+          ${styles.cardBg} ${isCenter ? styles.cardHover : ''}
+          border rounded-2xl p-5 
+          ${styles.glow} shadow-2xl
+          cursor-pointer select-none
+          ${isCenter ? 'hover:scale-105' : ''}
+        `}
+        style={{
+          ...cardStyle,
+          transformStyle: 'preserve-3d',
+          backfaceVisibility: 'hidden',
+          willChange: 'transform, opacity, filter'
+        }}
+        onClick={() => !isCenter && goToSlide(index)}
+      >
+        {/* Project Image */}
+        <div className="w-full h-40 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden group">
+          <img
+            src={project.image}
+            alt={project.title}
+            className="object-cover w-full h-full absolute inset-0 transition-transform duration-500 group-hover:scale-110"
+            loading="lazy"
+            onError={(e) => {
+              e.target.src = "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80";
+            }}
+            style={{
+              filter: isCenter ? "none" : cardStyle.filter
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+        </div>
+        
+        {/* Project Info */}
+        <div className="space-y-3">
+          <div>
+            <h3 className={`text-lg font-bold ${styles.text} mb-1 line-clamp-1`}>{project.title}</h3>
+            <p className={`${styles.textSecondary} text-sm leading-relaxed line-clamp-2`}>
+              {project.description}
+            </p>
+          </div>
+          {/* Technologies */}
+          <div className="flex flex-wrap gap-1">
+            {project.technologies.slice(0, 3).map((tech, techIndex) => (
+              <span
+                key={techIndex}
+                className={`
+                  ${styles.badge} border px-2 py-1 rounded-full text-xs
+                  flex items-center gap-1 font-medium
+                `}
+              >
+                {techIcons[tech] && <span className="w-3 h-3">{techIcons[tech]}</span>}
+                {tech}
+              </span>
+            ))}
+            {project.technologies.length > 3 && (
+              <span className={`${styles.badge} border px-2 py-1 rounded-full text-xs font-medium`}>
+                +{project.technologies.length - 3}
+              </span>
+            )}
+          </div>
+          {/* Status and GitHub Stats */}
+          <div className="flex items-center justify-between text-sm">
+            <span className={`${styles.textSecondary} flex items-center gap-1`}>
+              <FaRocket className="text-xs" />
+              {project.status}
+            </span>
+            <div className="flex items-center gap-3">
+              <span className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
+                <FaCodeBranch className="text-xs" />
+                {project.forks}
+              </span>
+              <span className="flex items-center gap-1 text-yellow-600 dark:text-yellow-400">
+                <FaStar className="text-xs" />
+                {project.stars}
+              </span>
+            </div>
+          </div>
+          {/* Action Buttons - Always show both */}
+          <div className="flex gap-2 pt-1">
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`
+                ${styles.button} border px-3 py-2 rounded-lg
+                flex items-center gap-2 text-xs font-medium
+                transition-all duration-300 hover:scale-105
+                flex-1 justify-center
+              `}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <FaGithub />
+              Code
+            </a>
+            <a
+              href={project.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`
+                ${styles.button} border px-3 py-2 rounded-lg
+                flex items-center gap-2 text-xs font-medium
+                transition-all duration-300 hover:scale-105
+                flex-1 justify-center
+              `}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <FaExternalLinkAlt />
+              Live
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className="w-full flex flex-col items-center justify-center py-32">
-      <h2 className="text-4xl font-bold mb-6">Projects</h2>
-      <p className="text-lg text-gray-700 dark:text-gray-200">Your projects content here.</p>
+    <div className={styles.bg + " min-h-screen relative overflow-hidden"}>
+      <div className="relative z-10 p-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-4">
+            <h1 className={`pt-10 text-5xl font-bold ${styles.text} mb-4 flex items-center justify-center gap-4`}>
+              <FaCode className={styles.accent} />
+              My Projects
+            </h1>
+            <p className={`text-xl ${styles.textSecondary} max-w-3xl mx-auto`}>
+              A collection of my academic and personal projects. 
+              <span className={`${styles.text} font-medium`}> No Freelance Projects Here </span>
+            </p>
+          </div>
+
+          {/* Status Filter */}
+          <div className="flex flex-wrap gap-4 justify-center mb-16">
+            <span className="flex items-center gap-2">
+              <FaFilter className={`${styles.textSecondary}`} />
+              <span className={`${styles.text} font-medium`}>Filter by Status:</span>
+            </span>
+            {statuses.map((status) => (
+              <button
+                key={status}
+                onClick={() => setActiveStatus(status)}
+                className={`
+                  px-4 py-2 rounded-lg border text-sm font-medium transition-all duration-300 relative
+                  ${activeStatus === status
+                    ? styles.filterActive + " ring-2 ring-offset-2 ring-cyan-400"
+                    : `${styles.button} hover:scale-105`
+                  }
+                `}
+              >
+                {status}
+                {activeStatus === status && (
+                  <span className="ml-2 inline-block align-middle text-xs font-bold text-green-600">
+                    ✓
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+
+          {/* Dots Indicators */}
+          <div className="flex justify-center space-x-2 mb-4">
+            {filteredProjects.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`
+                  w-3 h-3 rounded-full transition-all duration-300
+                  ${index === currentIndex 
+                    ? 'bg-cyan-500 scale-125 shadow-lg shadow-cyan-400/50' 
+                    : 'bg-white/30 hover:bg-white/50'
+                  }
+                `}
+                disabled={isTransitioning}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Carousel Container */}
+          <div className="relative h-[520px] flex items-center justify-center mb-8">
+            {/* Navigation Buttons */}
+            <button
+              onClick={prevSlide}
+              disabled={isTransitioning}
+              className={`
+                absolute left-8 z-[60] p-4 rounded-full transition-all duration-300
+                ${styles.button} hover:scale-110 shadow-lg
+                ${isTransitioning ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'}
+              `}
+              aria-label="Previous Project"
+            >
+              <FaChevronLeft className="text-xl" />
+            </button>
+
+            <button
+              onClick={nextSlide}
+              disabled={isTransitioning}
+              className={`
+                absolute right-8 z-[60] p-4 rounded-full transition-all duration-300
+                ${styles.button} hover:scale-110 shadow-lg
+                ${isTransitioning ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'}
+              `}
+              aria-label="Next Project"
+            >
+              <FaChevronRight className="text-xl" />
+            </button>
+
+            {/* Cards Container with Gesture Support */}
+            <div
+              ref={containerRef}
+              className="relative w-full h-full touch-pan-x"
+              onMouseDown={handleStart}
+              onMouseMove={handleMove}
+              onMouseUp={handleEnd}
+              onMouseLeave={handleEnd}
+              onTouchStart={handleStart}
+              onTouchMove={handleMove}
+              onTouchEnd={handleEnd}
+              style={{
+                perspective: '1200px',
+                touchAction: 'pan-x'
+              }}
+            >
+              {filteredProjects.map((project, index) => (
+                <ProjectCard key={project.id} project={project} index={index} />
+              ))}
+            </div>
+          </div>
+
+          {/* Empty State */}
+          {filteredProjects.length === 0 && (
+            <div className="text-center py-20">
+              <div className={`text-6xl ${styles.textSecondary} mb-4`}>🔍</div>
+              <h3 className={`text-2xl font-bold ${styles.text} mb-2`}>No projects found</h3>
+              <p className={`${styles.textSecondary}`}>
+                Try adjusting your filters to see more projects.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+      {/* Custom Styles */}
+      <style jsx>{`
+        .line-clamp-1 {
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .touch-pan-x {
+          touch-action: pan-x;
+        }
+      `}</style>
     </div>
   );
-}
+};
+
+export default Projects;
