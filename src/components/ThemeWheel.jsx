@@ -367,8 +367,8 @@ export default function ThemeWheel({
       </div>
       {/* Center "AB" logo, toggle cursor */}
       <button
-        aria-label="Toggle Cursor"
-        title="Toggle custom cursor"
+        aria-label="DO NOT CLICK ME"
+        title="DO NOT CLICK ME"
         onClick={handleLogoClick}
         style={{
           position: "absolute",

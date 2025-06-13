@@ -6,6 +6,7 @@ import {
   FaFilter
 } from "react-icons/fa";
 
+// ===== THEME STYLES (unchanged) =====
 const themeStyles = {
   icy: {
     cardBg: "bg-white/15 backdrop-blur-xl border-white/20",
@@ -45,6 +46,7 @@ const themeStyles = {
   }
 };
 
+// ======= CERTIFICATES DATA (Put your full list here, only a few for example) =======
 const certificates = [
   {
     id: 1,
@@ -118,7 +120,6 @@ const certificates = [
     skills: ["Blockchain", "Distributed Systems"],
     image: "/images/blockchain.png"
   },
-  // --- Courses (updated as per your request) ---
   {
     id: 10,
     title: "Narrative Economics",
@@ -143,7 +144,6 @@ const certificates = [
     skills: ["Critical Thinking", "Psychology"],
     image: "/images/psychology.jpg"
   },
-  // --- Infosys ---
   {
     id: 13,
     title: "Infosys certified Google Cloud Digital Leader",
@@ -168,7 +168,6 @@ const certificates = [
     skills: ["Cloud Computing", "Cloud Fundamentals"],
     image: "/images/infy-cloud.png"
   },
-  // --- Others ---
   {
     id: 16,
     title: "Hackothsav",
@@ -218,6 +217,8 @@ const certificates = [
     image: "/images/guvi.png"
   }
 ];
+
+// ========== COMPONENTS ==========
 
 const CertificateLightbox = ({ certificates, index, isOpen, onClose, onPrev, onNext }) => {
   const { theme } = useTheme();
@@ -299,7 +300,6 @@ const CertificateCard = ({ certificate, onClick, index }) => {
       title={certificate.title}
     >
       <div className="flex items-center">
-        {/* Image frame - 33:25 aspect, no blank space */}
         <div className="w-36 h-[110px] min-w-[9rem] rounded-xl overflow-hidden bg-white border flex items-center justify-center mr-4 relative aspect-[33/25]">
           <img
             src={certificate.image}
@@ -313,10 +313,9 @@ const CertificateCard = ({ certificate, onClick, index }) => {
             }}
           />
         </div>
-        {/* Side Data */}
         <div className="flex-1 flex flex-col justify-between h-full">
           <div className="mb-2 flex items-center gap-2">
-            <span className={`px-2 py-1 rounded-full border font-bold border-dashed ${styles.accent} bg-white/70 text-xs tracking-wide`}>
+            <span className={`px-2 py-1 rounded-full border font-bold border-dashed ${styles.accent} bg-white/20 text-xs tracking-wide`}>
               {certificate.category}
             </span>
           </div>
@@ -329,7 +328,6 @@ const CertificateCard = ({ certificate, onClick, index }) => {
           </div>
         </div>
       </div>
-      {/* Below image: title and org */}
       <div className="mt-4 text-center">
         <h3 className={`font-bold ${styles.text} text-lg leading-tight mb-1`}>{certificate.title}</h3>
         <p className={`${styles.accent} font-semibold text-sm`}>{certificate.organization}</p>
@@ -341,38 +339,26 @@ const CertificateCard = ({ certificate, onClick, index }) => {
 const Certifications = () => {
   const { theme } = useTheme();
   const styles = themeStyles[theme] || themeStyles.icy;
-  // Filter out unwanted certificates
-  const filteredCertList = certificates.filter(
-    cert =>
-      cert.category !== "AWS" &&
-      cert.category !== "Badge" &&
-      cert.title !== "Infosys Certified SAP SD Professional Consultant" &&
-      cert.title !== "The Science of Well-Being" &&
-      cert.title !== "Internet History, Technology, and Security" &&
-      cert.title !== "Financial Markets"
-  );
 
-  // Set default filter to 'Professional'
+  // Use all certificates, no exclusions
   const [activeFilter, setActiveFilter] = useState("Professional");
   const [filteredCertificates, setFilteredCertificates] = useState(
-    filteredCertList.filter(cert => cert.category === "Professional")
+    certificates.filter(cert => cert.category === "Professional")
   );
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const sectionRef = useRef(null);
 
-  // Only show allowed categories
   const allowedCategories = Array.from(
-    new Set(filteredCertList.map(cert => cert.category))
+    new Set(certificates.map(cert => cert.category))
   );
   const categories = ["All", ...allowedCategories];
 
   useEffect(() => {
-    // Update filtered certificates if activeFilter changes (including on first render)
     if (activeFilter === "All") {
-      setFilteredCertificates(filteredCertList);
+      setFilteredCertificates(certificates);
     } else {
-      setFilteredCertificates(filteredCertList.filter(cert => cert.category === activeFilter));
+      setFilteredCertificates(certificates.filter(cert => cert.category === activeFilter));
     }
   }, [activeFilter]);
 
@@ -403,9 +389,8 @@ const Certifications = () => {
   return (
     <div className="min-h-screen p-8">
       <div className="max-w-7xl mx-auto">
-        {/* Certifications Section Anchor with padding-top for navbar */}
         <div id="certifications" ref={sectionRef} className="pt-[120px] -mt-[120px]"></div>
-        <div className="text-center mb-4">
+        <div className="text-center mb-8">
           <h1 className={`pt-10 text-5xl font-bold ${styles.text} mb-4 flex items-center justify-center gap-4`}>
             <FaTrophy className={styles.accent} />
             Certifications

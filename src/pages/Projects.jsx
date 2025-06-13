@@ -3,7 +3,8 @@ import {
   FaGithub, FaExternalLinkAlt, FaCodeBranch, FaStar, FaChevronLeft, FaChevronRight, FaRocket, FaFilter, FaCode
 } from "react-icons/fa";
 import {
-  SiReact, SiNodedotjs, SiMongodb, SiBootstrap, SiPython, SiPhp, SiDjango, SiMysql, SiScikitlearn, SiPandas, SiOpencv, SiFirebase
+  SiReact, SiNodedotjs, SiMongodb, SiBootstrap, SiPython, SiPhp, SiDjango, SiMysql, SiScikitlearn, SiPandas, SiOpencv, SiFirebase,
+  SiSocketdotio
 } from "react-icons/si";
 // Replace below with your real ThemeContext import
 import { useTheme } from "../ThemeContext";
@@ -70,52 +71,51 @@ const techIcons = {
 
 // ========== Projects (with relevant Unsplash images) ==========
 const projects = [
-  // ... (same as your previous project list)
   {
     id: 1,
     title: "Blog App",
     description: "Django blog app with GitHub OAuth login, users can upload text and images, comment, and favorite posts.",
     image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=600&q=80",
-    technologies: ["Django", "Bootstrap", "Python", "SQLite"],
+    technologies: ["Django", "Bootstrap", "SQLite"],
     status: "Completed",
-    github: "https://github.com/ab007shetty/blog-app",
-    live: "https://blogapp-demo.vercel.app",
+    github: "https://github.com/ab007shetty/dj4e",
+    live: "https://ab007shetty.pythonanywhere.com/",
     forks: 16,
-    stars: 44
+    stars: 26
   },
   {
     id: 2,
     title: "EAttendance – Attendance Management System",
     description: "Real-time student attendance system using face recognition module, built on dlib's ResNet-34 model.",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
-    technologies: ["Node.js", "MongoDB", "Bootstrap", "OpenCV", "Python"],
+    technologies: ["Node.js", "MongoDB", "OpenCV"],
     status: "Completed",
     github: "https://github.com/ab007shetty/eattendance",
-    live: "https://eattendance-demo.netlify.app",
-    forks: 8,
-    stars: 29
+    live: "http://eattendance2021.herokuapp.com/",
+    forks: 4,
+    stars: 12
   },
   {
     id: 3,
     title: "Crop Management System",
     description: "ML-based system that predicts crops, recommends fertilizers, and provides rainfall and yield forecasts.",
     image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600&q=80",
-    technologies: ["PHP", "Bootstrap", "Python", "Pandas", "Scikit-learn"],
+    technologies: ["PHP", "Python", "Pandas"],
     status: "Completed",
-    github: "https://github.com/ab007shetty/crop-management",
-    live: "https://crop-management-demo.herokuapp.com",
-    forks: 12,
-    stars: 37
+    github: "https://github.com/ab007shetty/crop-management-system",
+    live: "#",
+    forks: 11,
+    stars: 25
   },
   {
     id: 4,
     title: "EClassroom",
     description: "Django based Student Teacher portal for communication and submitting assignments.",
     image: "https://images.unsplash.com/photo-1523050854058-8df90110c9d1?auto=format&fit=crop&w=600&q=80",
-    technologies: ["Django", "Bootstrap", "Python", "SQLite"],
+    technologies: ["Django", "Bootstrap", "Python"],
     status: "Completed",
-    github: "https://github.com/ab007shetty/eclassroom",
-    live: "https://eclassroom-demo.onrender.com",
+    github: "https://github.com/ab007shetty/eclassroom-django",
+    live: "https://eclassroom.pythonanywhere.com/",
     forks: 9,
     stars: 22
   },
@@ -124,36 +124,36 @@ const projects = [
     title: "Facial landmarks Detection",
     description: "Facial landmark detector using dlib to estimate 68 (x, y) coordinates to map facial structures.",
     image: "https://images.unsplash.com/photo-1555421689-491a97ff2040?auto=format&fit=crop&w=600&q=80",
-    technologies: ["Python", "OpenCV"],
+    technologies: ["Python", "OpenCV", "Dlib"],
     status: "Completed",
     github: "https://github.com/ab007shetty/facial-landmarks-detection",
-    live: "https://facial-landmarks-demo.streamlit.app",
-    forks: 5,
-    stars: 17
+    live: "#",
+    forks: 0,
+    stars: 2
   },
   {
     id: 6,
     title: "ViMusic – Web based Music Player",
     description: "Web-based solution for ViMusic Android player. Features: Favorites, playlists, DB import/export, Firebase login.",
     image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=600&q=80",
-    technologies: ["Node.js", "React", "Tailwind CSS", "Firebase", "SQLite"],
+    technologies: ["Node.js", "React", "Firebase"],
     status: "Completed",
-    github: "https://github.com/ab007shetty/vimusic-web",
-    live: "https://vimusic-web-demo.vercel.app",
-    forks: 21,
-    stars: 51
+    github: "https://github.com/ab007shetty/ViMusic",
+    live: "https://vimusic.vercel.app/",
+    forks: 0,
+    stars: 5
   },
   {
     id: 7,
     title: "Gemini – Chatbot",
     description: "Single page serverless site for Google's AI language and vision model.",
     image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=600&q=80",
-    technologies: ["Ajax", "Postman", "Python"],
+    technologies: ["Ajax", "Postman", "JavaScript"],
     status: "Completed",
-    github: "https://github.com/ab007shetty/gemini-chatbot",
-    live: "https://gemini-chatbot-demo.pages.dev",
-    forks: 7,
-    stars: 18
+    github: "https://github.com/ab007shetty/Gemini",
+    live: "https://ab007shetty.github.io/Gemini/?key=AIzaSyDz83LLl7dKzYsCZoATDd5boMlgjbRvhhE",
+    forks: 13,
+    stars: 28
   },
   {
     id: 8,
@@ -162,10 +162,10 @@ const projects = [
     image: "https://images.unsplash.com/photo-1615461066159-fea0960485d5?auto=format&fit=crop&w=600&q=80",
     technologies: ["Node.js", "Bootstrap", "MongoDB"],
     status: "Completed",
-    github: "https://github.com/ab007shetty/life-share",
-    live: "https://life-share-demo.railway.app",
-    forks: 11,
-    stars: 24
+    github: "https://github.com/ab007shetty/lifeshare",
+    live: "https://lifeshare2021.herokuapp.com/",
+    forks: 0,
+    stars: 4
   },
   {
     id: 9,
@@ -174,10 +174,10 @@ const projects = [
     image: "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?auto=format&fit=crop&w=600&q=80",
     technologies: ["PHP", "Bootstrap", "MySQL"],
     status: "Completed",
-    github: "https://github.com/ab007shetty/quiz-master",
-    live: "https://quiz-master-demo.000webhostapp.com",
-    forks: 10,
-    stars: 28
+    github: "https://github.com/ab007shetty/quiz-master-2",
+    live: "http://quizmaster.epizy.com/",
+    forks: 2,
+    stars: 6
   },
   {
     id: 10,
@@ -186,22 +186,34 @@ const projects = [
     image: "https://images.unsplash.com/photo-1611605698335-8b1569810432?auto=format&fit=crop&w=600&q=80",
     technologies: ["Python", "Scikit-learn", "Pandas"],
     status: "Ongoing",
-    github: "https://github.com/ab007shetty/tweet-align",
-    live: "https://tweet-align-demo.huggingface.co",
-    forks: 3,
-    stars: 12
+    github: "https://github.com/ab007shetty/TweetAlign",
+    live: "#",
+    forks: 0,
+    stars: 0
   },
   {
     id: 11,
     title: "Chowkabara",
     description: "Digitize a native board game into an online multiplayer experience.",
     image: "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?auto=format&fit=crop&w=600&q=80",
-    technologies: ["Node.js", "React"],
+    technologies: ["Node.js", "React", "Socket.io"],
     status: "Ongoing",
     github: "https://github.com/ab007shetty/chowkabara",
-    live: "https://chowkabara-game.netlify.app",
-    forks: 2,
-    stars: 8
+    live: "#",
+    forks: 0,
+    stars: 0
+  },
+    {
+    id: 12,
+    title: "InsureAI",
+    description: "Instant AI-powered insights, trends, and graphs for Insurance Policies.",
+    image: "https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?auto=format&fit=crop&w=600&q=80",
+    technologies: ["Node.js", "Vite", "Tailwind CSS"],
+    status: "Ongoing",
+    github: "https://github.com/ab007shetty/insureAI",
+    live: "#",
+    forks: 0,
+    stars: 0
   }
 ];
 
@@ -218,32 +230,51 @@ const Projects = () => {
   const styles = themeStyles[theme] || themeStyles.icy;
 
   const [activeStatus, setActiveStatus] = useState("All");
-  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Make Gemini chatbot (id: 7) the default project shown
+  // Find its index in the filtered list for initial status "All"
+  const getInitialIndex = () => {
+    const geminiIndex = projects.findIndex(p => p.id === 7);
+    if (geminiIndex === -1) return 0;
+    return geminiIndex;
+  };
+
+  // Dynamic filteredProjects & currentIndex
+  const [currentIndex, setCurrentIndexState] = useState(getInitialIndex());
   const [isTransitioning, setIsTransitioning] = useState(false);
   const containerRef = useRef(null);
   const startXRef = useRef(0);
   const isDraggingRef = useRef(false);
 
+  // Always filter projects based on status
   const filteredProjects = projects.filter(p => activeStatus === "All" ? true : p.status === activeStatus);
+
+  // Always keep Gemini first on load, but if filtered out, fallback to 0
+  useEffect(() => {
+    // If Gemini is visible, jump to it, else show first project
+    const geminiIdx = filteredProjects.findIndex(p => p.id === 7);
+    setCurrentIndexState(geminiIdx !== -1 ? geminiIdx : 0);
+    // eslint-disable-next-line
+  }, [activeStatus]);
 
   const nextSlide = () => {
     if (isTransitioning || filteredProjects.length === 0) return;
     setIsTransitioning(true);
-    setCurrentIndex((prev) => (prev + 1) % filteredProjects.length);
+    setCurrentIndexState((prev) => (prev + 1) % filteredProjects.length);
     setTimeout(() => setIsTransitioning(false), 430);
   };
 
   const prevSlide = () => {
     if (isTransitioning || filteredProjects.length === 0) return;
     setIsTransitioning(true);
-    setCurrentIndex((prev) => (prev - 1 + filteredProjects.length) % filteredProjects.length);
+    setCurrentIndexState((prev) => (prev - 1 + filteredProjects.length) % filteredProjects.length);
     setTimeout(() => setIsTransitioning(false), 430);
   };
 
   const goToSlide = (index) => {
     if (isTransitioning || index === currentIndex) return;
     setIsTransitioning(true);
-    setCurrentIndex(index);
+    setCurrentIndexState(index);
     setTimeout(() => setIsTransitioning(false), 430);
   };
 
@@ -273,10 +304,6 @@ const Projects = () => {
   const handleEnd = () => {
     isDraggingRef.current = false;
   };
-
-  useEffect(() => {
-    setCurrentIndex(0);
-  }, [activeStatus]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -365,24 +392,24 @@ const Projects = () => {
       position = position - totalCards;
     }
     const isCenter = position === 0;
-    return (
-      <div
-        className={`
-          absolute top-0 w-[320px] h-[450px]
-          ${styles.cardBg} ${isCenter ? styles.cardHover : ''}
-          border rounded-2xl p-5 
-          ${styles.glow} shadow-2xl
-          cursor-pointer select-none
-          ${isCenter ? 'hover:scale-105' : ''}
-        `}
-        style={{
-          ...cardStyle,
-          transformStyle: 'preserve-3d',
-          backfaceVisibility: 'hidden',
-          willChange: 'transform, opacity, filter'
-        }}
-        onClick={() => !isCenter && goToSlide(index)}
-      >
+            return (
+        <div
+          className={`
+            absolute top-0 w-[320px] h-[450px]
+            ${styles.cardBg} ${isCenter ? styles.cardHover : ''}
+            border rounded-2xl p-5 
+            ${styles.glow} shadow-2xl
+            cursor-pointer select-none
+            ${isCenter ? 'hover:scale-105' : ''}
+          `}
+          style={{
+            ...cardStyle,
+            transformStyle: 'preserve-3d',
+            backfaceVisibility: 'hidden',
+            willChange: 'transform, opacity, filter'
+          }}
+          onClick={() => !isCenter && goToSlide(index)}
+        >
         {/* Project Image */}
         <div className="w-full h-40 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden group">
           <img
@@ -401,7 +428,7 @@ const Projects = () => {
         </div>
         
         {/* Project Info */}
-        <div className="space-y-3">
+        <div className="space-y-5">
           <div>
             <h3 className={`text-lg font-bold ${styles.text} mb-1 line-clamp-1`}>{project.title}</h3>
             <p className={`${styles.textSecondary} text-sm leading-relaxed line-clamp-2`}>
@@ -435,7 +462,7 @@ const Projects = () => {
               {project.status}
             </span>
             <div className="flex items-center gap-3">
-              <span className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
+              <span className="flex items-center gap-1 text-black-700 ">
                 <FaCodeBranch className="text-xs" />
                 {project.forks}
               </span>
@@ -488,7 +515,7 @@ const Projects = () => {
       <div className="relative z-10 p-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-4">
+          <div className="text-center mb-8">
             <h1 className={`pt-10 text-5xl font-bold ${styles.text} mb-4 flex items-center justify-center gap-4`}>
               <FaCode className={styles.accent} />
               My Projects
@@ -553,7 +580,7 @@ const Projects = () => {
               onClick={prevSlide}
               disabled={isTransitioning}
               className={`
-                absolute left-8 z-[60] p-4 rounded-full transition-all duration-300
+                absolute left-0 z-[60] p-4 rounded-full transition-all duration-300
                 ${styles.button} hover:scale-110 shadow-lg
                 ${isTransitioning ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'}
               `}
@@ -566,7 +593,7 @@ const Projects = () => {
               onClick={nextSlide}
               disabled={isTransitioning}
               className={`
-                absolute right-8 z-[60] p-4 rounded-full transition-all duration-300
+                absolute right-0 z-[60] p-4 rounded-full transition-all duration-300
                 ${styles.button} hover:scale-110 shadow-lg
                 ${isTransitioning ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'}
               `}
@@ -625,6 +652,10 @@ const Projects = () => {
         }
         .touch-pan-x {
           touch-action: pan-x;
+        }
+        /* Remove extra space below the action buttons in ProjectCard */
+        .space-y-3 > :last-child {
+          margin-bottom: 0 !important;
         }
       `}</style>
     </div>

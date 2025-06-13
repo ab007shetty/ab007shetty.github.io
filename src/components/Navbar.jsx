@@ -24,6 +24,7 @@ const themeNavbarStyles = {
     fill: "bg-cyan-100/75",
     outline: "ring-cyan-400",
     highlight: "bg-cyan-400/70",
+    toggleBtn: "bg-black text-white hover:bg-black/80", // <-- Added dark toggle style
   },
   hot: {
     bg: "bg-yellow-50/20 backdrop-blur-lg",
@@ -34,16 +35,18 @@ const themeNavbarStyles = {
     fill: "bg-yellow-100/70",
     outline: "ring-yellow-400",
     highlight: "bg-yellow-400/70",
+    toggleBtn: "bg-black text-white hover:bg-black/80", // <-- Added dark toggle style
   },
   dark: {
-    bg: "bg-white/20 backdrop-blur-lg",
+    bg: "bg-gray-900/80 backdrop-blur-lg",
     border: "border border-gray-700/60",
-    link: "text-black",
-    active: "bg-white/80 text-black",
-    hover: "hover:bg-gray-200/60 hover:text-black",
-    fill: "bg-gray-300/60",
-    outline: "ring-gray-400",
+    link: "text-white",
+    active: "bg-gray-700/80 text-white",
+    hover: "hover:bg-gray-800/70 hover:text-white",
+    fill: "bg-gray-800/70",
+    outline: "ring-blue-400",
     highlight: "bg-blue-600/70",
+    toggleBtn: "bg-black text-white hover:bg-black/80", // <-- Added dark toggle style
   },
 };
 
@@ -133,13 +136,13 @@ export default function Navbar({ sections = [], onNavClick }) {
                   relative flex items-center gap-2 px-3 py-1.5 rounded-full transition font-semibold
                   cursor-pointer select-none overflow-hidden group bg-transparent
                   ${active
-                    ? `shadow ring-2 ${themeStyle.outline} z-10`
+                    ? `shadow ring-2 ${themeStyle.outline} z-10 ${themeStyle.active}`
                     : `${themeStyle.link} ${themeStyle.hover}`
                   }
                   focus:outline-none
                 `}
                 tabIndex={0}
-                style={{ color: "black", background: "transparent" }}
+                style={{ background: "transparent" }}
               >
                 {/* Animated fill on hover */}
                 <span
@@ -167,20 +170,23 @@ export default function Navbar({ sections = [], onNavClick }) {
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className={`
-            text-2xl bg-white/20 rounded-full p-2 shadow-md border border-white/20
-            text-black
+            text-2xl rounded-full p-2 shadow-md border border-white/20
+            bg-white/20
             backdrop-blur-xl
+            transition-colors
           `}
         >
           {menuOpen ? (
+            // X icon (close) in dark
             <svg width={22} height={22} viewBox="0 0 22 22">
-              <line x1="5" y1="5" x2="17" y2="17" stroke="black" strokeWidth={2} />
-              <line x1="17" y1="5" x2="5" y2="17" stroke="black" strokeWidth={2} />
+              <line x1="5" y1="5" x2="17" y2="17" stroke="#18181b" strokeWidth={2} />
+              <line x1="17" y1="5" x2="5" y2="17" stroke="#18181b" strokeWidth={2} />
             </svg>
           ) : (
+            // Hamburger in dark
             <svg width={22} height={22} viewBox="0 0 22 22">
-              <rect x="4" y="6" width="14" height="2" rx="1" fill="black" />
-              <rect x="4" y="14" width="14" height="2" rx="1" fill="black" />
+              <rect x="4" y="6" width="14" height="2" rx="1" fill="#18181b" />
+              <rect x="4" y="14" width="14" height="2" rx="1" fill="#18181b" />
             </svg>
           )}
         </button>
@@ -206,11 +212,11 @@ export default function Navbar({ sections = [], onNavClick }) {
       >
         <button
           onClick={() => setMenuOpen(false)}
-          className="absolute top-4 right-4 text-lg bg-white/40 rounded-full p-1 hover:bg-white/70 text-black"
+          className={`absolute top-4 right-4 text-lg rounded-full p-1 hover:bg-black/60 text-white bg-black/40 transition-colors`}
         >
           <svg width={22} height={22} viewBox="0 0 22 22">
-            <line x1="5" y1="5" x2="17" y2="17" stroke="black" strokeWidth={2} />
-            <line x1="17" y1="5" x2="5" y2="17" stroke="black" strokeWidth={2} />
+            <line x1="5" y1="5" x2="17" y2="17" stroke="currentColor" strokeWidth={2} />
+            <line x1="17" y1="5" x2="5" y2="17" stroke="currentColor" strokeWidth={2} />
           </svg>
         </button>
         <nav className="flex flex-col items-start space-y-4 mt-10">
@@ -231,13 +237,13 @@ export default function Navbar({ sections = [], onNavClick }) {
                   group
                   overflow-hidden
                   ${active
-                    ? `shadow ring-2 ${themeStyle.outline} ${themeStyle.highlight} z-10`
+                    ? `shadow ring-2 ${themeStyle.outline} ${themeStyle.highlight} z-10 ${themeStyle.active}`
                     : `${themeStyle.link} ${themeStyle.hover}`
                   }
                   focus:outline-none
                 `}
                 tabIndex={0}
-                style={{ color: 'black' }}
+                style={{}}
               >
                 <span className="relative z-10 text-xl">{sectionIcons[id]}</span>
                 <span className="relative z-10">{label}</span>

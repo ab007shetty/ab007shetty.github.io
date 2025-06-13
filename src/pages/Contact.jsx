@@ -57,21 +57,21 @@ const contactInfo = [
     label: "Email",
     value: "", // handled in ContactCard for animation
     link: "mailto:ab007shetty@gmail.com",
-    description: "Drop me a mail anytime"
+    description: "Only active on Gmail"
   },
   {
     icon: <FaPhone />,
     label: "Phone",
     value: "+91 8150071512",
     link: "tel:+918150071512",
-    description: "Call won’t go through as there’s no balan"
+    description: "Call may not connect as there’s no balance"
   },
   {
     icon: <FaMapMarkerAlt />,
     label: "Location",
     value: "Udupi, Karnataka",
     link: "https://maps.google.com/?q=Udupi,Karnataka",
-    description: "Based in Temple City of Karnataka"
+    description: "Technically not an island anymore"
   }
 ];
 
@@ -273,8 +273,7 @@ export default function Contact() {
             Get In <span className={styles.accent}>Touch</span>
           </h1>
           <p className={`text-xl ${styles.textSecondary} max-w-3xl mx-auto leading-relaxed`}>
-            Ready to bring your ideas to life? Let's collaborate and create something amazing together. 
-            I'm always excited to work on new projects and meet fellow creators.
+            Stuck, bored, or sad? You know where to find me!
           </p>
         </div>
       </div>

@@ -27,7 +27,7 @@ const themeStyles = {
     glow: "shadow-cyan-400/20",
     badge: "bg-cyan-100/30 text-cyan-800 border-cyan-300/40",
     filterActive: "bg-cyan-500/30 text-cyan-800 border-cyan-400/60",
-    sidebarActive: "bg-cyan-500/90 text-gray-900 border-cyan-400 font-bold", // <--- fix here
+    sidebarActive: "bg-cyan-500/20 text-cyan-800 border-cyan-400/40 font-bold",
     sidebar: "text-cyan-900 hover:text-cyan-700"
   },
   hot: {
@@ -45,7 +45,7 @@ const themeStyles = {
     glow: "shadow-yellow-400/20",
     badge: "bg-yellow-100/30 text-yellow-900 border-yellow-400/40",
     filterActive: "bg-yellow-500/30 text-yellow-900 border-yellow-500/60",
-    sidebarActive: "bg-yellow-400/90 text-yellow-900 border-yellow-500 font-bold", // <--- fix here
+    sidebarActive: "bg-yellow-400/20 text-yellow-900 border-yellow-500/40 font-bold",
     sidebar: "text-yellow-900 hover:text-yellow-700"
   },
   dark: {
@@ -63,7 +63,7 @@ const themeStyles = {
     glow: "shadow-blue-400/20",
     badge: "bg-blue-900/30 text-blue-200 border-blue-500/40",
     filterActive: "bg-blue-600/30 text-blue-200 border-blue-500/60",
-    sidebarActive: "bg-blue-900 text-blue-200 border-blue-400 font-bold", // <--- fix here
+    sidebarActive: "bg-blue-600/20 text-blue-200 border-blue-500/40 font-bold",
     sidebar: "text-blue-200 hover:text-blue-400"
   }
 };
@@ -110,7 +110,7 @@ const skillSections = [
   { group: "Project Management", icon: <FaJira className="text-blue-500" />, keys: ["jira", "agile"] }
 ];
 
-// HIGHLIGHTS, EXPERIENCE, EDUCATION (unchanged, except education label color)
+// HIGHLIGHTS, EXPERIENCE, EDUCATION
 const highlights = [
   { emoji: "🎓", text: "Completed 100+ courses on Coursera.", link: "https://www.coursera.org/user/9a1f6f65c70233a4cbf41887f48e0c06" },
   { emoji: "☁️", text: "Google Cloud Arcade Champion — completed 300+ Google Cloud Qwiklabs.", link: "https://www.cloudskillsboost.google/public_profiles/a71f17d6-36af-4e30-b70f-8771bf211324" },
@@ -122,15 +122,15 @@ const highlights = [
 const experienceGroups = [
   {
     label: "Infosys",
-    entries: [{ title: "Systems Engineer", company: "Infosys", location: "Mysuru, Karnataka", period: "2022 - 2023", description: [
+    entries: [{ title: "Systems Engineer", company: "Infosys", location: "Mangaluru, Karnataka", period: "2021 - 2023", description: [
       "Worked on web application development and maintenance for enterprise clients.",
       "Collaborated with cross-functional teams to deliver high-quality software.",
       "Automated deployment processes and implemented CI/CD pipelines."
-    ], skills: ["Java", "Spring Boot", "React", "CI/CD", "SQL Server", "Git"] }]
+    ], skills: ["Node.js", "Jest", "React", "CI/CD", "Scrum", "Git"] }]
   },
   {
     label: "Digitran Technologies",
-    entries: [{ title: "Software Developer", company: "Digitran Technologies", location: "Bengaluru, Karnataka", period: "2021 - 2022", description: [
+    entries: [{ title: "Software Developer", company: "Digitran Technologies", location: "Udupi, Karnataka", period: "2023 - 2025", description: [
       "Developed and maintained SaaS products for logistics and healthcare.",
       "Integrated REST APIs and enhanced system performance.",
       "Worked in an Agile team and participated in code reviews."
@@ -159,26 +159,28 @@ const educationGroups = [
 // ========== COMPONENTS ==========
 function MainTabBar({ activeTab, setActiveTab, styles }) {
   const tabs = [
-    { id: "skills", label: "Skills", icon: <FaCode /> },
-    { id: "highlights", label: "Highlights", icon: <FaTrophy /> },
-    { id: "experience", label: "Experience", icon: <FaBriefcase /> },
-    { id: "education", label: "Education", icon: <FaGraduationCap /> }
+    { id: "skills", label: "Skills", icon: <FaCode className="text-blue-500" /> },
+    { id: "highlights", label: "Highlights", icon: <FaTrophy className="text-yellow-500" /> },
+    { id: "experience", label: "Experience", icon: <FaBriefcase className="text-purple-600" /> },
+    { id: "education", label: "Education", icon: <FaGraduationCap className="text-green-500" /> }
   ];
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-center mb-12 gap-3 sm:gap-0">
+    <div className="grid grid-cols-4 md:flex md:flex-row items-center justify-center mb-8 md:mb-12 gap-2 md:gap-0">
       {tabs.map(tab => (
         <button
           key={tab.id}
           onClick={() => setActiveTab(tab.id)}
-          className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 w-full sm:w-auto justify-center
+          className={`flex items-center gap-1 md:gap-2 px-3 md:px-6 py-2 md:py-3 rounded-xl font-semibold transition-all duration-300 justify-center text-sm md:text-base
             ${activeTab === tab.id
               ? `${styles.button} border ${styles.glow} shadow-lg scale-105`
               : `${styles.textSecondary} hover:${styles.text}`
             }`}
-          style={{ minWidth: 170 }}
+          style={{ minWidth: "auto" }}
         >
-          <span className="text-lg">{tab.icon}</span>
-          <span>{tab.label}</span>
+          <span className="text-base md:text-lg flex items-center">
+            {tab.icon}
+          </span>
+          <span className="hidden sm:inline">{tab.label}</span>
         </button>
       ))}
     </div>
@@ -189,27 +191,50 @@ function SideTabBar({ groups, activeIndex, setActiveIndex, iconMap = {} }) {
   const { theme } = useTheme();
   const styles = themeStyles[theme] || themeStyles.icy;
   return (
-    <div className="flex flex-wrap md:flex-col gap-2 md:pr-6 mb-4 md:mb-0 w-full md:w-auto">
+    <div className="grid grid-cols-2 md:flex md:flex-col gap-2 md:pr-6 mb-4 md:mb-0 w-full md:w-auto">
       {groups.map((g, idx) => (
         <button
           key={g.label || g.group}
           onClick={() => setActiveIndex(idx)}
           className={`
-            w-1/2 md:w-full text-left px-5 py-3 rounded-xl font-semibold transition-all duration-300 border flex items-center gap-2 justify-center md:justify-start text-base
+            text-left px-3 md:px-5 py-2 md:py-3 rounded-xl font-semibold transition-all duration-300 border flex items-center gap-1 md:gap-2 justify-left md:justify-start text-xs md:text-base
             ${activeIndex === idx
               ? `${styles.sidebarActive} border-2`
               : `${styles.sidebar} border-transparent`}
           `}
         >
           {iconMap && iconMap[g.label || g.group] ? iconMap[g.label || g.group] : g.icon}
-          <span className="whitespace-pre-line">{g.label || g.group}</span>
+          <span className="whitespace-nowrap text-xs md:text-lg leading-tight">{g.label || g.group}</span>
         </button>
       ))}
     </div>
   );
 }
 
-function SkillCard({ skill, styles }) {
+function SkillCard({ skill, styles, isMobile = false }) {
+  if (isMobile) {
+    // Mobile version - only show icon
+    return (
+      <div
+        className={`
+          ${styles.cardBg} ${styles.cardHover} border rounded-xl
+          transition-all duration-300 transform ${styles.glow} shadow-lg
+          hover:scale-105 flex items-center justify-center
+        `}
+        style={{
+          minHeight: 60,
+          padding: "1rem",
+          border: "1.5px solid rgba(0,195,255,0.11)",
+          backdropFilter: "blur(7px)",
+          aspectRatio: "1"
+        }}
+      >
+        <span className="text-2xl">{skill.icon}</span>
+      </div>
+    );
+  }
+
+  // Desktop version - full card
   return (
     <div
       className={`
@@ -221,9 +246,6 @@ function SkillCard({ skill, styles }) {
         minHeight: 110,
         padding: "1.2rem 1.4rem",
         border: "1.5px solid rgba(0,195,255,0.11)",
-        margin: "0 auto",
-        width: "100%",
-        maxWidth: "100%",
         backdropFilter: "blur(7px)"
       }}
     >
@@ -271,24 +293,24 @@ export default function About() {
   skillSections.forEach(s => { skillGroupIcons[s.group] = s.icon; });
 
   // Education heading coloring per theme
-  const edulabelStyle = `text-2xl font-bold ${styles.text}`;
+  const edulabelStyle = `text-xl md:text-2xl font-bold ${styles.text}`;
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-16">
+    <div className="w-full max-w-7xl mx-auto px-4 py-8 md:py-16">
       {/* Header */}
-      <div className="text-center mb-4">
-        <h1 className={`text-5xl md:text-6xl font-bold ${styles.text} mb-4`}>
+      <div className="text-center mb-8">
+        <h1 className={`text-3xl md:text-5xl lg:text-6xl font-bold ${styles.text} mb-4`}>
           About <span className={styles.accent}>Me</span>
         </h1>
-        <p className={`text-xl ${styles.textSecondary} max-w-3xl mx-auto leading-relaxed`}>
+        <p className={`text-lg md:text-xl ${styles.textSecondary} max-w-3xl mx-auto leading-relaxed`}>
           Passionate Full-Stack Developer with 3.5 years of Professional Experience.
         </p>
       </div>
       <MainTabBar activeTab={activeTab} setActiveTab={setActiveTab} styles={styles} />
-      <div className="min-h-[600px] transition-all duration-500">
+      <div className="min-h-[400px] md:min-h-[600px] transition-all duration-500">
         {/* Skills */}
         {activeTab === "skills" && (
-          <div className="flex flex-col md:flex-row gap-10 animate-fadein">
+          <div className="flex flex-col md:flex-row gap-6 md:gap-10 animate-fadein">
             <SideTabBar
               groups={skillSections}
               activeIndex={skillsTab}
@@ -296,56 +318,49 @@ export default function About() {
               iconMap={skillGroupIcons}
             />
             <div className="flex-1 transition-all duration-500">
-              <div className="mb-6 flex items-center gap-2">
+              <div className="mb-4 md:mb-6 flex items-center gap-2">
                 {skillSections[skillsTab].icon}
-                <h2 className={`text-2xl font-bold ${styles.text} mb-3`}>
+                <h2 className={`text-lg md:text-2xl font-bold ${styles.text} mb-3`}>
                   {skillSections[skillsTab].group}
                 </h2>
               </div>
-              <div className="flex flex-wrap gap-5 skills-grid">
-                {skillSections[skillsTab].keys.map((key, i) => {
+              {/* Mobile Grid - 4 columns */}
+              <div className="grid grid-cols-4 gap-3 md:hidden">
+                {skillSections[skillsTab].keys.map((key) => {
                   const skill = allSkillDetails.find(s => s.key === key);
                   if (!skill) return null;
                   return (
-                    <div
-                      key={key}
-                      style={{
-                        flex: "1 1 48%",
-                        minWidth: "48%",
-                        maxWidth: "100%",
-                        margin: "0 auto"
-                      }}
-                    >
-                      <SkillCard skill={skill} styles={styles} />
-                    </div>
+                    <SkillCard key={key} skill={skill} styles={styles} isMobile={true} />
                   );
                 })}
               </div>
-              <style>{`
-                @media (max-width:900px) {
-                  .skills-grid > div { flex-basis: 48% !important; min-width: 48% !important; }
-                }
-                @media (max-width:700px) {
-                  .skills-grid > div { flex-basis: 100% !important; min-width: 100% !important; }
-                }
-              `}</style>
+              {/* Desktop Grid - 2 columns */}
+              <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-2 gap-5">
+                {skillSections[skillsTab].keys.map((key) => {
+                  const skill = allSkillDetails.find(s => s.key === key);
+                  if (!skill) return null;
+                  return (
+                    <SkillCard key={key} skill={skill} styles={styles} isMobile={false} />
+                  );
+                })}
+              </div>
             </div>
           </div>
         )}
         {/* Highlights */}
         {activeTab === "highlights" && (
           <div className="w-full transition-all duration-500 animate-fadein">
-            <div className={`w-full mx-auto ${styles.cardBg} ${styles.cardHover} border rounded-2xl shadow-xl p-7 ${styles.glow} transition-all duration-500`}>
-              <div className="flex items-center mb-6 gap-3">
-                <FaTrophy className={`text-3xl ${styles.accent}`} />
-                <h2 className={`text-3xl font-bold ${styles.text}`}>Highlights</h2>
+            <div className={`w-full mx-auto ${styles.cardBg} ${styles.cardHover} border rounded-2xl shadow-xl p-4 md:p-7 ${styles.glow} transition-all duration-500`}>
+              <div className="flex items-center mb-4 md:mb-6 gap-3">
+                <FaTrophy className={`text-2xl md:text-3xl ${styles.accent}`} />
+                <h2 className={`text-2xl md:text-3xl font-bold ${styles.text}`}>Highlights</h2>
               </div>
-              <ul className="flex flex-col gap-6 w-full">
+              <ul className="flex flex-col gap-4 md:gap-6 w-full">
                 {highlights.map((ach, i) => (
-                  <li key={i} className="flex gap-4 items-start animate-slideup" style={{ animationDelay: `${i * 0.11}s` }}>
-                    <span className="text-2xl mt-1 leading-none select-none">{ach.emoji}</span>
+                  <li key={i} className="flex gap-3 md:gap-4 items-start animate-slideup" style={{ animationDelay: `${i * 0.11}s` }}>
+                    <span className="text-xl md:text-2xl mt-1 leading-none select-none">{ach.emoji}</span>
                     <div className="flex flex-col w-full">
-                      <div className="flex items-center gap-2 text-lg font-medium">
+                      <div className="flex items-center gap-2 text-sm md:text-lg font-medium">
                         <span className={`${styles.text}`}>{ach.text}</span>
                         {ach.link &&
                           <a
@@ -354,7 +369,7 @@ export default function About() {
                             rel="noopener noreferrer"
                             className={`ml-1 ${styles.accent} hover:underline inline-flex items-center`}
                           >
-                            <FaExternalLinkAlt className="text-sm" />
+                            <FaExternalLinkAlt className="text-xs md:text-sm" />
                           </a>
                         }
                       </div>
@@ -367,7 +382,7 @@ export default function About() {
         )}
         {/* Experience */}
         {activeTab === "experience" && (
-          <div className="flex flex-col md:flex-row gap-10 animate-fadein">
+          <div className="flex flex-col md:flex-row gap-6 md:gap-10 animate-fadein">
             <SideTabBar
               groups={experienceGroups}
               activeIndex={expTab}
@@ -378,11 +393,11 @@ export default function About() {
               {experienceGroups[expTab].entries.map((exp, idx) => (
                 <div
                   key={idx}
-                  className={`mb-8 p-6 rounded-2xl border ${styles.cardBg} ${styles.cardHover} ${styles.glow} shadow-lg animate-slideup`}
+                  className={`mb-6 md:mb-8 p-4 md:p-6 rounded-2xl border ${styles.cardBg} ${styles.cardHover} ${styles.glow} shadow-lg animate-slideup`}
                   style={{ animationDelay: `${idx * 0.12}s` }}
                 >
-                  <div className="flex flex-wrap gap-2 mb-3 items-center">
-                    <span className={`text-lg font-bold ${styles.text}`}>{exp.title}</span>
+                  <div className="flex flex-col md:flex-row md:flex-wrap gap-2 mb-3 md:items-center">
+                    <span className={`text-lg md:text-lg font-bold ${styles.text}`}>{exp.title}</span>
                     <span className={`text-base font-semibold ${styles.accent}`}>{exp.company}</span>
                     <span className={`flex items-center gap-2 text-sm ${styles.textSecondary}`}>
                       <FaCalendarAlt className="text-xs" />
@@ -397,15 +412,15 @@ export default function About() {
                     {exp.description.map((item, i) => (
                       <li key={i} className="flex gap-2 items-start">
                         <span className="mt-1 text-cyan-400">
-                          <FaCheckCircle className="text-base" />
+                          <FaCheckCircle className="text-sm md:text-base" />
                         </span>
-                        <span className={`${styles.textSecondary}`}>{item}</span>
+                        <span className={`${styles.textSecondary} text-sm md:text-base`}>{item}</span>
                       </li>
                     ))}
                   </ul>
                   <div className="flex flex-wrap gap-2">
                     {exp.skills.map((skill, i) => (
-                      <span key={i} className={`px-3 py-1 rounded-full text-xs ${styles.button} border`}>
+                      <span key={i} className={`px-2 md:px-3 py-1 rounded-full text-xs ${styles.button} border`}>
                         {skill}
                       </span>
                     ))}
@@ -417,11 +432,11 @@ export default function About() {
         )}
         {/* Education */}
         {activeTab === "education" && (
-          <div className="flex flex-col md:flex-row gap-7 items-stretch animate-fadein">
+          <div className="flex flex-col md:flex-row gap-4 md:gap-7 items-stretch animate-fadein">
             {educationGroups.map((edu, idx) => (
               <div
                 key={edu.label}
-                className={`flex-1 min-w-[260px] mb-8 md:mb-0 p-6 rounded-2xl border ${styles.cardBg} ${styles.cardHover} ${styles.glow} shadow-lg flex flex-col gap-4 items-center animate-slideup`}
+                className={`flex-1 min-w-[200px] mb-6 md:mb-0 p-4 md:p-6 rounded-2xl border ${styles.cardBg} ${styles.cardHover} ${styles.glow} shadow-lg flex flex-col gap-3 md:gap-4 items-center animate-slideup`}
                 style={{ animationDelay: `${idx * 0.16}s` }}
               >
                 <div className="mb-2 flex items-center gap-2">
@@ -430,12 +445,12 @@ export default function About() {
                 </div>
                 {edu.entries.map((entry, idy) => (
                   <div key={idy} className="flex flex-col items-center text-center">
-                    <div className="text-lg font-bold mb-1 flex items-center gap-2">
+                    <div className="text-base md:text-lg font-bold mb-1 flex items-center gap-2">
                       <FaGraduationCap className="text-cyan-500" />
                       {entry.degree}
                     </div>
-                    <div className={`text-base font-semibold ${styles.accent}`}>{entry.institution}</div>
-                    <div className="flex flex-wrap gap-3 justify-center text-sm items-center my-2">
+                    <div className={`text-sm md:text-base font-semibold ${styles.accent}`}>{entry.institution}</div>
+                    <div className="flex flex-wrap gap-2 md:gap-3 justify-center text-xs md:text-sm items-center my-2">
                       <span className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
                         <FaCalendarAlt className="text-xs" />
                         {entry.period}
@@ -445,10 +460,8 @@ export default function About() {
                         {entry.location}
                       </span>
                     </div>
-                    <div className={`text-sm ${styles.textSecondary}`}>
-                      <span className={`inline-block px-2 py-1 rounded-full border ${styles.badge} font-bold`}>
-                        {entry.grade}
-                      </span>
+                    <div className={`text-sm md:text-base font-semibold ${styles.text} mt-2`}>
+                      {entry.grade}
                     </div>
                   </div>
                 ))}
@@ -457,16 +470,23 @@ export default function About() {
           </div>
         )}
       </div>
-      <style>{`
-        .animate-fadein { animation: fadeInTab 0.6s cubic-bezier(.4,0,.2,1);}
-        .animate-slideup { animation: slideUpCard 0.6s cubic-bezier(.4,0,.2,1) both;}
-        @keyframes fadeInTab {
-          from { opacity: 0; transform: translateY(16px);}
-          to { opacity: 1; transform: translateY(0);}
+      {/* Animation styles */}
+      <style jsx>{`
+        @keyframes fadein {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes slideUpCard {
-          from { opacity: 0; transform: translateY(48px);}
-          to { opacity: 1; transform: translateY(0);}
+        @keyframes slideup {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadein {
+          animation: fadein 0.6s ease-out forwards;
+        }
+        .animate-slideup {
+          animation: slideup 0.8s ease-out forwards;
+          opacity: 0;
+          animation-fill-mode: forwards;
         }
       `}</style>
     </div>

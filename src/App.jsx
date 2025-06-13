@@ -87,8 +87,8 @@ export default function App() {
               <ThemeWheel customCursor={customCursor} setCustomCursor={setCustomCursor} />
             </div>
           )}
-          {/* SocialsAndEmail only on landing (home) section */}
-          {activeSection === "home" && <SocialsAndEmail />}
+          {/* SocialsAndEmail only on landing (home) section 
+          {activeSection === "home" && <SocialsAndEmail />} */}
           <div className="snap-y snap-mandatory overflow-y-auto min-h-screen" style={{ scrollBehavior: "smooth" }}>
             {SECTIONS.map(({ id, label }) => (
               <section
