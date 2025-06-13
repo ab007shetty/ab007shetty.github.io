@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkportfolio=self.webpackChunkportfolio||[]).push([[19],{19:(e,s,l)=>{l.r(s),l.d(s,{default:()=>r});l(43);var t=l(749),c=l(197),i=(l(110),l(949)),o=l(579);const r=()=>(0,o.jsxs)("div",{className:"relative w-full h-screen overflow-hidden text-white ",children:[(0,o.jsx)(t.A,{}),(0,o.jsx)(c.A,{}),(0,o.jsx)(i.A,{accent:"icy"})]})}}]);
+//# sourceMappingURL=19.c9cbb669.chunk.js.map
