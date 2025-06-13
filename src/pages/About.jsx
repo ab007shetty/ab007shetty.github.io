@@ -296,9 +296,9 @@ export default function About() {
   const edulabelStyle = `text-xl md:text-2xl font-bold ${styles.text}`;
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-8 md:py-16">
-      {/* Header */}
-      <div className="text-center mb-8">
+    <section id="about" className="relative w-full max-w-7xl mx-auto px-4 py-8 md:py-16 scroll-mt-24">
+      {/* About Me heading and description - always at the top */}
+      <div className="text-center mb-8 pt-8">
         <h1 className={`text-3xl md:text-5xl lg:text-6xl font-bold ${styles.text} mb-4`}>
           About <span className={styles.accent}>Me</span>
         </h1>
@@ -306,6 +306,7 @@ export default function About() {
           Passionate Full-Stack Developer with 3.5 years of Professional Experience.
         </p>
       </div>
+      {/* Main Tabs */}
       <MainTabBar activeTab={activeTab} setActiveTab={setActiveTab} styles={styles} />
       <div className="min-h-[400px] md:min-h-[600px] transition-all duration-500">
         {/* Skills */}
@@ -489,6 +490,6 @@ export default function About() {
           animation-fill-mode: forwards;
         }
       `}</style>
-    </div>
+    </section>
   );
 }

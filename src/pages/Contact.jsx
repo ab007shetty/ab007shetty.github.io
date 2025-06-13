@@ -145,25 +145,27 @@ const ContactCard = ({ contact, index, theme }) => {
       href={contact.link}
       target={contact.link.startsWith('http') ? "_blank" : "_self"}
       rel={contact.link.startsWith('http') ? "noopener noreferrer" : undefined}
-      className={`block p-6 rounded-2xl border transition-all duration-700 ${styles.cardBg} ${styles.cardHover} shadow-lg transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'} group`}
-      style={{ transitionDelay: `${index * 100}ms` }}
+      className={`block p-6 rounded-2xl border transition-all duration-700 ${styles.cardBg} ${styles.cardHover} shadow-lg transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'} group overflow-x-auto`}
+      style={{ transitionDelay: `${index * 100}ms`, maxWidth: "100%" }}
     >
-      <div className="flex items-start gap-4">
-        <div className={`p-3 rounded-xl ${styles.cardBg} border group-hover:scale-110 transition-transform duration-300`}>
+      <div className="flex items-start gap-4 min-w-0">
+        <div className={`p-3 rounded-xl ${styles.cardBg} border group-hover:scale-110 transition-transform duration-300 flex-shrink-0`}>
           <span className={`text-2xl ${styles.icon}`}>{contact.icon}</span>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           <h3 className={`text-lg font-bold ${styles.text} mb-1`}>{contact.label}</h3>
-          <p className={`text-base font-semibold ${styles.accent} mb-2`}>
+          <p className={`text-base font-semibold ${styles.accent} mb-2 break-all`}>
             {contact.label === "Email" ? (
               <span
-                className="transition-colors font-mono cursor-pointer"
+                className="transition-colors font-mono cursor-pointer inline-block"
                 title={`${emailInitial}@${emailDomains[domainIdx].domain}`}
                 style={{
                   letterSpacing: "0.06em",
                   userSelect: "text",
                   padding: "0.1em 0.15em",
-                  fontSize: "1.05em"
+                  fontSize: "1.05em",
+                  wordBreak: "break-all",
+                  maxWidth: "100%",
                 }}
               >
                 <span>{emailInitial}</span>
@@ -317,24 +319,23 @@ export default function Contact() {
         <div className={`border-t border-opacity-20 ${styles.cardBg} backdrop-blur-xl`}>
           <div className="max-w-7xl mx-auto px-4 py-6">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <div className={`text-sm ${styles.textSecondary} text-center md:text-left`}>
-                <p className="flex items-center justify-center md:justify-start gap-2">
+              <div className={`text-sm ${styles.textSecondary} text-center md:text-left break-words w-full`}>
+                <p className="flex items-center justify-center md:justify-start gap-2 flex-wrap break-all w-full">
                   © {currentYear} Anirudha B Shetty. Made with
                   <FaHeart className={`${styles.accent} animate-pulse`} />
                   in India
                 </p>
               </div>
-              <div className="flex items-center gap-6 text-sm">
-                <div className={`${styles.textSecondary} flex items-center gap-2`}>
-                  <span>Powered by</span>
-                  <FaReact className={`${styles.accent} animate-spin-slow`} />
-                  <span>React</span>
-                </div>
+              {/* Fix: Always force 'Powered by React' to be a single line on desktop */}
+              <div className="flex items-center gap-2 text-sm whitespace-nowrap">
+                <span className={styles.textSecondary}>Powered by</span>
+                <FaReact className={`${styles.accent} animate-spin-slow`} />
+                <span className={styles.textSecondary}>React</span>
               </div>
             </div>
           </div>
         </div>
-        {/* Custom CSS for animations */}
+        {/* Custom CSS for animations and horizontal overflow fix */}
         <style jsx>{`
           @keyframes spin-slow {
             from { transform: rotate(0deg);}
