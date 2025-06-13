@@ -121,7 +121,7 @@ export default function LandingContent() {
 
   return (
     <main
-      className="relative z-20 flex flex-col md:flex-row items-center justify-center min-h-[90vh] px-2 md:px-8 py-8 space-y-8 md:space-y-0 md:space-x-10"
+      className="relative z-20 flex flex-col md:flex-row items-center justify-center min-h-[90vh] px-2 md:px-8 py-8 space-y-8 md:space-y-0 md:space-x-10 overflow-x-hidden"
       style={{ width: "100vw", minHeight: "82vh" }}
     >
       {/* Subtle floating elements */}
@@ -145,17 +145,17 @@ export default function LandingContent() {
       <div
         className="flex items-center justify-center profile-pic-container"
         style={{
-            flex: "0 0 auto",
-            minWidth: "320px",
-            minHeight: "320px",
-            width: "100%",
-            height: "100%",
-            maxWidth: "420px",
-            maxHeight: "620px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center"
-          }}
+          flex: "0 0 auto",
+          minWidth: "320px",
+          minHeight: "320px",
+          width: "100%",
+          height: "100%",
+          maxWidth: "420px",
+          maxHeight: "620px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
       >
         <div
           className="rounded-3xl overflow-hidden bg-transparent relative flex items-center justify-center"
@@ -368,6 +368,20 @@ export default function LandingContent() {
             min-height: 92vw !important;
             max-width: 99vw !important;
             max-height: 99vw !important;
+          }
+        }
+        /* Prevent horizontal scroll on mobile */
+        @media (max-width: 767px) {
+          main {
+            overflow-x: hidden !important;
+          }
+          .profile-pic-container {
+            min-width: 0 !important;
+            min-height: 0 !important;
+            max-width: 96vw !important;
+            max-height: 96vw !important;
+            width: 90vw !important;
+            height: 90vw !important;
           }
         }
       `}</style>

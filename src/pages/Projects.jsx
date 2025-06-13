@@ -111,7 +111,7 @@ const projects = [
     id: 4,
     title: "EClassroom",
     description: "Django based Student Teacher portal for communication and submitting assignments.",
-    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9d1?auto=format&fit=crop&w=600&q=80",
+    image: "https://images.unsplash.com/photo-1649920442906-3c8ef428fb6e?auto=format&fit=crop&w=600&q=80",
     technologies: ["Django", "Bootstrap", "Python"],
     status: "Completed",
     github: "https://github.com/ab007shetty/eclassroom-django",
@@ -279,27 +279,36 @@ const Projects = () => {
   };
 
   // Gesture handlers
-  const handleStart = (e) => {
-    if (isTransitioning) return;
-    isDraggingRef.current = true;
-    const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
-    startXRef.current = clientX;
-  };
+const startYRef = useRef(0); // add this with your other refs
 
-  const handleMove = (e) => {
-    if (!isDraggingRef.current || isTransitioning) return;
+const handleStart = (e) => {
+  if (isTransitioning) return;
+  isDraggingRef.current = true;
+  const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+  const clientY = e.type === 'mousedown' ? e.clientY : e.touches[0].clientY;
+  startXRef.current = clientX;
+  startYRef.current = clientY;
+};
+
+const handleMove = (e) => {
+  if (!isDraggingRef.current || isTransitioning) return;
+  const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+  const clientY = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
+  const diffX = startXRef.current - clientX;
+  const diffY = startYRef.current - clientY;
+
+  // Only prevent default and swipe if it's a horizontal swipe
+  if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
     e.preventDefault();
-    const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
-    const diff = startXRef.current - clientX;
-    if (Math.abs(diff) > 70) {
-      if (diff > 0) {
-        nextSlide();
-      } else {
-        prevSlide();
-      }
-      isDraggingRef.current = false;
+    if (diffX > 0) {
+      nextSlide();
+    } else {
+      prevSlide();
     }
-  };
+    isDraggingRef.current = false;
+  }
+  // If vertical swipe, do nothing: allow page to scroll!
+};
 
   const handleEnd = () => {
     isDraggingRef.current = false;
@@ -424,7 +433,38 @@ const Projects = () => {
               filter: isCenter ? "none" : cardStyle.filter
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent">
+                {isCenter && (
+        <div className="absolute inset-0 flex items-center justify-between px-2 md:hidden">
+          <button
+            onClick={e => { e.stopPropagation(); prevSlide(); }}
+            disabled={isTransitioning}
+            className={`
+              p-2 bg-white/70 hover:bg-white rounded-full shadow
+              transition-all duration-300
+              ${isTransitioning ? 'opacity-50 cursor-not-allowed' : ''}
+            `}
+            aria-label="Previous Project"
+            style={{ minWidth: 36, minHeight: 36 }}
+          >
+            <FaChevronLeft className="text-xl text-gray-700" />
+          </button>
+          <button
+            onClick={e => { e.stopPropagation(); nextSlide(); }}
+            disabled={isTransitioning}
+            className={`
+              p-2 bg-white/70 hover:bg-white rounded-full shadow
+              transition-all duration-300
+              ${isTransitioning ? 'opacity-50 cursor-not-allowed' : ''}
+            `}
+            aria-label="Next Project"
+            style={{ minWidth: 36, minHeight: 36 }}
+          >
+            <FaChevronRight className="text-xl text-gray-700" />
+          </button>
+        </div>
+      )}
+</div>
         </div>
         
         {/* Project Info */}
@@ -574,13 +614,13 @@ const Projects = () => {
           </div>
 
           {/* Carousel Container */}
-          <div className="relative h-[520px] flex items-center justify-center mb-8">
+          <div className="relative h-[520px] flex items-center justify-center mb-8 ">
             {/* Navigation Buttons */}
             <button
               onClick={prevSlide}
               disabled={isTransitioning}
               className={`
-                absolute left-0 z-[60] p-4 rounded-full transition-all duration-300
+                absolute left-0 z-[60] p-4 rounded-full transition-all duration-300 hidden md:block
                 ${styles.button} hover:scale-110 shadow-lg
                 ${isTransitioning ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'}
               `}
@@ -593,7 +633,7 @@ const Projects = () => {
               onClick={nextSlide}
               disabled={isTransitioning}
               className={`
-                absolute right-0 z-[60] p-4 rounded-full transition-all duration-300
+                absolute right-0 z-[60] p-4 rounded-full transition-all duration-300 hidden md:block
                 ${styles.button} hover:scale-110 shadow-lg
                 ${isTransitioning ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'}
               `}
@@ -605,7 +645,7 @@ const Projects = () => {
             {/* Cards Container with Gesture Support */}
             <div
               ref={containerRef}
-              className="relative w-full h-full touch-pan-x"
+              className="relative w-full h-full"
               onMouseDown={handleStart}
               onMouseMove={handleMove}
               onMouseUp={handleEnd}
@@ -614,8 +654,7 @@ const Projects = () => {
               onTouchMove={handleMove}
               onTouchEnd={handleEnd}
               style={{
-                perspective: '1200px',
-                touchAction: 'pan-x'
+                perspective: '1200px'
               }}
             >
               {filteredProjects.map((project, index) => (

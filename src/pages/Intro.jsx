@@ -1,16 +1,89 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense, lazy } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import ThemeWheel from "../components/ThemeWheel";
-import LandingIcy from "./LandingIcy";
 
-const FADE_DURATION = 1;
+// Lazy load landing page
+const LandingIcy = lazy(() => import("./LandingIcy"));
 
-const Intro = ({ customCursor, setCustomCursor, onDone }) => {
+const FADE_DURATION = 0.5;
+const arcColors = ["#67e8f9", "#fde047", "#64748b"];
+
+const ArcWaves = ({ size = 110, duration = 0.19 }) => (
+  <div
+    style={{
+      width: size,
+      height: size,
+      position: "relative",
+      willChange: "transform, opacity",
+      contain: "layout style paint",
+      backfaceVisibility: "hidden",
+      WebkitBackfaceVisibility: "hidden",
+    }}
+  >
+    {arcColors.map((color, i) => {
+      const style = {
+        position: "absolute",
+        width: size,
+        height: size,
+        borderRadius: "50%",
+        borderTop: `${size * 0.12}px solid ${color}`,
+        borderLeft: "none",
+        borderRight: "none",
+        borderBottom: "none",
+        background: "transparent",
+        transform: `rotate(${i * 120}deg)`,
+        top: 0,
+        left: 0,
+        opacity: 0.95,
+        zIndex: 2,
+        pointerEvents: "none",
+        willChange: "transform, opacity",
+      };
+      return (
+        <motion.div
+          key={i}
+          style={style}
+          animate={{
+            rotate: [i * 120, i * 120 + 360],
+          }}
+          transition={{
+            repeat: Infinity,
+            duration,
+            ease: "linear", // constant speed, no easing
+            delay: i * (duration / 2.5),
+          }}
+        />
+      );
+    })}
+  </div>
+);
+
+const preloadAssets = () => {
+  // Preload images
+  const images = [
+    "/img/theme-icy.png",
+    "/img/theme-hot.png",
+    "/img/theme-dark.png",
+  ];
+  images.forEach(src => {
+    const img = new window.Image();
+    img.src = src;
+  });
+  // Preload font
+  const font = new FontFace(
+    "Inter",
+    "url(https://fonts.gstatic.com/s/inter/v12/UcCO3FwrKJ4.woff2)"
+  );
+  font.load().then(f => document.fonts.add(f)).catch(() => {});
+  // Preload JS modules
+  import("./LandingIcy");
+};
+
+const Intro = ({ onDone }) => {
   const [phase, setPhase] = useState("intro");
-
   useEffect(() => {
+    preloadAssets();
     if (phase === "intro") {
-      const timer = setTimeout(() => setPhase("fade"), 3000);
+      const timer = setTimeout(() => setPhase("fade"), 2400); // 2.4s feels instant, less lag
       return () => clearTimeout(timer);
     }
     if (phase === "fade") {
@@ -21,43 +94,34 @@ const Intro = ({ customCursor, setCustomCursor, onDone }) => {
 
   return (
     <div className="fixed inset-0 z-[9999]">
-      {/* Intro spinner overlay */}
       <AnimatePresence>
         {(phase === "intro" || phase === "fade") && (
           <motion.div
-            key="wheel"
+            key="waves"
             className="flex items-center justify-center absolute inset-0"
             initial={{ opacity: 1, scale: 1 }}
             animate={
               phase === "fade"
-                ? { opacity: 0, scale: 0.3 }
+                ? { opacity: 0, scale: 0.38 }
                 : { opacity: 1, scale: 1 }
             }
-            exit={{ opacity: 0, scale: 0.3 }}
+            exit={{ opacity: 0, scale: 0.38 }}
             transition={{ duration: FADE_DURATION, ease: "easeIn" }}
             style={{
               zIndex: 10000,
-              background: "rgba(18, 22, 28, 0.94)", // Dark, semi-opaque
+              background: "rgba(18, 22, 28, 0.94)",
+              willChange: "opacity, transform",
             }}
           >
-            <ThemeWheel
-              customCursor={customCursor}
-              setCustomCursor={setCustomCursor}
-              introSpinning={true}
-              disableCursorToggle={true}
-              // Optional: pass a prop for extra smoothness if ThemeWheel supports it
-              spinSpeed={0.045} // slightly slower for more fluid spin (tweak as needed)
-            />
+            <ArcWaves size={110} duration={0.19} />
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Landing content is always rendered, just fade it in */}
       <motion.div
         key="landing"
         initial={{ opacity: 0 }}
         animate={{ opacity: phase === "landing" ? 1 : 0 }}
-        transition={{ duration: 0.45, ease: "easeOut" }}
+        transition={{ duration: 0.30, ease: "easeOut" }}
         style={{
           width: "100vw",
           minHeight: "100vh",
@@ -71,10 +135,11 @@ const Intro = ({ customCursor, setCustomCursor, onDone }) => {
           if (phase === "landing" && onDone) onDone();
         }}
       >
-        <LandingIcy />
+        <Suspense fallback={null}>
+          <LandingIcy />
+        </Suspense>
       </motion.div>
     </div>
   );
 };
-
 export default Intro;
