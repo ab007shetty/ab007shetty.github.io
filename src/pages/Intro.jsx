@@ -1,8 +1,6 @@
-import React, { useEffect, useState, Suspense, lazy } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-// Lazy load landing page
-const LandingIcy = lazy(() => import("./LandingIcy"));
+import LandingPage from "./LandingPage";
 
 const FADE_DURATION = 0.5;
 const arcColors = ["#67e8f9", "#fde047", "#64748b"];
@@ -19,71 +17,47 @@ const ArcWaves = ({ size = 110, duration = 0.19 }) => (
       WebkitBackfaceVisibility: "hidden",
     }}
   >
-    {arcColors.map((color, i) => {
-      const style = {
-        position: "absolute",
-        width: size,
-        height: size,
-        borderRadius: "50%",
-        borderTop: `${size * 0.12}px solid ${color}`,
-        borderLeft: "none",
-        borderRight: "none",
-        borderBottom: "none",
-        background: "transparent",
-        transform: `rotate(${i * 120}deg)`,
-        top: 0,
-        left: 0,
-        opacity: 0.95,
-        zIndex: 2,
-        pointerEvents: "none",
-        willChange: "transform, opacity",
-      };
-      return (
-        <motion.div
-          key={i}
-          style={style}
-          animate={{
-            rotate: [i * 120, i * 120 + 360],
-          }}
-          transition={{
-            repeat: Infinity,
-            duration,
-            ease: "linear", // constant speed, no easing
-            delay: i * (duration / 2.5),
-          }}
-        />
-      );
-    })}
+    {arcColors.map((color, i) => (
+      <motion.div
+        key={i}
+        style={{
+          position: "absolute",
+          width: size,
+          height: size,
+          borderRadius: "50%",
+          borderTop: `${size * 0.12}px solid ${color}`,
+          borderLeft: "none",
+          borderRight: "none",
+          borderBottom: "none",
+          background: "transparent",
+          transform: `rotate(${i * 120}deg)`,
+          top: 0,
+          left: 0,
+          opacity: 0.95,
+          zIndex: 2,
+          pointerEvents: "none",
+          willChange: "transform, opacity",
+        }}
+        animate={{
+          rotate: [i * 120, i * 120 + 360],
+        }}
+        transition={{
+          repeat: Infinity,
+          duration,
+          ease: "linear",
+          delay: i * (duration / 2.5),
+        }}
+      />
+    ))}
   </div>
 );
 
-const preloadAssets = () => {
-  // Preload images
-  const images = [
-    "/img/theme-icy.png",
-    "/img/theme-hot.png",
-    "/img/theme-dark.png",
-  ];
-  images.forEach(src => {
-    const img = new window.Image();
-    img.src = src;
-  });
-  // Preload font
-  const font = new FontFace(
-    "Inter",
-    "url(https://fonts.gstatic.com/s/inter/v12/UcCO3FwrKJ4.woff2)"
-  );
-  font.load().then(f => document.fonts.add(f)).catch(() => {});
-  // Preload JS modules
-  import("./LandingIcy");
-};
-
 const Intro = ({ onDone }) => {
   const [phase, setPhase] = useState("intro");
+
   useEffect(() => {
-    preloadAssets();
     if (phase === "intro") {
-      const timer = setTimeout(() => setPhase("fade"), 2400); // 2.4s feels instant, less lag
+      const timer = setTimeout(() => setPhase("fade"), 2400);
       return () => clearTimeout(timer);
     }
     if (phase === "fade") {
@@ -135,11 +109,10 @@ const Intro = ({ onDone }) => {
           if (phase === "landing" && onDone) onDone();
         }}
       >
-        <Suspense fallback={null}>
-          <LandingIcy />
-        </Suspense>
+        <LandingPage />
       </motion.div>
     </div>
   );
 };
+
 export default Intro;

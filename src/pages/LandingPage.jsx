@@ -57,7 +57,7 @@ const typewriterText = [
   "Dream Builder"
 ];
 
-export default function LandingContent() {
+export default function LandingPage() {
   const { theme } = useTheme();
   const accents = accentsMap[theme] || accentsMap.icy;
 
@@ -290,7 +290,7 @@ export default function LandingContent() {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-15px); }

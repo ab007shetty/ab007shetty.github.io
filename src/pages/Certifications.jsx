@@ -2,11 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { useTheme } from "../ThemeContext";
 import {
   FaAward, FaTrophy, FaTimes, FaChevronLeft, FaChevronRight,
-  FaBootstrap,
   FaFilter
 } from "react-icons/fa";
 
-// ===== THEME STYLES (unchanged) =====
+// ===== THEME STYLES =====
 const themeStyles = {
   icy: {
     cardBg: "bg-white/15 backdrop-blur-xl border-white/20",
@@ -46,7 +45,7 @@ const themeStyles = {
   }
 };
 
-// ======= CERTIFICATES DATA (Put your full list here, only a few for example) =======
+// ======= CERTIFICATES DATA =======
 const certificates = [
   {
     id: 1,
@@ -296,7 +295,7 @@ const CertificateCard = ({ certificate, onClick, index }) => {
         hover:scale-105
       `}
       onClick={() => onClick(index)}
-      style={{ transitionDelay: `${index * 50}ms` }}
+      style={{ transitionDelay: `${index * 50}ms`, minWidth: 0 }}
       title={certificate.title}
     >
       <div className="flex items-center">
@@ -313,7 +312,7 @@ const CertificateCard = ({ certificate, onClick, index }) => {
             }}
           />
         </div>
-        <div className="flex-1 flex flex-col justify-between h-full">
+        <div className="flex-1 flex flex-col justify-between h-full min-w-0">
           <div className="mb-2 flex items-center gap-2">
             <span className={`px-2 py-1 rounded-full border font-bold border-dashed ${styles.accent} bg-white/20 text-xs tracking-wide`}>
               {certificate.category}
@@ -340,10 +339,10 @@ const Certifications = () => {
   const { theme } = useTheme();
   const styles = themeStyles[theme] || themeStyles.icy;
 
-  // Use all certificates, no exclusions
+  // Show Professional certificates by default
   const [activeFilter, setActiveFilter] = useState("Professional");
   const [filteredCertificates, setFilteredCertificates] = useState(
-    certificates.filter(cert => cert.category === "Professional")
+  certificates.filter(cert => cert.category === "Professional")
   );
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -362,41 +361,32 @@ const Certifications = () => {
     }
   }, [activeFilter]);
 
-  const handleFilter = (category) => {
-    setActiveFilter(category);
-  };
-
-  const openLightbox = (idx) => {
-    setSelectedIndex(idx);
-    setIsLightboxOpen(true);
-  };
-
-  const closeLightbox = () => {
-    setIsLightboxOpen(false);
-    setSelectedIndex(null);
-  };
-
-  const prevLightbox = (e) => {
-    e.stopPropagation();
-    if (selectedIndex > 0) setSelectedIndex(selectedIndex - 1);
-  };
-
-  const nextLightbox = (e) => {
-    e.stopPropagation();
-    if (selectedIndex < filteredCertificates.length - 1) setSelectedIndex(selectedIndex + 1);
-  };
+  const handleFilter = (category) => setActiveFilter(category);
+  const openLightbox = (idx) => { setSelectedIndex(idx); setIsLightboxOpen(true); };
+  const closeLightbox = () => { setIsLightboxOpen(false); setSelectedIndex(null); };
+  const prevLightbox = (e) => { e.stopPropagation(); if (selectedIndex > 0) setSelectedIndex(selectedIndex - 1); };
+  const nextLightbox = (e) => { e.stopPropagation(); if (selectedIndex < filteredCertificates.length - 1) setSelectedIndex(selectedIndex + 1); };
 
   return (
-    <div className="min-h-screen p-8">
+    <div className="min-h-screen p-4 sm:p-8">
       <div className="max-w-7xl mx-auto">
         <div id="certifications" ref={sectionRef} className="pt-[120px] -mt-[120px]"></div>
         <div className="text-center mb-8">
-          <h1 className={`pt-10 text-5xl font-bold ${styles.text} mb-4 flex items-center justify-center gap-4`}>
-            <FaTrophy className={styles.accent} />
-            Certifications
+          <h1
+            className={`pt-10 text-4xl sm:text-5xl font-bold ${styles.text} mb-4 flex flex-wrap items-center justify-center gap-2 break-words`}
+            style={{
+              wordBreak: "break-word",
+              overflowWrap: "break-word",
+              minWidth: 0,
+              maxWidth: "100%",
+              whiteSpace: "normal"
+            }}
+          >
+            <FaTrophy className={`shrink-0 ${styles.accent}`} style={{ fontSize: "1.2em" }} />
+            <span style={{ minWidth: 0, maxWidth: "100%" }}>Certifications</span>
           </h1>
           <p className={`text-xl ${styles.textSecondary} max-w-3xl mx-auto`}>
-             This is Exactly how I spent my time during the Corona Pandemic.
+            This is Exactly how I spent my time during the Corona Pandemic.
           </p>
         </div>
         <div className="flex flex-wrap gap-4 justify-center mb-12">
@@ -453,6 +443,26 @@ const Certifications = () => {
           onNext={nextLightbox}
         />
       </div>
+      {/* Only clamp overflow-x on mobile for horizontal scroll issues */}
+      <style>{`
+        @media (max-width: 767px) {
+          .max-w-7xl, .grid, .flex, .certifications-section {
+            min-width: 0 !important;
+            max-width: 100vw !important;
+            box-sizing: border-box;
+          }
+          h1, .certifications-title {
+            min-width: 0 !important;
+            max-width: 100vw !important;
+            box-sizing: border-box;
+            word-break: break-word;
+            overflow-wrap: break-word;
+          }
+          .grid > div {
+            min-width: 0 !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };

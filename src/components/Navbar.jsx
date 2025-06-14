@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { FaHome, FaProjectDiagram, FaGraduationCap, FaEnvelope, FaUserTie, FaUser, FaAward } from "react-icons/fa";
 import { GiSkills } from "react-icons/gi";
 import { useTheme } from "../ThemeContext";
@@ -51,8 +51,11 @@ const themeNavbarStyles = {
 };
 
 export default function Navbar({ sections = [], onNavClick }) {
-  // Filter out the footer section
-  const filteredSections = sections.filter(section => section.id !== "footer");
+  // Use useMemo to prevent filteredSections from recreating on every render
+  const filteredSections = useMemo(() => 
+    sections.filter(section => section.id !== "footer"), 
+    [sections]
+  );
 
   const { theme } = useTheme();
   const themeStyle = themeNavbarStyles[theme] || themeNavbarStyles.icy;
@@ -75,7 +78,7 @@ export default function Navbar({ sections = [], onNavClick }) {
     window.addEventListener("scroll", handler, { passive: true });
     handler();
     return () => window.removeEventListener("scroll", handler);
-  }, [filteredSections]);
+  }, [filteredSections]); // Now filteredSections won't change unless sections prop changes
 
   // Animated highlight using transform for smoothness
   const [highlightStyle, setHighlightStyle] = useState({});
@@ -91,7 +94,7 @@ export default function Navbar({ sections = [], onNavClick }) {
         transition: "transform 0.5s cubic-bezier(.65,-0.01,.27,1.01), width 0.45s cubic-bezier(.65,-0.01,.27,1.01), background 0.38s",
       });
     }
-  }, [activeSection, filteredSections]);
+  }, [activeSection]); // Removed filteredSections dependency since it's not needed here
 
   // Mobile menu state
   const [menuOpen, setMenuOpen] = useState(false);

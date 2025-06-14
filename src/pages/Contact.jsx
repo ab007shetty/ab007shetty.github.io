@@ -336,7 +336,7 @@ export default function Contact() {
           </div>
         </div>
         {/* Custom CSS for animations and horizontal overflow fix */}
-        <style jsx>{`
+        <style>{`
           @keyframes spin-slow {
             from { transform: rotate(0deg);}
             to { transform: rotate(360deg);}

@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import SocialsAndEmail from "./components/SocialsAndEmail";
-import LandingContent from "./pages/LandingContent";
+import LandingPage from "./pages/LandingPage";
+import { ThemeProvider } from "./ThemeContext";
 import About from "./pages/About";
 import Projects from "./pages/Projects";
 import Certifications from "./pages/Certifications";
@@ -10,7 +11,6 @@ import ThemeBackground from "./components/ThemeBackground";
 import ThemeWheel from "./components/ThemeWheel";
 import ThemeCursors from "./components/ThemeCursors";
 import Intro from "./pages/Intro";
-import { ThemeProvider } from "./ThemeContext";
 
 const SECTIONS = [
   { id: "home", label: "Home" },
@@ -101,7 +101,7 @@ export default function App() {
               >
                 {id === "home" ? (
                   <div className={`flex w-full h-full items-center justify-center transition-all duration-700 ${isLeavingLanding ? "opacity-0 translate-y-24 pointer-events-none" : "opacity-100 translate-y-0"}`}>
-                    <LandingContent />
+                    <LandingPage />
                   </div>
                 ) : id === "about" ? (
                   <About />

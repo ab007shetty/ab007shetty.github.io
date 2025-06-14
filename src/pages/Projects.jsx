@@ -676,7 +676,7 @@ const handleMove = (e) => {
         </div>
       </div>
       {/* Custom Styles */}
-      <style jsx>{`
+      <style>{`
         .line-clamp-1 {
           display: -webkit-box;
           -webkit-line-clamp: 1;
