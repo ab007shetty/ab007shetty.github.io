@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import Navbar from "./components/Navbar";
 import SocialsAndEmail from "./components/SocialsAndEmail";
 import LandingPage from "./pages/LandingPage";
@@ -11,6 +13,7 @@ import ThemeBackground from "./components/ThemeBackground";
 import ThemeWheel from "./components/ThemeWheel";
 import ThemeCursors from "./components/ThemeCursors";
 import Intro from "./pages/Intro";
+import Redirector from "./Redirector";
 
 const SECTIONS = [
   { id: "home", label: "Home" },
@@ -20,7 +23,7 @@ const SECTIONS = [
   { id: "contact", label: "Contact" },
 ];
 
-export default function App() {
+function Portfolio() {
   const sectionRefs = SECTIONS.reduce((acc, { id }) => {
     acc[id] = useRef();
     return acc;
@@ -31,7 +34,6 @@ export default function App() {
   const [isLeavingLanding, setIsLeavingLanding] = useState(false);
   const [customCursor, setCustomCursor] = useState(false);
 
-  // Scroll spy: update activeSection based on scroll
   useEffect(() => {
     function handler() {
       const offset = window.innerHeight / 2;
@@ -54,13 +56,11 @@ export default function App() {
     sectionRefs[id]?.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  // Hide default cursor if customCursor is enabled
   useEffect(() => {
     document.body.style.cursor = customCursor ? "none" : "";
     return () => { document.body.style.cursor = ""; };
   }, [customCursor]);
 
-  // Prevent scrolling during intro
   useEffect(() => {
     if (!introDone) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
@@ -68,7 +68,7 @@ export default function App() {
   }, [introDone]);
 
   return (
-    <ThemeProvider>
+    <>
       <ThemeBackground activeSection={activeSection} />
       {customCursor && <ThemeCursors />}
       {!introDone ? (
@@ -76,20 +76,28 @@ export default function App() {
       ) : (
         <>
           <Navbar sections={SECTIONS} onNavClick={scrollToSection} />
+
           {/* ThemeWheel at the top only on landing (home) section */}
           {activeSection === "home" && (
-            <div style={{
-              position: "fixed",
-              top: 32,  // 32px margin from top
-              left: 32, // 32px margin from left
-              zIndex: 1010
-            }}>
+            <div
+              style={{
+                position: "fixed",
+                top: 32,
+                left: 32,
+                zIndex: 1010,
+              }}
+            >
               <ThemeWheel customCursor={customCursor} setCustomCursor={setCustomCursor} />
             </div>
           )}
+
           {/* SocialsAndEmail only on landing (home) section 
           {activeSection === "home" && <SocialsAndEmail />} */}
-          <div className="snap-y snap-mandatory overflow-y-auto min-h-screen" style={{ scrollBehavior: "smooth" }}>
+
+          <div
+            className="snap-y snap-mandatory overflow-y-auto min-h-screen"
+            style={{ scrollBehavior: "smooth" }}
+          >
             {SECTIONS.map(({ id, label }) => (
               <section
                 key={id}
@@ -100,7 +108,13 @@ export default function App() {
                 }`}
               >
                 {id === "home" ? (
-                  <div className={`flex w-full h-full items-center justify-center transition-all duration-700 ${isLeavingLanding ? "opacity-0 translate-y-24 pointer-events-none" : "opacity-100 translate-y-0"}`}>
+                  <div
+                    className={`flex w-full h-full items-center justify-center transition-all duration-700 ${
+                      isLeavingLanding
+                        ? "opacity-0 translate-y-24 pointer-events-none"
+                        : "opacity-100 translate-y-0"
+                    }`}
+                  >
                     <LandingPage />
                   </div>
                 ) : id === "about" ? (
@@ -116,7 +130,9 @@ export default function App() {
                 ) : (
                   <div className="w-full flex flex-col items-center">
                     <h1 className="text-4xl font-bold mb-4">{label}</h1>
-                    <p className="text-lg text-gray-600 dark:text-gray-200">Your {label} content goes here.</p>
+                    <p className="text-lg text-gray-600 dark:text-gray-200">
+                      Your {label} content goes here.
+                    </p>
                   </div>
                 )}
               </section>
@@ -124,6 +140,19 @@ export default function App() {
           </div>
         </>
       )}
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Portfolio />} />
+          <Route path="/:slug" element={<Redirector />} />
+        </Routes>
+      </Router>
     </ThemeProvider>
   );
 }

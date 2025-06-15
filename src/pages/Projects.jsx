@@ -6,7 +6,6 @@ import {
   SiReact, SiNodedotjs, SiMongodb, SiBootstrap, SiPython, SiPhp, SiDjango, SiMysql, SiScikitlearn, SiPandas, SiOpencv, SiFirebase,
   SiSocketdotio
 } from "react-icons/si";
-// Replace below with your real ThemeContext import
 import { useTheme } from "../ThemeContext";
 
 // ========== Theme Styles ==========
@@ -21,7 +20,7 @@ const themeStyles = {
     badge: "bg-cyan-100/30 text-cyan-800 border-cyan-300/40",
     glow: "shadow-cyan-400/20",
     filterActive: "bg-cyan-500/30 text-cyan-800 border-cyan-400/60",
-    bg: "" // No background color
+    bg: ""
   },
   hot: {
     cardBg: "bg-yellow-50/10 backdrop-blur-xl border-yellow-300/20",
@@ -69,7 +68,7 @@ const techIcons = {
   "Tailwind CSS": <SiReact className="text-teal-500" />
 };
 
-// ========== Projects (with relevant Unsplash images) ==========
+// ========== Projects ==========
 const projects = [
   {
     id: 1,
@@ -203,7 +202,7 @@ const projects = [
     forks: 0,
     stars: 0
   },
-    {
+  {
     id: 12,
     title: "InsureAI",
     description: "Instant AI-powered insights, trends, and graphs for Insurance Policies.",
@@ -224,51 +223,377 @@ const statuses = [
   "Ongoing"
 ];
 
-// ========== Component ==========
+// ========== Responsive Helper ==========
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(typeof window !== "undefined" ? window.innerWidth < breakpoint : false);
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [breakpoint]);
+  return isMobile;
+}
+
+const getCardStyle = (index, currentIndex, filteredProjects) => {
+  if (filteredProjects.length === 0) return { display: 'none' };
+  const totalCards = filteredProjects.length;
+  let position = (index - currentIndex + totalCards) % totalCards;
+  if (position > totalCards / 2) position = position - totalCards;
+  const transition = "transform 0.43s cubic-bezier(.7,0,.3,1), opacity 0.33s cubic-bezier(.7,0,.3,1), filter 0.43s";
+
+  // Values can be tweaked for stronger or softer effect
+  if (position === 0) {
+    // Center card
+    return {
+      filter: "none",
+      boxShadow: "0 8px 32px 0 rgba(0,0,0,0.13), 0 2px 12px 0 rgba(0,0,0,0.10)",
+      transform: 'translateX(-50%) scale(1.08) rotateY(0deg) translateZ(40px)',
+      zIndex: 50,
+      opacity: 1,
+      left: '50%',
+      background: "inherit",
+      transition,
+    };
+  } else if (position === 1) {
+    // Right card, bent away
+    return {
+      filter: "blur(1.2px) brightness(0.96)",
+      boxShadow: "0 4px 16px 0 rgba(0,0,0,0.10)",
+      transform: 'translateX(-50%) scale(0.95) rotateY(-38deg) translateZ(-60px)',
+      zIndex: 25,
+      opacity: 0.65,
+      left: '68%',
+      transition,
+    };
+  } else if (position === -1) {
+    // Left card, bent away
+    return {
+      filter: "blur(1.2px) brightness(0.96)",
+      boxShadow: "0 4px 16px 0 rgba(0,0,0,0.10)",
+      transform: 'translateX(-50%) scale(0.95) rotateY(38deg) translateZ(-60px)',
+      zIndex: 25,
+      opacity: 0.65,
+      left: '32%',
+      transition,
+    };
+  } else if (position === 2) {
+    // Far right card, more bent and further back
+    return {
+      filter: "blur(2.3px) brightness(0.92)",
+      boxShadow: "0 2px 8px 0 rgba(0,0,0,0.08)",
+      transform: 'translateX(-50%) scale(0.8) rotateY(-60deg) translateZ(-140px)',
+      zIndex: 10,
+      opacity: 0.30,
+      left: '82%',
+      transition,
+    };
+  } else if (position === -2) {
+    // Far left card, more bent and further back
+    return {
+      filter: "blur(2.3px) brightness(0.92)",
+      boxShadow: "0 2px 8px 0 rgba(0,0,0,0.08)",
+      transform: 'translateX(-50%) scale(0.8) rotateY(60deg) translateZ(-140px)',
+      zIndex: 10,
+      opacity: 0.30,
+      left: '18%',
+      transition,
+    };
+  } else {
+    // Hide any other cards
+    return {
+      filter: "none",
+      boxShadow: "none",
+      transform: 'translateX(-50%) scale(0.5) rotateY(0deg) translateZ(-220px)',
+      zIndex: 1,
+      opacity: 0,
+      left: '50%',
+      transition,
+    };
+  }
+};
+
+// ========== Mobile Card ==========
+const MobileCard = ({ project, onPrev, onNext, isTransitioning, styles, techIcons }) => {
+  if (!project) return null;
+  return (
+    <div className={`
+      w-full max-w-sm mx-auto
+      ${styles.cardBg} ${styles.cardHover}
+      border rounded-2xl p-5 ${styles.glow} shadow-2xl
+      transition-transform duration-300
+      relative
+    `}>
+      <div className="w-full h-40 rounded-xl mb-4 relative overflow-hidden group">
+        <img
+          src={project.image}
+          alt={project.title}
+          className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+          loading="lazy"
+          onError={(e) => {
+            e.target.src = "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80";
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        <button
+          onClick={onPrev}
+          disabled={isTransitioning}
+          className={`
+            absolute left-2.5 top-1/2 -translate-y-1/2 p-1.5 bg-white/70 hover:bg-white/90 rounded-full shadow
+            ${isTransitioning ? 'opacity-50 cursor-not-allowed' : ''}
+            z-10
+          `}
+          aria-label="Previous"
+          style={{ minWidth: 34, minHeight: 34 }}
+        >
+          <FaChevronLeft className="text-base text-gray-700" />
+        </button>
+        <button
+          onClick={onNext}
+          disabled={isTransitioning}
+          className={`
+            absolute right-2.5 top-1/2 -translate-y-1/2 p-1.5 bg-white/70 hover:bg-white/90 rounded-full shadow
+            ${isTransitioning ? 'opacity-50 cursor-not-allowed' : ''}
+            z-10
+          `}
+          aria-label="Next"
+          style={{ minWidth: 34, minHeight: 34 }}
+        >
+          <FaChevronRight className="text-base text-gray-700" />
+        </button>
+      </div>
+      <div className="space-y-4">
+        <div>
+          <h3 className={`text-lg font-bold ${styles.text} mb-1`}>{project.title}</h3>
+          <p className={`${styles.textSecondary} text-sm leading-relaxed`}>
+            {project.description}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-1">
+          {project.technologies.slice(0, 3).map((tech, techIndex) => (
+            <span
+              key={techIndex}
+              className={`${styles.badge} border px-2 py-1 rounded-full text-xs flex items-center gap-1 font-medium`}
+            >
+              {techIcons[tech] && <span className="w-3 h-3">{techIcons[tech]}</span>}
+              {tech}
+            </span>
+          ))}
+          {project.technologies.length > 3 && (
+            <span className={`${styles.badge} border px-2 py-1 rounded-full text-xs font-medium`}>
+              +{project.technologies.length - 3}
+            </span>
+          )}
+        </div>
+        <div className="flex items-center justify-between text-sm">
+          <span className={`${styles.textSecondary} flex items-center gap-1`}>
+            <FaRocket className="text-xs" />
+            {project.status}
+          </span>
+          <div className="flex items-center gap-3">
+            <span className="flex items-center gap-1 text-gray-700">
+              <FaCodeBranch className="text-xs" />
+              {project.forks}
+            </span>
+            <span className="flex items-center gap-1 text-yellow-600">
+              <FaStar className="text-xs" />
+              {project.stars}
+            </span>
+          </div>
+        </div>
+        <div className="flex gap-2 pt-1">
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`
+              ${styles.button} border px-3 py-2 rounded-lg
+              flex items-center gap-2 text-xs font-medium
+              transition-all duration-300 hover:scale-105
+              flex-1 justify-center
+            `}
+          >
+            <FaGithub />
+            Code
+          </a>
+          <a
+            href={project.live}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`
+              ${styles.button} border px-3 py-2 rounded-lg
+              flex items-center gap-2 text-xs font-medium
+              transition-all duration-300 hover:scale-105
+              flex-1 justify-center
+            `}
+          >
+            <FaExternalLinkAlt />
+            Live
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ========== Desktop Card ==========
+const DesktopCard = ({ project, index, currentIndex, filteredProjects, styles, techIcons, goToSlide }) => {
+  const cardStyle = getCardStyle(index, currentIndex, filteredProjects);
+  const isCenter = (index - currentIndex + filteredProjects.length) % filteredProjects.length === 0;
+  return (
+    <div
+      className={`
+        absolute top-0
+        w-[340px] h-[470px]
+        ${styles.cardBg} ${isCenter ? styles.cardHover : ''}
+        border rounded-2xl p-7 ${styles.glow} shadow-2xl
+        cursor-pointer select-none
+        ${isCenter ? 'hover:scale-105' : ''}
+      `}
+      style={{
+        ...cardStyle,
+        transformStyle: 'preserve-3d',
+        backfaceVisibility: 'hidden'
+      }}
+      onClick={() => !isCenter && goToSlide(index)}
+    >
+      <div className="w-full h-44 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden group">
+        <img
+          src={project.image}
+          alt={project.title}
+          className="object-cover w-full h-full absolute inset-0 transition-transform duration-500 group-hover:scale-110"
+          loading="lazy"
+          onError={(e) => {
+            e.target.src = "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80";
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+      </div>
+      <div className="space-y-4">
+        <div>
+          <h3 className={`text-lg font-bold ${styles.text} mb-1 line-clamp-1`}>{project.title}</h3>
+          <p className={`${styles.textSecondary} text-sm leading-relaxed line-clamp-2`}>
+            {project.description}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-1">
+          {project.technologies.slice(0, 3).map((tech, techIndex) => (
+            <span
+              key={techIndex}
+              className={`${styles.badge} border px-2 py-1 rounded-full text-xs flex items-center gap-1 font-medium`}
+            >
+              {techIcons[tech] && <span className="w-3 h-3">{techIcons[tech]}</span>}
+              {tech}
+            </span>
+          ))}
+          {project.technologies.length > 3 && (
+            <span className={`${styles.badge} border px-2 py-1 rounded-full text-xs font-medium`}>
+              +{project.technologies.length - 3}
+            </span>
+          )}
+        </div>
+        <div className="flex items-center justify-between text-sm">
+          <span className={`${styles.textSecondary} flex items-center gap-1`}>
+            <FaRocket className="text-xs" />
+            {project.status}
+          </span>
+          <div className="flex items-center gap-3">
+            <span className="flex items-center gap-1 text-gray-700">
+              <FaCodeBranch className="text-xs" />
+              {project.forks}
+            </span>
+            <span className="flex items-center gap-1 text-yellow-600">
+              <FaStar className="text-xs" />
+              {project.stars}
+            </span>
+          </div>
+        </div>
+        <div className="flex gap-2 pt-1">
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`
+              ${styles.button} border px-3 py-2 rounded-lg
+              flex items-center gap-2 text-xs font-medium
+              transition-all duration-300 hover:scale-105
+              flex-1 justify-center
+            `}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <FaGithub />
+            Code
+          </a>
+          <a
+            href={project.live}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`
+              ${styles.button} border px-3 py-2 rounded-lg
+              flex items-center gap-2 text-xs font-medium
+              transition-all duration-300 hover:scale-105
+              flex-1 justify-center
+            `}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <FaExternalLinkAlt />
+            Live
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ========== Main Component ==========
 const Projects = () => {
   const { theme } = useTheme();
   const styles = themeStyles[theme] || themeStyles.icy;
+  const isMobile = useIsMobile(768);
 
   const [activeStatus, setActiveStatus] = useState("All");
-
-  // Make Gemini chatbot (id: 7) the default project shown
-  // Find its index in the filtered list for initial status "All"
   const getInitialIndex = () => {
     const geminiIndex = projects.findIndex(p => p.id === 7);
-    if (geminiIndex === -1) return 0;
-    return geminiIndex;
+    return geminiIndex === -1 ? 0 : geminiIndex;
   };
 
-  // Dynamic filteredProjects & currentIndex
   const [currentIndex, setCurrentIndexState] = useState(getInitialIndex());
   const [isTransitioning, setIsTransitioning] = useState(false);
   const containerRef = useRef(null);
   const startXRef = useRef(0);
+  const startYRef = useRef(0);
   const isDraggingRef = useRef(false);
 
-  // Always filter projects based on status
   const filteredProjects = projects.filter(p => activeStatus === "All" ? true : p.status === activeStatus);
 
-  // Always keep Gemini first on load, but if filtered out, fallback to 0
   useEffect(() => {
-    // If Gemini is visible, jump to it, else show first project
+    let newIndex = 0;
     const geminiIdx = filteredProjects.findIndex(p => p.id === 7);
-    setCurrentIndexState(geminiIdx !== -1 ? geminiIdx : 0);
+    if (geminiIdx !== -1) {
+      newIndex = geminiIdx;
+    }
+    setCurrentIndexState(Math.min(newIndex, Math.max(filteredProjects.length - 1, 0)));
     // eslint-disable-next-line
-  }, [activeStatus]);
+  }, [activeStatus, filteredProjects.length]);
+
+  useEffect(() => {
+    if (currentIndex >= filteredProjects.length) {
+      setCurrentIndexState(Math.max(filteredProjects.length - 1, 0));
+    }
+    // eslint-disable-next-line
+  }, [filteredProjects.length]);
 
   const nextSlide = () => {
     if (isTransitioning || filteredProjects.length === 0) return;
     setIsTransitioning(true);
     setCurrentIndexState((prev) => (prev + 1) % filteredProjects.length);
-    setTimeout(() => setIsTransitioning(false), 430);
+    setTimeout(() => setIsTransitioning(false), isMobile ? 300 : 430);
   };
 
   const prevSlide = () => {
     if (isTransitioning || filteredProjects.length === 0) return;
     setIsTransitioning(true);
     setCurrentIndexState((prev) => (prev - 1 + filteredProjects.length) % filteredProjects.length);
-    setTimeout(() => setIsTransitioning(false), 430);
+    setTimeout(() => setIsTransitioning(false), isMobile ? 300 : 430);
   };
 
   const goToSlide = (index) => {
@@ -278,43 +603,32 @@ const Projects = () => {
     setTimeout(() => setIsTransitioning(false), 430);
   };
 
-  // Gesture handlers
-const startYRef = useRef(0); // add this with your other refs
-
-const handleStart = (e) => {
-  if (isTransitioning) return;
-  isDraggingRef.current = true;
-  const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
-  const clientY = e.type === 'mousedown' ? e.clientY : e.touches[0].clientY;
-  startXRef.current = clientX;
-  startYRef.current = clientY;
-};
-
-const handleMove = (e) => {
-  if (!isDraggingRef.current || isTransitioning) return;
-  const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
-  const clientY = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
-  const diffX = startXRef.current - clientX;
-  const diffY = startYRef.current - clientY;
-
-  // Only prevent default and swipe if it's a horizontal swipe
-  if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
-    e.preventDefault();
-    if (diffX > 0) {
-      nextSlide();
-    } else {
-      prevSlide();
-    }
-    isDraggingRef.current = false;
-  }
-  // If vertical swipe, do nothing: allow page to scroll!
-};
-
-  const handleEnd = () => {
-    isDraggingRef.current = false;
+  // Swipe handlers - do NOT call preventDefault (see earlier answers)
+  const handleStart = (e) => {
+    if (isTransitioning) return;
+    isDraggingRef.current = true;
+    const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+    const clientY = e.type === 'mousedown' ? e.clientY : e.touches[0].clientY;
+    startXRef.current = clientX;
+    startYRef.current = clientY;
   };
+  const handleMove = (e) => {
+    if (!isDraggingRef.current || isTransitioning) return;
+    const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+    const clientY = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
+    const diffX = startXRef.current - clientX;
+    const diffY = startYRef.current - clientY;
+    if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+      // Don't call preventDefault here; mobile warning fix
+      if (diffX > 0) nextSlide();
+      else prevSlide();
+      isDraggingRef.current = false;
+    }
+  };
+  const handleEnd = () => { isDraggingRef.current = false; };
 
   useEffect(() => {
+    if (isMobile) return;
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowLeft') prevSlide();
       if (e.key === 'ArrowRight') nextSlide();
@@ -322,252 +636,25 @@ const handleMove = (e) => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
     // eslint-disable-next-line
-  }, [isTransitioning, filteredProjects.length]);
-
-  // Card position and styling
-  const getCardStyle = (index) => {
-    if (filteredProjects.length === 0) return { display: 'none' };
-    const totalCards = filteredProjects.length;
-    let position = (index - currentIndex + totalCards) % totalCards;
-    if (position > totalCards / 2) {
-      position = position - totalCards;
-    }
-    let transition = "transform 0.43s cubic-bezier(.7,0,.3,1), opacity 0.33s cubic-bezier(.7,0,.3,1), filter 0.43s";
-    // Center card (no blur/fog)
-    if (position === 0) {
-      return {
-        filter: "none",
-        boxShadow: "0 8px 36px 0 rgba(0,0,0,0.12), 0 1.5px 8px 0 rgba(0,0,0,0.08)",
-        transform: 'translateX(-50%) translateY(-20px) scale(1.12) rotateY(0deg) translateZ(60px)',
-        zIndex: 50,
-        opacity: 1,
-        left: '50%',
-        background: "inherit",
-        transition
-      };
-    } else if (position === 1) {
-      return {
-        filter: "blur(1.0px) brightness(0.97)",
-        transform: 'translateX(-50%) translateY(10px) scale(0.84) rotateY(-18deg) translateZ(0px)',
-        zIndex: 30,
-        opacity: 0.7,
-        left: '68%',
-        transition
-      };
-    } else if (position === -1) {
-      return {
-        filter: "blur(1.0px) brightness(0.97)",
-        transform: 'translateX(-50%) translateY(10px) scale(0.84) rotateY(18deg) translateZ(0px)',
-        zIndex: 30,
-        opacity: 0.7,
-        left: '32%',
-        transition
-      };
-    } else if (position === 2) {
-      return {
-        filter: "blur(1.8px) brightness(0.93)",
-        transform: 'translateX(-50%) translateY(30px) scale(0.63) rotateY(-36deg) translateZ(-30px)',
-        zIndex: 20,
-        opacity: 0.4,
-        left: '80%',
-        transition
-      };
-    } else if (position === -2) {
-      return {
-        filter: "blur(1.8px) brightness(0.93)",
-        transform: 'translateX(-50%) translateY(30px) scale(0.63) rotateY(36deg) translateZ(-30px)',
-        zIndex: 20,
-        opacity: 0.4,
-        left: '20%',
-        transition
-      };
-    } else {
-      return {
-        filter: "none",
-        transform: 'translateX(-50%) translateY(40px) scale(0.4) rotateY(0deg) translateZ(-60px)',
-        zIndex: 10,
-        opacity: 0,
-        left: '50%',
-        transition
-      };
-    }
-  };
-
-  const ProjectCard = ({ project, index }) => {
-    const cardStyle = getCardStyle(index);
-    const totalCards = filteredProjects.length;
-    let position = (index - currentIndex + totalCards) % totalCards;
-    if (position > totalCards / 2) {
-      position = position - totalCards;
-    }
-    const isCenter = position === 0;
-            return (
-        <div
-          className={`
-            absolute top-0 w-[320px] h-[450px]
-            ${styles.cardBg} ${isCenter ? styles.cardHover : ''}
-            border rounded-2xl p-5 
-            ${styles.glow} shadow-2xl
-            cursor-pointer select-none
-            ${isCenter ? 'hover:scale-105' : ''}
-          `}
-          style={{
-            ...cardStyle,
-            transformStyle: 'preserve-3d',
-            backfaceVisibility: 'hidden',
-            willChange: 'transform, opacity, filter'
-          }}
-          onClick={() => !isCenter && goToSlide(index)}
-        >
-        {/* Project Image */}
-        <div className="w-full h-40 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden group">
-          <img
-            src={project.image}
-            alt={project.title}
-            className="object-cover w-full h-full absolute inset-0 transition-transform duration-500 group-hover:scale-110"
-            loading="lazy"
-            onError={(e) => {
-              e.target.src = "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80";
-            }}
-            style={{
-              filter: isCenter ? "none" : cardStyle.filter
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent">
-                {isCenter && (
-        <div className="absolute inset-0 flex items-center justify-between px-2 md:hidden">
-          <button
-            onClick={e => { e.stopPropagation(); prevSlide(); }}
-            disabled={isTransitioning}
-            className={`
-              p-2 bg-white/70 hover:bg-white rounded-full shadow
-              transition-all duration-300
-              ${isTransitioning ? 'opacity-50 cursor-not-allowed' : ''}
-            `}
-            aria-label="Previous Project"
-            style={{ minWidth: 36, minHeight: 36 }}
-          >
-            <FaChevronLeft className="text-xl text-gray-700" />
-          </button>
-          <button
-            onClick={e => { e.stopPropagation(); nextSlide(); }}
-            disabled={isTransitioning}
-            className={`
-              p-2 bg-white/70 hover:bg-white rounded-full shadow
-              transition-all duration-300
-              ${isTransitioning ? 'opacity-50 cursor-not-allowed' : ''}
-            `}
-            aria-label="Next Project"
-            style={{ minWidth: 36, minHeight: 36 }}
-          >
-            <FaChevronRight className="text-xl text-gray-700" />
-          </button>
-        </div>
-      )}
-</div>
-        </div>
-        
-        {/* Project Info */}
-        <div className="space-y-5">
-          <div>
-            <h3 className={`text-lg font-bold ${styles.text} mb-1 line-clamp-1`}>{project.title}</h3>
-            <p className={`${styles.textSecondary} text-sm leading-relaxed line-clamp-2`}>
-              {project.description}
-            </p>
-          </div>
-          {/* Technologies */}
-          <div className="flex flex-wrap gap-1">
-            {project.technologies.slice(0, 3).map((tech, techIndex) => (
-              <span
-                key={techIndex}
-                className={`
-                  ${styles.badge} border px-2 py-1 rounded-full text-xs
-                  flex items-center gap-1 font-medium
-                `}
-              >
-                {techIcons[tech] && <span className="w-3 h-3">{techIcons[tech]}</span>}
-                {tech}
-              </span>
-            ))}
-            {project.technologies.length > 3 && (
-              <span className={`${styles.badge} border px-2 py-1 rounded-full text-xs font-medium`}>
-                +{project.technologies.length - 3}
-              </span>
-            )}
-          </div>
-          {/* Status and GitHub Stats */}
-          <div className="flex items-center justify-between text-sm">
-            <span className={`${styles.textSecondary} flex items-center gap-1`}>
-              <FaRocket className="text-xs" />
-              {project.status}
-            </span>
-            <div className="flex items-center gap-3">
-              <span className="flex items-center gap-1 text-black-700 ">
-                <FaCodeBranch className="text-xs" />
-                {project.forks}
-              </span>
-              <span className="flex items-center gap-1 text-yellow-600 dark:text-yellow-400">
-                <FaStar className="text-xs" />
-                {project.stars}
-              </span>
-            </div>
-          </div>
-          {/* Action Buttons - Always show both */}
-          <div className="flex gap-2 pt-1">
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`
-                ${styles.button} border px-3 py-2 rounded-lg
-                flex items-center gap-2 text-xs font-medium
-                transition-all duration-300 hover:scale-105
-                flex-1 justify-center
-              `}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <FaGithub />
-              Code
-            </a>
-            <a
-              href={project.live}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`
-                ${styles.button} border px-3 py-2 rounded-lg
-                flex items-center gap-2 text-xs font-medium
-                transition-all duration-300 hover:scale-105
-                flex-1 justify-center
-              `}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <FaExternalLinkAlt />
-              Live
-            </a>
-          </div>
-        </div>
-      </div>
-    );
-  };
+  }, [isTransitioning, filteredProjects.length, isMobile]);
 
   return (
     <div className={styles.bg + " min-h-screen relative overflow-hidden"}>
-      <div className="relative z-10 p-8">
+      <div className="relative z-10 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className={`pt-10 text-5xl font-bold ${styles.text} mb-4 flex items-center justify-center gap-4`}>
+            <h1 className={`pt-10 text-4xl md:text-5xl font-bold ${styles.text} mb-4 flex items-center justify-center gap-4`}>
               <FaCode className={styles.accent} />
               My Projects
             </h1>
-            <p className={`text-xl ${styles.textSecondary} max-w-3xl mx-auto`}>
-              A collection of my academic and personal projects. 
+            <p className={`text-lg md:text-xl ${styles.textSecondary} max-w-3xl mx-auto`}>
+              A collection of my academic and personal projects.
               <span className={`${styles.text} font-medium`}> No Freelance Projects Here </span>
             </p>
           </div>
-
           {/* Status Filter */}
-          <div className="flex flex-wrap gap-4 justify-center mb-16">
+          <div className="flex flex-wrap gap-4 justify-center mb-0">
             <span className="flex items-center gap-2">
               <FaFilter className={`${styles.textSecondary}`} />
               <span className={`${styles.text} font-medium`}>Filter by Status:</span>
@@ -577,7 +664,7 @@ const handleMove = (e) => {
                 key={status}
                 onClick={() => setActiveStatus(status)}
                 className={`
-                  px-4 py-2 rounded-lg border text-sm font-medium transition-all duration-300 relative
+                  px-4 py-2 rounded-lg border text-sm font-medium transition-all duration-300
                   ${activeStatus === status
                     ? styles.filterActive + " ring-2 ring-offset-2 ring-cyan-400"
                     : `${styles.button} hover:scale-105`
@@ -586,83 +673,122 @@ const handleMove = (e) => {
               >
                 {status}
                 {activeStatus === status && (
-                  <span className="ml-2 inline-block align-middle text-xs font-bold text-green-600">
-                    ✓
-                  </span>
+                  <span className="ml-2 inline-block text-xs font-bold text-green-600">✓</span>
                 )}
               </button>
             ))}
           </div>
-
-          {/* Dots Indicators */}
-          <div className="flex justify-center space-x-2 mb-4">
-            {filteredProjects.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`
-                  w-3 h-3 rounded-full transition-all duration-300
-                  ${index === currentIndex 
-                    ? 'bg-cyan-500 scale-125 shadow-lg shadow-cyan-400/50' 
-                    : 'bg-white/30 hover:bg-white/50'
-                  }
-                `}
-                disabled={isTransitioning}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-
-          {/* Carousel Container */}
-          <div className="relative h-[520px] flex items-center justify-center mb-8 ">
-            {/* Navigation Buttons */}
-            <button
-              onClick={prevSlide}
-              disabled={isTransitioning}
-              className={`
-                absolute left-0 z-[60] p-4 rounded-full transition-all duration-300 hidden md:block
-                ${styles.button} hover:scale-110 shadow-lg
-                ${isTransitioning ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'}
-              `}
-              aria-label="Previous Project"
-            >
-              <FaChevronLeft className="text-xl" />
-            </button>
-
-            <button
-              onClick={nextSlide}
-              disabled={isTransitioning}
-              className={`
-                absolute right-0 z-[60] p-4 rounded-full transition-all duration-300 hidden md:block
-                ${styles.button} hover:scale-110 shadow-lg
-                ${isTransitioning ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'}
-              `}
-              aria-label="Next Project"
-            >
-              <FaChevronRight className="text-xl" />
-            </button>
-
-            {/* Cards Container with Gesture Support */}
-            <div
-              ref={containerRef}
-              className="relative w-full h-full"
-              onMouseDown={handleStart}
-              onMouseMove={handleMove}
-              onMouseUp={handleEnd}
-              onMouseLeave={handleEnd}
-              onTouchStart={handleStart}
-              onTouchMove={handleMove}
-              onTouchEnd={handleEnd}
-              style={{
-                perspective: '1200px'
-              }}
-            >
-              {filteredProjects.map((project, index) => (
-                <ProjectCard key={project.id} project={project} index={index} />
-              ))}
+          {/* Mobile View */}
+          {isMobile ? (
+            <div className="relative mt-8">
+              <div
+                className="w-full"
+                onTouchStart={handleStart}
+                onTouchMove={handleMove}
+                onTouchEnd={handleEnd}
+                onMouseDown={handleStart}
+                onMouseMove={handleMove}
+                onMouseUp={handleEnd}
+                onMouseLeave={handleEnd}
+              >
+                {filteredProjects.length > 0 && (
+                  <MobileCard
+                    project={filteredProjects[currentIndex]}
+                    onPrev={prevSlide}
+                    onNext={nextSlide}
+                    isTransitioning={isTransitioning}
+                    styles={styles}
+                    techIcons={techIcons}
+                  />
+                )}
+              </div>
+              {/* Mobile Dots Indicator */}
+              <div className="flex justify-center mt-6 gap-2">
+                {filteredProjects.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentIndexState(index)}
+                    className={`
+                      w-2 h-2 rounded-full transition-all duration-300
+                      ${index === currentIndex
+                        ? `${styles.accent} w-6`
+                        : `${styles.textSecondary} opacity-50`
+                      }
+                    `}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-
+          ) : (
+            /* Desktop View */
+            <div className="relative mt-16">
+              {/* Desktop Cards Container */}
+              <div
+                ref={containerRef}
+                className="relative h-[540px] mx-0"
+                onMouseDown={handleStart}
+                onMouseMove={handleMove}
+                onMouseUp={handleEnd}
+                onMouseLeave={handleEnd}
+              >
+                {filteredProjects.map((project, index) => (
+                  <DesktopCard
+                    key={project.id}
+                    project={project}
+                    index={index}
+                    currentIndex={currentIndex}
+                    filteredProjects={filteredProjects}
+                    styles={styles}
+                    techIcons={techIcons}
+                    goToSlide={goToSlide}
+                  />
+                ))}
+                {/* Navigation Buttons on card sides */}
+                <button
+                  onClick={prevSlide}
+                  disabled={isTransitioning}
+                  className={`
+                    absolute left-0 top-1/2 -translate-y-1/2 z-40
+                    p-4 rounded-full transition-all duration-300
+                    ${styles.button} hover:scale-110 shadow-xl
+                    ${isTransitioning ? 'opacity-50 cursor-not-allowed' : ''}
+                  `}
+                  style={{ marginLeft: '-10px' }}
+                >
+                  <FaChevronLeft className="text-xl" />
+                </button>
+                <button
+                  onClick={nextSlide}
+                  disabled={isTransitioning}
+                  className={`
+                    absolute right-0 top-1/2 -translate-y-1/2 z-40
+                    p-4 rounded-full transition-all duration-300
+                    ${styles.button} hover:scale-110 shadow-xl
+                    ${isTransitioning ? 'opacity-50 cursor-not-allowed' : ''}
+                  `}
+                  style={{ marginRight: '-10px' }}
+                >
+                  <FaChevronRight className="text-xl" />
+                </button>
+              </div>
+              {/* Desktop Dots Indicator */}
+              <div className="flex justify-center mt-8 gap-3">
+                {filteredProjects.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`
+                      w-3 h-3 rounded-full transition-all duration-300 hover:scale-125
+                      ${index === currentIndex
+                        ? `${styles.accent} shadow-lg`
+                        : `${styles.textSecondary} opacity-60 hover:opacity-80`
+                      }
+                    `}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
           {/* Empty State */}
           {filteredProjects.length === 0 && (
             <div className="text-center py-20">
@@ -675,7 +801,12 @@ const handleMove = (e) => {
           )}
         </div>
       </div>
-      {/* Custom Styles */}
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className={`absolute top-20 left-10 w-32 h-32 ${styles.accent} opacity-10 rounded-full blur-3xl animate-pulse`} />
+        <div className={`absolute bottom-20 right-10 w-24 h-24 ${styles.accent} opacity-10 rounded-full blur-2xl animate-pulse delay-1000`} />
+        <div className={`absolute top-1/2 left-1/2 w-40 h-40 ${styles.accent} opacity-5 rounded-full blur-3xl animate-pulse delay-500`} />
+      </div>
       <style>{`
         .line-clamp-1 {
           display: -webkit-box;
@@ -692,7 +823,6 @@ const handleMove = (e) => {
         .touch-pan-x {
           touch-action: pan-x;
         }
-        /* Remove extra space below the action buttons in ProjectCard */
         .space-y-3 > :last-child {
           margin-bottom: 0 !important;
         }
