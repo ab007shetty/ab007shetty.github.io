@@ -3,7 +3,7 @@ name: Deploy React App to GitHub Pages
 on:
   push:
     branches:
-      - main  # Triggers on push to main
+      - main # Triggers on push to main
 
 jobs:
   build-and-deploy:
@@ -26,6 +26,9 @@ jobs:
 
       - name: Build Project
         run: npm run build
+
+      - name: Create 404.html
+        run: cp build/index.html build/404.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

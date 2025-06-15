@@ -2,7 +2,7 @@
   "name": "portfolio",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://ab007shetty.github.io/",
+  "homepage": "https://abshetty.in",
   "dependencies": {
     "framer-motion": "^7.6.0",
     "react": "^18.2.0",
