@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useTheme } from "../ThemeContext";
 
 const images = [
@@ -51,15 +51,96 @@ const accentsMap = {
 
 const typewriterText = [
   "Full-Stack Developer",
-  "AI Enthusiast",
+  "AI Enthusiast", 
   "Cloud Architect",
   "Problem Solver",
   "Dream Builder"
 ];
 
-export default function LandingPage() {
+// Memoized floating elements component
+const FloatingElements = React.memo(() => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    {[...Array(5)].map((_, i) => (
+      <div
+        key={i}
+        className="absolute w-1 h-1 rounded-full animate-float opacity-40"
+        style={{
+          background: 'rgba(255, 255, 255, 0.4)',
+          left: `${15 + i * 18}%`,
+          top: `${20 + (i % 3) * 20}%`,
+          animationDelay: `${i * 1.2}s`,
+          animationDuration: `${6 + i * 0.8}s`,
+        }}
+      />
+    ))}
+  </div>
+));
+
+// Memoized profile image component
+const ProfileImages = React.memo(({ imgIdx, images }) => (
+  <div
+    className="flex items-center justify-center profile-pic-container"
+    style={{
+      flex: "0 0 auto",
+      minWidth: "320px",
+      minHeight: "320px", 
+      width: "100%",
+      height: "100%",
+      maxWidth: "420px",
+      maxHeight: "620px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    }}
+  >
+    <div
+      className="rounded-3xl overflow-hidden bg-transparent relative flex items-center justify-center"
+      style={{
+        width: "100%",
+        height: "100%",
+        minHeight: 650,
+        minWidth: 650,
+        maxWidth: 650,
+        maxHeight: 650,
+        aspectRatio: "1/1",
+      }}
+    >
+      {images.map((src, i) => (
+        <img
+          key={src}
+          src={src}
+          alt={`Profile ${i + 1}`}
+          loading={i === 0 ? "eager" : "lazy"} // Load first image eagerly
+          className={`
+            absolute rounded-3xl w-full h-full object-contain object-center
+            profile-img-fade
+            ${imgIdx === i ? "opacity-100 z-10" : "opacity-0 z-0"}
+          `}
+          style={{
+            transition: "opacity 2.4s cubic-bezier(.4,0,.2,1)",
+            background: "transparent",
+            borderRadius: "1.5rem"
+          }}
+        />
+      ))}
+    </div>
+  </div>
+));
+
+// Memoized typewriter component
+const TypewriterText = React.memo(({ currentText, accents }) => (
+  <div className="h-8 flex items-center md:justify-start justify-center">
+    <span className={`text-lg md:text-xl ${accents.secondary} font-mono`}>
+      {currentText}
+      <span className="animate-blink ml-1">|</span>
+    </span>
+  </div>
+));
+
+// Main component
+function LandingPage() {
   const { theme } = useTheme();
-  const accents = accentsMap[theme] || accentsMap.icy;
+  const accents = useMemo(() => accentsMap[theme] || accentsMap.icy, [theme]);
 
   // Profile image animation
   const [imgIdx, setImgIdx] = useState(0);
@@ -74,6 +155,15 @@ export default function LandingPage() {
   // Mouse position for subtle parallax
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
+  // Memoized scroll handler
+  const handleScrollToContact = useCallback(() => {
+    const contactSection = document.getElementById("contact");
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
+
+  // Image rotation effect
   useEffect(() => {
     const interval = setInterval(() => setImgIdx(idx => (idx + 1) % images.length), 6000);
     return () => clearInterval(interval);
@@ -106,17 +196,26 @@ export default function LandingPage() {
     return () => clearTimeout(timer);
   }, [charIndex, isDeleting, textIndex]);
 
-  // Subtle mouse parallax effect
+  // Optimized mouse parallax effect
   useEffect(() => {
+    let rafId;
     const handleMouseMove = (e) => {
-      setMousePos({
-        x: (e.clientX - window.innerWidth / 2) / 100,
-        y: (e.clientY - window.innerHeight / 2) / 100
+      if (rafId) return; // Skip if already scheduled
+      
+      rafId = requestAnimationFrame(() => {
+        setMousePos({
+          x: (e.clientX - window.innerWidth / 2) / 100,
+          y: (e.clientY - window.innerHeight / 2) / 100
+        });
+        rafId = null;
       });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
@@ -124,72 +223,11 @@ export default function LandingPage() {
       className="relative z-20 flex flex-col md:flex-row items-center justify-center min-h-[90vh] px-2 md:px-8 py-8 space-y-8 md:space-y-0 md:space-x-10 overflow-x-hidden"
       style={{ width: "100vw", minHeight: "82vh" }}
     >
-      {/* Subtle floating elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(5)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 rounded-full animate-float opacity-40"
-            style={{
-              background: 'rgba(255, 255, 255, 0.4)',
-              left: `${15 + i * 18}%`,
-              top: `${20 + (i % 3) * 20}%`,
-              animationDelay: `${i * 1.2}s`,
-              animationDuration: `${6 + i * 0.8}s`,
-            }}
-          />
-        ))}
-      </div>
+      <FloatingElements />
 
-      {/* Profile Image Section */}
-      <div
-        className="flex items-center justify-center profile-pic-container"
-        style={{
-          flex: "0 0 auto",
-          minWidth: "320px",
-          minHeight: "320px",
-          width: "100%",
-          height: "100%",
-          maxWidth: "420px",
-          maxHeight: "620px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center"
-        }}
-      >
-        <div
-          className="rounded-3xl overflow-hidden bg-transparent relative flex items-center justify-center"
-          style={{
-            width: "100%",
-            height: "100%",
-            minHeight: 650,
-            minWidth: 650,
-            maxWidth: 650,
-            maxHeight: 650,
-            aspectRatio: "1/1",
-          }}
-        >
-          {images.map((src, i) => (
-            <img
-              key={src}
-              src={src}
-              alt={`Profile ${i + 1}`}
-              className={`
-                absolute rounded-3xl w-full h-full object-contain object-center
-                profile-img-fade
-                ${imgIdx === i ? "opacity-100 z-10" : "opacity-0 z-0"}
-              `}
-              style={{
-                transition: "opacity 2.4s cubic-bezier(.4,0,.2,1)",
-                background: "transparent",
-                borderRadius: "1.5rem"
-              }}
-            />
-          ))}
-        </div>
-      </div>
+      <ProfileImages imgIdx={imgIdx} images={images} />
 
-      {/* Content Section - Side by Side with Image, Centered Card on Mobile */}
+      {/* Content Section */}
       <div
         className={`
           relative transition-all duration-1000 ease-out delay-200 w-full max-w-[580px]
@@ -230,21 +268,14 @@ export default function LandingPage() {
                   Anirudha B Shetty
                 </span>
               </div>
-
-              {/* Typewriter effect */}
-              <div className="h-8 flex items-center md:justify-start justify-center">
-                <span className={`text-lg md:text-xl ${accents.secondary} font-mono`}>
-                  {currentText}
-                  <span className="animate-blink ml-1">|</span>
-                </span>
-              </div>
-            </div>
-
-            {/* Description */}
+                          {/* Description */}
             <div className={`space-y-4 mb-10 ${accents.text} text-center md:text-left`}>
               <p className="text-lg md:text-xl leading-relaxed animate-fade-in-up">
-                I love giving life to <span className={`${accents.highlight} font-semibold`}>wild dreams</span> through code.
+                 <span className={`${accents.highlight} font-semibold`}>Full Stack Developer</span> - MERN, Firebase, Tailwind
               </p>
+            </div>
+
+              <TypewriterText currentText={currentText} accents={accents} />
             </div>
 
             {/* Action buttons */}
@@ -275,12 +306,7 @@ export default function LandingPage() {
                   relative overflow-hidden text-center
                   whitespace-nowrap flex-1 sm:flex-none min-w-[200px]
                 `}
-                onClick={() => {
-                  const contactSection = document.getElementById("contact");
-                  if (contactSection) {
-                    contactSection.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
+                onClick={handleScrollToContact}
               >
                 <span className="relative z-10">Let's Connect</span>
                 <div className="freeze-effect" />
@@ -388,3 +414,5 @@ export default function LandingPage() {
     </main>
   );
 }
+
+export default React.memo(LandingPage);

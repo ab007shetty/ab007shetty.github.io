@@ -285,4 +285,4 @@ const DarkThemeBackground = () => {
   );
 };
 
-export default DarkThemeBackground;
+export default React.memo(DarkThemeBackground);

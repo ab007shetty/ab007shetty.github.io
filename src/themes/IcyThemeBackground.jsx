@@ -221,4 +221,4 @@ const IcyThemeBackground = () => {
   );
 };
 
-export default IcyThemeBackground;
+export default React.memo(IcyThemeBackground);

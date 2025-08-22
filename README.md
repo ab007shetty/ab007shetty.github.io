@@ -37,7 +37,7 @@ This is a React-based portfolio website deployed automatically to GitHub Pages u
 3. **Start the development server**
 
    ```bash
-   npm start
+   npm run dev
    ```
 
 This runs the app locally at [http://localhost:3000](http://localhost:3000) with hot reload for live changes.

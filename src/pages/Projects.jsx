@@ -6,6 +6,7 @@ import {
   SiReact, SiNodedotjs, SiMongodb, SiBootstrap, SiPython, SiPhp, SiDjango, SiMysql, SiScikitlearn, SiPandas, SiOpencv, SiFirebase,
   SiSocketdotio
 } from "react-icons/si";
+
 import { useTheme } from "../ThemeContext";
 
 // ========== Theme Styles ==========
@@ -65,7 +66,13 @@ const techIcons = {
   MySQL: <SiMysql className="text-blue-700" />,
   Ajax: <FaCode className="text-orange-500" />,
   Postman: <FaCode className="text-orange-600" />,
-  "Tailwind CSS": <SiReact className="text-teal-500" />
+  "Tailwind CSS": <SiReact className="text-teal-500" />,
+  "Socket.io": <SiSocketdotio className="text-black" />,
+  "react-dnd": <SiReact className="text-blue-500" />,
+  "Nvidia CUDA": <FaCode className="text-green-500" />,
+  "Open3D": <FaCode className="text-blue-600" />,
+  "Meshroom": <FaCode className="text-purple-600" />,
+  "JavaScript": <FaCode className="text-yellow-500" />
 };
 
 // ========== Projects ==========
@@ -103,8 +110,8 @@ const projects = [
     status: "Completed",
     github: "https://github.com/ab007shetty/crop-management-system",
     live: "#",
-    forks: 11,
-    stars: 25
+    forks: 13,
+    stars: 26
   },
   {
     id: 4,
@@ -120,18 +127,6 @@ const projects = [
   },
   {
     id: 5,
-    title: "Facial landmarks Detection",
-    description: "Facial landmark detector using dlib to estimate 68 (x, y) coordinates to map facial structures.",
-    image: "https://images.unsplash.com/photo-1555421689-491a97ff2040?auto=format&fit=crop&w=600&q=80",
-    technologies: ["Python", "OpenCV", "Dlib"],
-    status: "Completed",
-    github: "https://github.com/ab007shetty/facial-landmarks-detection",
-    live: "#",
-    forks: 0,
-    stars: 2
-  },
-  {
-    id: 6,
     title: "ViMusic – Web based Music Player",
     description: "Web-based solution for ViMusic Android player. Features: Favorites, playlists, DB import/export, Firebase login.",
     image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=600&q=80",
@@ -143,7 +138,7 @@ const projects = [
     stars: 5
   },
   {
-    id: 7,
+    id: 6,
     title: "Gemini – Chatbot",
     description: "Single page serverless site for Google's AI language and vision model.",
     image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=600&q=80",
@@ -155,7 +150,7 @@ const projects = [
     stars: 28
   },
   {
-    id: 8,
+    id: 7,
     title: "Life Share – Blood Bank Management System",
     description: "Node.js-based API server connecting donors and recipients, with multi-language support and chatbot.",
     image: "https://images.unsplash.com/photo-1615461066159-fea0960485d5?auto=format&fit=crop&w=600&q=80",
@@ -167,7 +162,7 @@ const projects = [
     stars: 4
   },
   {
-    id: 9,
+    id: 8,
     title: "Quiz Master – Online Quiz Management System",
     description: "Real-time quiz platform for schools with live scores, leaderboards, OTP-based, Domain restricted login.",
     image: "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?auto=format&fit=crop&w=600&q=80",
@@ -179,7 +174,7 @@ const projects = [
     stars: 6
   },
   {
-    id: 10,
+    id: 9,
     title: "Tweet Align",
     description: "ML model predicting political alignment (left/right) based on users' tweets and likes.",
     image: "https://images.unsplash.com/photo-1611605698335-8b1569810432?auto=format&fit=crop&w=600&q=80",
@@ -191,7 +186,7 @@ const projects = [
     stars: 0
   },
   {
-    id: 11,
+    id: 10,
     title: "Chowkabara",
     description: "Digitize a native board game into an online multiplayer experience.",
     image: "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?auto=format&fit=crop&w=600&q=80",
@@ -203,14 +198,50 @@ const projects = [
     stars: 0
   },
   {
+    id: 11,
+    title: "Revel",
+    description: "New Gen Event Booking Platform for Bangalore based Startup.",
+    image: "https://pbs.twimg.com/media/Gy574JOboAI3MFp?format=jpg&name=medium",
+    technologies: ["Node.js", "React", "Firebase", "Tailwind CSS"],
+    status: "Completed",
+    github: "https://github.com/ab007shetty/revel",
+    live: "https://therevel.co/",
+    forks: 0,
+    stars: 0
+  },
+  {
     id: 12,
-    title: "InsureAI",
-    description: "Instant AI-powered insights, trends, and graphs for Insurance Policies.",
-    image: "https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?auto=format&fit=crop&w=600&q=80",
-    technologies: ["Node.js", "Vite", "Tailwind CSS"],
-    status: "Ongoing",
-    github: "https://github.com/ab007shetty/insureAI",
+    title: "Task Planner",
+    description: "A  Month View Task Planner with drag & drop functionality, task scheduling, and filtering capabilities.",
+    image: "https://plus.unsplash.com/premium_photo-1706544427087-9f8747c5c675?auto=format&fit=crop&w=600&q=80",
+    technologies: ["Node.js", "React", "react-dnd", "Tailwind CSS"],
+    status: "Completed",
+    github: "https://github.com/ab007shetty/planner",
     live: "#",
+    forks: 0,
+    stars: 0
+  },
+  {
+    id: 13,
+    title: "Learn React",
+    description: "A comprehensive guide to learning React.js. Through Code Snippets and Puzzles.",
+    image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=600&q=80",
+    technologies: ["Node.js", "React", "Tailwind CSS"],
+    status: "Completed",
+    github: "https://github.com/ab007shetty/react-basics",
+    live: "https://ab007shetty.github.io/react-basics/",
+    forks: 0,
+    stars: 0
+  },
+  {
+    id: 14,
+    title: "Snap 3D",
+    description: "Images to 3D model rendering using Meshroom and Open3D.",
+    image: "https://images.unsplash.com/photo-1644158767445-79390e879319?auto=format&fit=crop&w=600&q=80",
+    technologies: ["Nvidia CUDA", "Open3D", "Meshroom","Node.js", "React"],
+    status: "Ongoing",
+    github: "https://github.com/ab007shetty/snap3d",
+    live: "https://ab007shetty.github.io/snap3d/",
     forks: 0,
     stars: 0
   }
@@ -262,7 +293,7 @@ const getCardStyle = (index, currentIndex, filteredProjects) => {
       transform: 'translateX(-50%) scale(0.95) rotateY(-38deg) translateZ(-60px)',
       zIndex: 25,
       opacity: 0.65,
-      left: '68%',
+      left: '72%',
       transition,
     };
   } else if (position === -1) {
@@ -273,7 +304,7 @@ const getCardStyle = (index, currentIndex, filteredProjects) => {
       transform: 'translateX(-50%) scale(0.95) rotateY(38deg) translateZ(-60px)',
       zIndex: 25,
       opacity: 0.65,
-      left: '32%',
+      left: '28%',
       transition,
     };
   } else if (position === 2) {
@@ -284,7 +315,7 @@ const getCardStyle = (index, currentIndex, filteredProjects) => {
       transform: 'translateX(-50%) scale(0.8) rotateY(-60deg) translateZ(-140px)',
       zIndex: 10,
       opacity: 0.30,
-      left: '82%',
+      left: '86%',
       transition,
     };
   } else if (position === -2) {
@@ -295,7 +326,7 @@ const getCardStyle = (index, currentIndex, filteredProjects) => {
       transform: 'translateX(-50%) scale(0.8) rotateY(60deg) translateZ(-140px)',
       zIndex: 10,
       opacity: 0.30,
-      left: '18%',
+      left: '14%',
       transition,
     };
   } else {
@@ -551,9 +582,11 @@ const Projects = () => {
   const isMobile = useIsMobile(768);
 
   const [activeStatus, setActiveStatus] = useState("All");
+  
+  // Updated to default to Revel (id: 11)
   const getInitialIndex = () => {
-    const geminiIndex = projects.findIndex(p => p.id === 7);
-    return geminiIndex === -1 ? 0 : geminiIndex;
+    const revelIndex = projects.findIndex(p => p.id === 11);
+    return revelIndex === -1 ? 0 : revelIndex;
   };
 
   const [currentIndex, setCurrentIndexState] = useState(getInitialIndex());
@@ -564,12 +597,18 @@ const Projects = () => {
   const isDraggingRef = useRef(false);
 
   const filteredProjects = projects.filter(p => activeStatus === "All" ? true : p.status === activeStatus);
+  
+  // Get count for each status
+  const getProjectCount = (status) => {
+    if (status === "All") return projects.length;
+    return projects.filter(p => p.status === status).length;
+  };
 
   useEffect(() => {
     let newIndex = 0;
-    const geminiIdx = filteredProjects.findIndex(p => p.id === 7);
-    if (geminiIdx !== -1) {
-      newIndex = geminiIdx;
+    const revelIdx = filteredProjects.findIndex(p => p.id === 11);
+    if (revelIdx !== -1) {
+      newIndex = revelIdx;
     }
     setCurrentIndexState(Math.min(newIndex, Math.max(filteredProjects.length - 1, 0)));
     // eslint-disable-next-line
@@ -649,8 +688,7 @@ const Projects = () => {
               My Projects
             </h1>
             <p className={`text-lg md:text-xl ${styles.textSecondary} max-w-3xl mx-auto`}>
-              A collection of my academic and personal projects.
-              <span className={`${styles.text} font-medium`}> No Freelance Projects Here </span>
+              A collection of my academic personal and freelance projects.
             </p>
           </div>
           {/* Status Filter */}
@@ -672,6 +710,13 @@ const Projects = () => {
                 `}
               >
                 {status}
+                <span className={`ml-2 inline-block px-1.5 py-0.5 rounded-full text-xs font-bold ${
+                  activeStatus === status 
+                    ? 'bg-white/20 text-current' 
+                    : 'bg-black/10 text-current'
+                }`}>
+                  {getProjectCount(status)}
+                </span>
                 {activeStatus === status && (
                   <span className="ml-2 inline-block text-xs font-bold text-green-600">✓</span>
                 )}

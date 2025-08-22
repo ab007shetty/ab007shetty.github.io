@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { FaSnowflake, FaFire, FaMoon } from "react-icons/fa";
 import { useTheme } from "../ThemeContext";
 
@@ -41,6 +41,126 @@ const themeIcons = {
   dark: <FaMoon />,
 };
 
+// Memoized theme arc component
+const ThemeArc = React.memo(({ 
+  theme, 
+  isActive, 
+  isHovered, 
+  path, 
+  size, 
+  onThemeSelect, 
+  onHover, 
+  onLeave 
+}) => (
+  <g>
+    {/* Main arc */}
+    <path
+      d={path}
+      fill={isActive ? `url(#${theme}Gradient)` : (isHovered ? `url(#${theme}Gradient)` : "#f8fafc")}
+      stroke={themeColors[theme]}
+      strokeWidth={size * (isActive ? 0.015 : 0.012)}
+      style={{
+        transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
+        cursor: isActive ? "default" : "pointer",
+        transform: isHovered && !isActive ? "scale(1.08)" : "scale(1)",
+        transformOrigin: `50% 50%`,
+        filter: isActive ? "url(#activeGlow)" : "none",
+        opacity: isActive ? 1 : (isHovered ? 0.9 : 0.8)
+      }}
+      onClick={isActive ? undefined : onThemeSelect}
+      onMouseEnter={!isActive ? onHover : undefined}
+      onMouseLeave={onLeave}
+    />
+    
+    {/* Inner highlight */}
+    <path
+      d={path}
+      fill="none"
+      stroke={isActive ? "#ffffff" : themeAccents[theme]}
+      strokeWidth={size * 0.008}
+      style={{
+        opacity: isActive ? 0.6 : 0.4,
+        pointerEvents: "none",
+        transition: "opacity 0.3s ease"
+      }}
+    />
+    
+    {/* Outer accent ring */}
+    <path
+      d={path}
+      fill="none"
+      stroke={themeColors[theme]}
+      strokeWidth={size * 0.025}
+      style={{
+        opacity: isActive ? 0.3 : 0.15,
+        pointerEvents: "none",
+        transition: "opacity 0.3s ease"
+      }}
+    />
+  </g>
+));
+
+// Memoized center button component
+const CenterButton = React.memo(({ 
+  theme, 
+  customCursor, 
+  isPressed, 
+  size, 
+  centerBg, 
+  centerBorderColor, 
+  disableCursorToggle, 
+  onToggleCursor, 
+  onMouseDown, 
+  onMouseUp, 
+  onMouseLeave 
+}) => (
+  <button
+    aria-label="Toggle custom cursor"
+    title={customCursor ? "Disable custom cursor" : "Enable custom cursor"}
+    onClick={onToggleCursor}
+    style={{
+      position: "absolute",
+      left: size/2 - size * 0.17,
+      top: size/2 - size * 0.17,
+      width: size * 0.34,
+      height: size * 0.34,
+      borderRadius: "50%",
+      border: `${size * 0.027}px solid ${centerBorderColor}`,
+      background: centerBg,
+      color: themeColors[theme],
+      fontWeight: 900,
+      fontSize: size * 0.18,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      boxShadow: customCursor
+        ? `0 0 16px #10b98155, 0 4px 20px #047857aa, inset 0 1px 0 rgba(255,255,255,0.3)`
+        : `0 0 16px ${themeAccents[theme]}55, 0 4px 20px ${themeColors[theme]}33, inset 0 1px 0 rgba(255,255,255,0.3)`,
+      zIndex: 2,
+      outline: "none",
+      cursor: disableCursorToggle ? "not-allowed" : "pointer",
+      userSelect: "none",
+      transition: "all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)",
+      transform: isPressed ? "scale(0.95)" : "scale(1)",
+      backdropFilter: "blur(2px)",
+    }}
+    disabled={disableCursorToggle}
+    onMouseDown={onMouseDown}
+    onMouseUp={onMouseUp}
+    onMouseLeave={onMouseLeave}
+  >
+    <div
+      style={{
+        transform: `scale(${isPressed ? 0.9 : 1})`,
+        transition: "transform 0.15s ease",
+        filter: `drop-shadow(0 2px 4px ${themeColors[theme]}44)`
+      }}
+    >
+      {themeIcons[theme]}
+    </div>
+  </button>
+));
+
 export default function ThemeWheelArc({
   customCursor = false,
   setCustomCursor = () => {},
@@ -53,34 +173,83 @@ export default function ThemeWheelArc({
   const [hoverTheme, setHoverTheme] = useState(null);
   const [isPressed, setIsPressed] = useState(false);
 
-  // Enhanced responsive sizing
-  const [size, setSize] = useState(() => window.innerWidth <= 750 ? 90 : 130);
+  // Enhanced responsive sizing with memoization
+  const size = useMemo(() => {
+    return window.innerWidth <= 750 ? 90 : 130;
+  }, []);
   
   useEffect(() => {
+    let resizeTimeout;
     function handleResize() {
-      const newSize = window.innerWidth <= 750 ? 90 : 130;
-      setSize(newSize);
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        // Force re-render on significant resize
+        window.dispatchEvent(new Event('themeWheelResize'));
+      }, 150);
     }
+    
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(resizeTimeout);
+    };
   }, []);
 
-  const CENTER = size / 2;
-  const OUTER_RADIUS = size * 0.45;
-  const ARC_THICKNESS = size * 0.18;
-  const INNER_RADIUS = OUTER_RADIUS - ARC_THICKNESS;
-  const angles = [0, 120, 240];
+  // Memoized calculations
+  const wheelConfig = useMemo(() => {
+    const CENTER = size / 2;
+    const OUTER_RADIUS = size * 0.45;
+    const ARC_THICKNESS = size * 0.18;
+    const INNER_RADIUS = OUTER_RADIUS - ARC_THICKNESS;
+    const angles = [0, 120, 240];
+    
+    return { CENTER, OUTER_RADIUS, INNER_RADIUS, angles };
+  }, [size]);
 
-  // Enhanced gradients with more depth
-  const centerBg =
-    theme === "icy"
-      ? "radial-gradient(circle at 60% 40%, #f0f9ff 30%, #e0f2fe 65%, #0ea5e9 100%)"
-      : theme === "hot"
-      ? "radial-gradient(circle at 40% 60%, #fffbeb 30%, #fef3c7 60%, #f59e0b 100%)"
-      : "radial-gradient(circle at 30% 70%, #f8fafc 30%, #e2e8f0 60%, #475569 100%)";
+  // Memoized gradients and styles
+  const centerStyles = useMemo(() => {
+    const centerBg =
+      theme === "icy"
+        ? "radial-gradient(circle at 60% 40%, #f0f9ff 30%, #e0f2fe 65%, #0ea5e9 100%)"
+        : theme === "hot"
+        ? "radial-gradient(circle at 40% 60%, #fffbeb 30%, #fef3c7 60%, #f59e0b 100%)"
+        : "radial-gradient(circle at 30% 70%, #f8fafc 30%, #e2e8f0 60%, #475569 100%)";
 
-  const centerBorderColor = customCursor ? "#10b981" : themeColors[theme];
-  const centerGlowColor = customCursor ? "#10b981" : themeAccents[theme];
+    const centerBorderColor = customCursor ? "#10b981" : themeColors[theme];
+    const centerGlowColor = customCursor ? "#10b981" : themeAccents[theme];
+    
+    return { centerBg, centerBorderColor, centerGlowColor };
+  }, [theme, customCursor]);
+
+  // Memoized callbacks
+  const handleThemeSelect = useCallback((selectedTheme) => {
+    setTheme(selectedTheme);
+  }, [setTheme]);
+
+  const handleHover = useCallback((hoveredTheme) => {
+    setHoverTheme(hoveredTheme);
+  }, []);
+
+  const handleLeave = useCallback(() => {
+    setHoverTheme(null);
+  }, []);
+
+  const handleToggleCursor = useCallback((e) => {
+    e.stopPropagation();
+    if (!disableCursorToggle && setCustomCursor) {
+      setCustomCursor(v => !v);
+      setIsPressed(true);
+      setTimeout(() => setIsPressed(false), 150);
+    }
+  }, [disableCursorToggle, setCustomCursor]);
+
+  const handleMouseDown = useCallback(() => {
+    if (!disableCursorToggle) setIsPressed(true);
+  }, [disableCursorToggle]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsPressed(false);
+  }, []);
 
   return (
     <div
@@ -93,7 +262,9 @@ export default function ThemeWheelArc({
         height: size,
         userSelect: "none",
         pointerEvents: sidenavOpen ? "none" : "auto",
-        filter: `drop-shadow(0 4px 12px rgba(0,0,0,0.15)) drop-shadow(0 0 8px ${centerGlowColor}22)`,
+        filter: `drop-shadow(0 4px 12px rgba(0,0,0,0.15)) drop-shadow(0 0 8px ${centerStyles.centerGlowColor}22)`,
+        willChange: "transform",
+        contain: "layout style paint",
         ...style,
       }}
       className="theme-wheel-fixed"
@@ -107,7 +278,7 @@ export default function ThemeWheelArc({
           width: size + 8,
           height: size + 8,
           borderRadius: "50%",
-          background: `radial-gradient(circle, ${centerGlowColor}15 0%, transparent 70%)`,
+          background: `radial-gradient(circle, ${centerStyles.centerGlowColor}15 0%, transparent 70%)`,
           pointerEvents: "none",
           zIndex: 0,
         }}
@@ -122,7 +293,8 @@ export default function ThemeWheelArc({
           top: 0,
           zIndex: 1,
           transform: introSpinning ? "rotate(360deg)" : "rotate(0deg)",
-          transition: introSpinning ? "transform 2s cubic-bezier(0.4, 0, 0.2, 1)" : "none"
+          transition: introSpinning ? "transform 2s cubic-bezier(0.4, 0, 0.2, 1)" : "none",
+          willChange: "transform"
         }}
       >
         <defs>
@@ -155,119 +327,48 @@ export default function ThemeWheelArc({
 
         {themeOrder.map((t, i) => {
           const gap = 2.5;
-          const angleStart = angles[i] - 60 + gap / 2;
-          const angleEnd = angles[i] + 60 - gap / 2;
+          const angleStart = wheelConfig.angles[i] - 60 + gap / 2;
+          const angleEnd = wheelConfig.angles[i] + 60 - gap / 2;
           const path = describeArc(
-            CENTER, CENTER, OUTER_RADIUS, INNER_RADIUS,
-            angleStart, angleEnd
+            wheelConfig.CENTER, 
+            wheelConfig.CENTER, 
+            wheelConfig.OUTER_RADIUS, 
+            wheelConfig.INNER_RADIUS,
+            angleStart, 
+            angleEnd
           );
           const isActive = theme === t;
           const isHovered = hoverTheme === t;
           
           return (
-            <g key={t}>
-              {/* Main arc */}
-              <path
-                d={path}
-                fill={isActive ? `url(#${t}Gradient)` : (isHovered ? `url(#${t}Gradient)` : "#f8fafc")}
-                stroke={themeColors[t]}
-                strokeWidth={size * (isActive ? 0.015 : 0.012)}
-                style={{
-                  transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
-                  cursor: isActive ? "default" : "pointer",
-                  transform: isHovered && !isActive ? "scale(1.08)" : "scale(1)",
-                  transformOrigin: `${CENTER}px ${CENTER}px`,
-                  filter: isActive ? "url(#activeGlow)" : "none",
-                  opacity: isActive ? 1 : (isHovered ? 0.9 : 0.8)
-                }}
-                onClick={isActive ? undefined : () => setTheme(t)}
-                onMouseEnter={() => !isActive && setHoverTheme(t)}
-                onMouseLeave={() => setHoverTheme(null)}
-              />
-              
-              {/* Inner highlight */}
-              <path
-                d={path}
-                fill="none"
-                stroke={isActive ? "#ffffff" : themeAccents[t]}
-                strokeWidth={size * 0.008}
-                style={{
-                  opacity: isActive ? 0.6 : 0.4,
-                  pointerEvents: "none",
-                  transition: "opacity 0.3s ease"
-                }}
-              />
-              
-              {/* Outer accent ring */}
-              <path
-                d={path}
-                fill="none"
-                stroke={themeColors[t]}
-                strokeWidth={size * 0.025}
-                style={{
-                  opacity: isActive ? 0.3 : 0.15,
-                  pointerEvents: "none",
-                  transition: "opacity 0.3s ease"
-                }}
-              />
-            </g>
+            <ThemeArc
+              key={t}
+              theme={t}
+              isActive={isActive}
+              isHovered={isHovered}
+              path={path}
+              size={size}
+              onThemeSelect={() => handleThemeSelect(t)}
+              onHover={() => handleHover(t)}
+              onLeave={handleLeave}
+            />
           );
         })}
       </svg>
 
-      {/* Enhanced center button */}
-      <button
-        aria-label="Toggle custom cursor"
-        title={customCursor ? "Disable custom cursor" : "Enable custom cursor"}
-        onClick={e => {
-          e.stopPropagation();
-          if (!disableCursorToggle && setCustomCursor) {
-            setCustomCursor(v => !v);
-            setIsPressed(true);
-            setTimeout(() => setIsPressed(false), 150);
-          }
-        }}
-        style={{
-          position: "absolute",
-          left: CENTER - size * 0.17,
-          top: CENTER - size * 0.17,
-          width: size * 0.34,
-          height: size * 0.34,
-          borderRadius: "50%",
-          border: `${size * 0.027}px solid ${centerBorderColor}`,
-          background: centerBg,
-          color: themeColors[theme],
-          fontWeight: 900,
-          fontSize: size * 0.18,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          boxShadow: customCursor
-            ? `0 0 16px #10b98155, 0 4px 20px #047857aa, inset 0 1px 0 rgba(255,255,255,0.3)`
-            : `0 0 16px ${centerGlowColor}55, 0 4px 20px ${themeColors[theme]}33, inset 0 1px 0 rgba(255,255,255,0.3)`,
-          zIndex: 2,
-          outline: "none",
-          cursor: disableCursorToggle ? "not-allowed" : "pointer",
-          userSelect: "none",
-          transition: "all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)",
-          transform: isPressed ? "scale(0.95)" : "scale(1)",
-          backdropFilter: "blur(2px)",
-        }}
-        disabled={disableCursorToggle}
-        onMouseDown={() => !disableCursorToggle && setIsPressed(true)}
-        onMouseUp={() => setIsPressed(false)}
-        onMouseLeave={() => setIsPressed(false)}
-      >
-        <div
-          style={{
-            transform: `scale(${isPressed ? 0.9 : 1})`,
-            transition: "transform 0.15s ease",
-            filter: `drop-shadow(0 2px 4px ${themeColors[theme]}44)`
-          }}
-        >
-          {themeIcons[theme]}
-        </div>
-      </button>
+      <CenterButton
+        theme={theme}
+        customCursor={customCursor}
+        isPressed={isPressed}
+        size={size}
+        centerBg={centerStyles.centerBg}
+        centerBorderColor={centerStyles.centerBorderColor}
+        disableCursorToggle={disableCursorToggle}
+        onToggleCursor={handleToggleCursor}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+      />
 
       <style>
         {`

@@ -111,4 +111,4 @@ const HotThemeBackground = ({ visible = true }) => (
   </div>
 );
 
-export default HotThemeBackground;
+export default React.memo(HotThemeBackground);

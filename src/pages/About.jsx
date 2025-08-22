@@ -113,30 +113,81 @@ const skillSections = [
 // HIGHLIGHTS, EXPERIENCE, EDUCATION
 const highlights = [
   { emoji: "🎓", text: "Completed 100+ courses on Coursera.", link: "https://www.coursera.org/user/9a1f6f65c70233a4cbf41887f48e0c06" },
-  { emoji: "☁️", text: "Google Cloud Arcade Champion — completed 300+ Google Cloud Qwiklabs.", link: "https://www.cloudskillsboost.google/public_profiles/a71f17d6-36af-4e30-b70f-8771bf211324" },
+  { emoji: "☁️", text: "Google Cloud Arcade Champion — completed 400+ Google Cloud Qwiklabs.", link: "https://www.cloudskillsboost.google/public_profiles/a71f17d6-36af-4e30-b70f-8771bf211324" },
   { emoji: "🏅", text: "Hackothsav National Finalist: Consolation prize winner in a national-level hackathon.", link: "" },
-  { emoji: "🌟", text: "Ranked among Top 6000 GitHub developers (India) with 150+ stars and 50+ forks.", link: "https://stardev.io/developers/ab007shetty#country-badge" },
-  { emoji: "📄", text: 'Authored a research paper: "Facial Recognition Using Haar Cascade and LBP Classifiers", 100+ citations (Elsevier).', link: "https://scholar.google.com/citations?user=i1vJxMYAAAAJ" }
+  { emoji: "🌟", text: "Ranked among Top 6000 GitHub developers (India) with 170+ stars and 50+ forks.", link: "https://stardev.io/developers/ab007shetty#country-badge" },
+  { emoji: "📄", text: 'Authored a research paper: "Facial Recognition Using Haar Cascade and LBP Classifiers", 130+ citations (Elsevier).', link: "https://scholar.google.com/citations?user=i1vJxMYAAAAJ" }
 ];
 
 const experienceGroups = [
   {
     label: "Infosys",
-    entries: [{ title: "Systems Engineer", company: "Infosys", location: "Mangaluru, Karnataka", period: "2021 - 2023", description: [
-      "Worked on web application development and maintenance for enterprise clients.",
-      "Collaborated with cross-functional teams to deliver high-quality software.",
-      "Automated deployment processes and implemented CI/CD pipelines."
-    ], skills: ["Node.js", "Jest", "React", "CI/CD", "Scrum", "Git"] }]
+    entries: [
+      {
+        title: "Systems Engineer",
+        company: "Infosys",
+        location: "Mangaluru, Karnataka",
+        period: "Aug 2021 – Apr 2023",
+        description: [
+          "Built web applications using React.js across two major international projects, such as Waters and Elanco.",
+          "Integrated product dashboards with search and filter features, shopping cart, and order history components.",
+          "Created interfaces for medicine stock tracking, doctor prescription entry, and report generation using Chart.js.",
+          "Utilized Git, Postman, and JIRA for efficient development, testing, and project management.",
+          "Ensured code quality through ESLint and Prettier, also done unit testing with Jest.",
+          "Resolved UI/API issues through debugging, isolation testing, and effective team collaboration.",
+          "Collaborated with the DevOps team to implement CI/CD pipelines, enabling efficient deployment workflows through GitHub Actions and Jenkins.",
+          "Developed a personal web app to call LLMs to debug and speed up the development process.",
+          "Additionally completed the Full-Stack Web Development with React (by Hong Kong University) via Coursera to enhance technical delivery."
+        ],
+        skills: [
+          "React.js",
+          "Chart.js",
+          "Node.js",
+          "Jest",
+          "CI/CD",
+          "GitHub Actions",
+          "Jenkins",
+          "Git",
+          "Postman",
+          "JIRA"
+        ]
+      }
+    ]
   },
   {
     label: "Digitran Technologies",
-    entries: [{ title: "Software Developer", company: "Digitran Technologies", location: "Udupi, Karnataka", period: "2023 - 2025", description: [
-      "Developed and maintained SaaS products for logistics and healthcare.",
-      "Integrated REST APIs and enhanced system performance.",
-      "Worked in an Agile team and participated in code reviews."
-    ], skills: ["Node.js", "React.js", "MongoDB", "REST APIs", "Agile"] }]
+    entries: [
+      {
+        title: "Software Developer (Part-Time)",
+        company: "Digitran Technologies",
+        location: "Udupi, Karnataka",
+        period: "2023 – 2025",
+        description: [
+          "Handled full-stack web application development for logistics and healthcare SaaS products.",
+          "Developed and maintained core features while ensuring scalability and performance improvements.",
+          "Integrated REST APIs and optimized data flow for smooth user experience.",
+          "Actively participated in Agile ceremonies, including sprint planning and retrospectives.",
+          "Conducted code reviews and improved overall code quality.",
+          "Gave product demos to US-based clients and incorporated feedback effectively."
+        ],
+        skills: [
+          "Node.js",
+          "React.js",
+          "MongoDB",
+          "Firebase",
+          "MySQL",
+          "GCP",
+          "Firebase",
+          "REST APIs",
+          "Agile",
+          "Code Reviews",
+          "Client Demos"
+        ]
+      }
+    ]
   }
 ];
+
 
 const educationGroups = [
   {
@@ -303,7 +354,7 @@ export default function About() {
           About <span className={styles.accent}>Me</span>
         </h1>
         <p className={`text-lg md:text-xl ${styles.textSecondary} max-w-3xl mx-auto leading-relaxed`}>
-          Passionate Full-Stack Developer with 3.5 years of Professional Experience.
+          Passionate Full-Stack Developer with 2 years of Professional Experience and 4+ Overall.
         </p>
       </div>
       {/* Main Tabs */}

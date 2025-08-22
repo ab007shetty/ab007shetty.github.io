@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { FaHome, FaProjectDiagram, FaGraduationCap, FaEnvelope, FaUserTie, FaUser, FaAward } from "react-icons/fa";
 import { GiSkills } from "react-icons/gi";
 import { useTheme } from "../ThemeContext";
@@ -6,10 +6,10 @@ import { useTheme } from "../ThemeContext";
 // Section icons for nav
 const sectionIcons = {
   home: <FaHome />,
-  about: <FaUserTie />, // Added about with FaUserTie icon (alternatively, use FaUser)
+  about: <FaUserTie />,
   skills: <GiSkills />,
   experience: <FaUserTie />,
-  certifications: <FaAward />, // Added certifications with FaAward icon (alternatively, use FaGraduationCap)
+  certifications: <FaAward />,
   projects: <FaProjectDiagram />,
   contact: <FaEnvelope />,
 };
@@ -24,7 +24,7 @@ const themeNavbarStyles = {
     fill: "bg-cyan-100/75",
     outline: "ring-cyan-400",
     highlight: "bg-cyan-400/70",
-    toggleBtn: "bg-black text-white hover:bg-black/80", // <-- Added dark toggle style
+    toggleBtn: "bg-black text-white hover:bg-black/80",
   },
   hot: {
     bg: "bg-yellow-50/20 backdrop-blur-lg",
@@ -35,7 +35,7 @@ const themeNavbarStyles = {
     fill: "bg-yellow-100/70",
     outline: "ring-yellow-400",
     highlight: "bg-yellow-400/70",
-    toggleBtn: "bg-black text-white hover:bg-black/80", // <-- Added dark toggle style
+    toggleBtn: "bg-black text-white hover:bg-black/80",
   },
   dark: {
     bg: "bg-gray-900/80 backdrop-blur-lg",
@@ -46,9 +46,80 @@ const themeNavbarStyles = {
     fill: "bg-gray-800/70",
     outline: "ring-blue-400",
     highlight: "bg-blue-600/70",
-    toggleBtn: "bg-black text-white hover:bg-black/80", // <-- Added dark toggle style
+    toggleBtn: "bg-black text-white hover:bg-black/80",
   },
 };
+
+// Memoized navigation button component
+const NavButton = React.memo(({ 
+  id, 
+  label, 
+  active, 
+  themeStyle, 
+  navRef, 
+  onClick 
+}) => (
+  <button
+    ref={navRef}
+    onClick={onClick}
+    className={`
+      relative flex items-center gap-2 px-3 py-1.5 rounded-full transition font-semibold
+      cursor-pointer select-none overflow-hidden group bg-transparent
+      ${active
+        ? `shadow ring-2 ${themeStyle.outline} z-10 ${themeStyle.active}`
+        : `${themeStyle.link} ${themeStyle.hover}`
+      }
+      focus:outline-none
+    `}
+    tabIndex={0}
+    style={{ background: "transparent" }}
+  >
+    {/* Animated fill on hover */}
+    <span
+      className={`
+        absolute inset-0 z-0 rounded-full pointer-events-none
+        transition-all duration-250
+        scale-x-0 group-hover:scale-x-100 group-focus:scale-x-100
+        origin-left
+        ${themeStyle.fill}
+      `}
+      style={{
+        transitionProperty: 'transform, background, opacity',
+      }}
+    />
+    <span className="relative z-10 text-lg">{sectionIcons[id]}</span>
+    <span className="relative z-10">{label}</span>
+  </button>
+));
+
+// Memoized mobile nav button component
+const MobileNavButton = React.memo(({ 
+  id, 
+  label, 
+  active, 
+  themeStyle, 
+  onClick 
+}) => (
+  <button
+    onClick={onClick}
+    className={`
+      relative flex items-center gap-3 px-3 py-2 rounded-xl font-semibold w-full
+      transition
+      cursor-pointer select-none
+      group
+      overflow-hidden
+      ${active
+        ? `shadow ring-2 ${themeStyle.outline} ${themeStyle.highlight} z-10 ${themeStyle.active}`
+        : `${themeStyle.link} ${themeStyle.hover}`
+      }
+      focus:outline-none
+    `}
+    tabIndex={0}
+  >
+    <span className="relative z-10 text-xl">{sectionIcons[id]}</span>
+    <span className="relative z-10">{label}</span>
+  </button>
+));
 
 export default function Navbar({ sections = [], onNavClick }) {
   // Use useMemo to prevent filteredSections from recreating on every render
@@ -58,30 +129,46 @@ export default function Navbar({ sections = [], onNavClick }) {
   );
 
   const { theme } = useTheme();
-  const themeStyle = themeNavbarStyles[theme] || themeNavbarStyles.icy;
+  const themeStyle = useMemo(() => themeNavbarStyles[theme] || themeNavbarStyles.icy, [theme]);
   const [activeSection, setActiveSection] = useState(filteredSections[0]?.id || "home");
   const navRefs = useRef({});
 
+  // Mobile menu state
+  const [menuOpen, setMenuOpen] = useState(false);
+
   // Scroll spy: update activeSection based on scroll
   useEffect(() => {
-    function handler() {
-      const offset = window.innerHeight / 3;
-      let current = filteredSections[0]?.id || "home";
-      for (const { id } of filteredSections) {
-        const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top < offset) {
-          current = id;
+    let rafId;
+    const handler = () => {
+      if (rafId) return; // Skip if already scheduled
+      
+      rafId = requestAnimationFrame(() => {
+        const offset = window.innerHeight / 3;
+        let current = filteredSections[0]?.id || "home";
+        
+        for (const { id } of filteredSections) {
+          const el = document.getElementById(id);
+          if (el && el.getBoundingClientRect().top < offset) {
+            current = id;
+          }
         }
-      }
-      setActiveSection(current);
-    }
+        
+        setActiveSection(current);
+        rafId = null;
+      });
+    };
+
     window.addEventListener("scroll", handler, { passive: true });
     handler();
-    return () => window.removeEventListener("scroll", handler);
-  }, [filteredSections]); // Now filteredSections won't change unless sections prop changes
+    return () => {
+      window.removeEventListener("scroll", handler);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [filteredSections]);
 
   // Animated highlight using transform for smoothness
   const [highlightStyle, setHighlightStyle] = useState({});
+  
   useEffect(() => {
     const el = navRefs.current[activeSection];
     if (el) {
@@ -94,10 +181,22 @@ export default function Navbar({ sections = [], onNavClick }) {
         transition: "transform 0.5s cubic-bezier(.65,-0.01,.27,1.01), width 0.45s cubic-bezier(.65,-0.01,.27,1.01), background 0.38s",
       });
     }
-  }, [activeSection]); // Removed filteredSections dependency since it's not needed here
+  }, [activeSection]);
 
-  // Mobile menu state
-  const [menuOpen, setMenuOpen] = useState(false);
+  // Memoized click handlers
+  const handleNavClick = useCallback((id) => {
+    setActiveSection(id);
+    setMenuOpen(false);
+    onNavClick?.(id);
+  }, [onNavClick]);
+
+  const handleMenuToggle = useCallback(() => {
+    setMenuOpen(prev => !prev);
+  }, []);
+
+  const handleMenuClose = useCallback(() => {
+    setMenuOpen(false);
+  }, []);
 
   return (
     <>
@@ -124,45 +223,19 @@ export default function Navbar({ sections = [], onNavClick }) {
               willChange: "transform,width",
             }}
           />
+          
           {filteredSections.map(({ id, label }) => {
             const active = activeSection === id;
             return (
-              <button
-                ref={el => (navRefs.current[id] = el)}
+              <NavButton
                 key={id}
-                onClick={() => {
-                  setActiveSection(id);
-                  setMenuOpen(false);
-                  onNavClick && onNavClick(id);
-                }}
-                className={`
-                  relative flex items-center gap-2 px-3 py-1.5 rounded-full transition font-semibold
-                  cursor-pointer select-none overflow-hidden group bg-transparent
-                  ${active
-                    ? `shadow ring-2 ${themeStyle.outline} z-10 ${themeStyle.active}`
-                    : `${themeStyle.link} ${themeStyle.hover}`
-                  }
-                  focus:outline-none
-                `}
-                tabIndex={0}
-                style={{ background: "transparent" }}
-              >
-                {/* Animated fill on hover */}
-                <span
-                  className={`
-                    absolute inset-0 z-0 rounded-full pointer-events-none
-                    transition-all duration-250
-                    scale-x-0 group-hover:scale-x-100 group-focus:scale-x-100
-                    origin-left
-                    ${themeStyle.fill}
-                  `}
-                  style={{
-                    transitionProperty: 'transform, background, opacity',
-                  }}
-                />
-                <span className="relative z-10 text-lg">{sectionIcons[id]}</span>
-                <span className="relative z-10">{label}</span>
-              </button>
+                id={id}
+                label={label}
+                active={active}
+                themeStyle={themeStyle}
+                navRef={el => (navRefs.current[id] = el)}
+                onClick={() => handleNavClick(id)}
+              />
             );
           })}
         </div>
@@ -171,23 +244,22 @@ export default function Navbar({ sections = [], onNavClick }) {
       {/* Mobile Navbar Toggle Button */}
       <div className="sm:hidden fixed top-4 right-3 z-50">
         <button
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={handleMenuToggle}
           className={`
             text-2xl rounded-full p-2 shadow-md border border-white/20
             bg-white/20
             backdrop-blur-xl
             transition-colors
           `}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
         >
           {menuOpen ? (
-            // X icon (close) in dark
-            <svg width={22} height={22} viewBox="0 0 22 22">
+            <svg width={22} height={22} viewBox="0 0 22 22" aria-hidden="true">
               <line x1="5" y1="5" x2="17" y2="17" stroke="#18181b" strokeWidth={2} />
               <line x1="17" y1="5" x2="5" y2="17" stroke="#18181b" strokeWidth={2} />
             </svg>
           ) : (
-            // Hamburger in dark
-            <svg width={22} height={22} viewBox="0 0 22 22">
+            <svg width={22} height={22} viewBox="0 0 22 22" aria-hidden="true">
               <rect x="4" y="6" width="14" height="2" rx="1" fill="#18181b" />
               <rect x="4" y="14" width="14" height="2" rx="1" fill="#18181b" />
             </svg>
@@ -197,8 +269,10 @@ export default function Navbar({ sections = [], onNavClick }) {
 
       {/* Mobile Overlay */}
       <div
-        className={`sm:hidden fixed inset-0 z-40 transition-all duration-300 ${menuOpen ? 'backdrop-blur-xl bg-black/30' : 'pointer-events-none opacity-0'}`}
-        onClick={() => setMenuOpen(false)}
+        className={`sm:hidden fixed inset-0 z-40 transition-all duration-300 ${
+          menuOpen ? 'backdrop-blur-xl bg-black/30' : 'pointer-events-none opacity-0'
+        }`}
+        onClick={handleMenuClose}
         aria-hidden={!menuOpen}
       />
 
@@ -214,43 +288,28 @@ export default function Navbar({ sections = [], onNavClick }) {
         style={{ minWidth: 220 }}
       >
         <button
-          onClick={() => setMenuOpen(false)}
-          className={`absolute top-4 right-4 text-lg rounded-full p-1 hover:bg-black/60 text-white bg-black/40 transition-colors`}
+          onClick={handleMenuClose}
+          className="absolute top-4 right-4 text-lg rounded-full p-1 hover:bg-black/60 text-white bg-black/40 transition-colors"
+          aria-label="Close menu"
         >
-          <svg width={22} height={22} viewBox="0 0 22 22">
+          <svg width={22} height={22} viewBox="0 0 22 22" aria-hidden="true">
             <line x1="5" y1="5" x2="17" y2="17" stroke="currentColor" strokeWidth={2} />
             <line x1="17" y1="5" x2="5" y2="17" stroke="currentColor" strokeWidth={2} />
           </svg>
         </button>
+        
         <nav className="flex flex-col items-start space-y-4 mt-10">
           {filteredSections.map(({ id, label }) => {
             const active = activeSection === id;
             return (
-              <button
+              <MobileNavButton
                 key={id}
-                onClick={() => {
-                  setActiveSection(id);
-                  setMenuOpen(false);
-                  onNavClick && onNavClick(id);
-                }}
-                className={`
-                  relative flex items-center gap-3 px-3 py-2 rounded-xl font-semibold w-full
-                  transition
-                  cursor-pointer select-none
-                  group
-                  overflow-hidden
-                  ${active
-                    ? `shadow ring-2 ${themeStyle.outline} ${themeStyle.highlight} z-10 ${themeStyle.active}`
-                    : `${themeStyle.link} ${themeStyle.hover}`
-                  }
-                  focus:outline-none
-                `}
-                tabIndex={0}
-                style={{}}
-              >
-                <span className="relative z-10 text-xl">{sectionIcons[id]}</span>
-                <span className="relative z-10">{label}</span>
-              </button>
+                id={id}
+                label={label}
+                active={active}
+                themeStyle={themeStyle}
+                onClick={() => handleNavClick(id)}
+              />
             );
           })}
         </nav>
