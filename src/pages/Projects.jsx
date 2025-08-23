@@ -81,7 +81,7 @@ const projects = [
     id: 1,
     title: "Blog App",
     description: "Django blog app with GitHub OAuth login, users can upload text and images, comment, and favorite posts.",
-    image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=600&q=80",
+    image: "https://plus.unsplash.com/premium_photo-1720744786849-a7412d24ffbf?auto=format&fit=crop&w=600&q=80",
     technologies: ["Django", "Bootstrap", "SQLite"],
     status: "Completed",
     github: "https://github.com/ab007shetty/dj4e",
@@ -93,7 +93,7 @@ const projects = [
     id: 2,
     title: "EAttendance – Attendance Management System",
     description: "Real-time student attendance system using face recognition module, built on dlib's ResNet-34 model.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
+    image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=600&q=80",
     technologies: ["Node.js", "MongoDB", "OpenCV"],
     status: "Completed",
     github: "https://github.com/ab007shetty/eattendance",
@@ -105,7 +105,7 @@ const projects = [
     id: 3,
     title: "Crop Management System",
     description: "ML-based system that predicts crops, recommends fertilizers, and provides rainfall and yield forecasts.",
-    image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600&q=80",
+    image: "https://images.unsplash.com/uploads/141247613151541c06062/c15fb37d?auto=format&fit=crop&w=600&q=80",
     technologies: ["PHP", "Python", "Pandas"],
     status: "Completed",
     github: "https://github.com/ab007shetty/crop-management-system",
@@ -165,7 +165,7 @@ const projects = [
     id: 8,
     title: "Quiz Master – Online Quiz Management System",
     description: "Real-time quiz platform for schools with live scores, leaderboards, OTP-based, Domain restricted login.",
-    image: "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?auto=format&fit=crop&w=600&q=80",
+    image: "https://plus.unsplash.com/premium_photo-1678216286021-e81f66761751?auto=format&fit=crop&w=600&q=80",
     technologies: ["PHP", "Bootstrap", "MySQL"],
     status: "Completed",
     github: "https://github.com/ab007shetty/quiz-master-2",
@@ -189,7 +189,7 @@ const projects = [
     id: 10,
     title: "Chowkabara",
     description: "Digitize a native board game into an online multiplayer experience.",
-    image: "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?auto=format&fit=crop&w=600&q=80",
+    image: "https://www.three-mens-morris.com/images/morris.png?auto=format&fit=crop&w=600&q=80",
     technologies: ["Node.js", "React", "Socket.io"],
     status: "Ongoing",
     github: "https://github.com/ab007shetty/chowkabara",
@@ -201,7 +201,7 @@ const projects = [
     id: 11,
     title: "Revel",
     description: "New Gen Event Booking Platform for Bangalore based Startup.",
-    image: "https://pbs.twimg.com/media/Gy574JOboAI3MFp?format=jpg&name=medium",
+    image: "https://media.licdn.com/dms/image/v2/D4D22AQG8z3H3S5DYsw/feedshare-shrink_2048_1536/B4DZjSyWLAH4A0-/0/1755883089159?e=1758758400&v=beta&t=631R3lMJefAji-o4upccMOg1hmaGnPXklWrS8iVUVKk",
     technologies: ["Node.js", "React", "Firebase", "Tailwind CSS"],
     status: "Completed",
     github: "https://github.com/ab007shetty/revel",
@@ -581,7 +581,7 @@ const Projects = () => {
   const styles = themeStyles[theme] || themeStyles.icy;
   const isMobile = useIsMobile(768);
 
-  const [activeStatus, setActiveStatus] = useState("All");
+  const [activeStatus, setActiveStatus] = useState("Completed");
   
   // Updated to default to Revel (id: 11)
   const getInitialIndex = () => {
@@ -770,7 +770,7 @@ const Projects = () => {
               {/* Desktop Cards Container */}
               <div
                 ref={containerRef}
-                className="relative h-[540px] mx-0"
+                className="w-[800px] h-[540px] mx-0"
                 onMouseDown={handleStart}
                 onMouseMove={handleMove}
                 onMouseUp={handleEnd}

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Anirudha B Shetty</title>
+    <script>
+        const path = window.location.pathname.slice(1);
+        if (path) {
+            sessionStorage.setItem('redirectPath', path);
+            window.location.replace(window.location.origin);
+        }
+    </script>
+</head>
+<body>
+    <div style="text-align: center; margin-top: 50px;">
+        <h2>Redirecting...</h2>
+    </div>
+</body>
+</html>
