@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,10 +8,22 @@
     <link rel="prefetch" as="image" href="/images/profile2.png">
     <link rel="prefetch" as="image" href="/images/profile3.png">
     <title>Anirudha B Shetty</title>
-    <script type="module" crossorigin src="/assets/index-YDppYhoZ.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-CQIa-b6O.css">
-  </head>
-  <body>
+    <!-- ADD THIS SCRIPT -->
+    <script>
+        // Handle GitHub Pages SPA redirect
+        (function() {
+            const redirectPath = sessionStorage.getItem('redirectPath');
+            if (redirectPath) {
+                sessionStorage.removeItem('redirectPath');
+                history.replaceState(null, null, '/' + redirectPath);
+            }
+        })();
+    </script>
+    <!-- END OF ADDED SCRIPT -->
+  <script type="module" crossorigin src="/assets/index-CKaJiTyk.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BSfL-PBs.css">
+</head>
+<body>
     <div id="root"></div>
-  </body>
+</body>
 </html>
