@@ -766,11 +766,11 @@ const Projects = () => {
             </div>
           ) : (
             /* Desktop View */
-            <div className="relative mt-16">
+            <div className="relative mt-16 ">
               {/* Desktop Cards Container */}
               <div
                 ref={containerRef}
-                className="w-[800px] h-[540px] mx-0"
+                className="w-[1000px] h-[540px] mx-auto"
                 onMouseDown={handleStart}
                 onMouseMove={handleMove}
                 onMouseUp={handleEnd}

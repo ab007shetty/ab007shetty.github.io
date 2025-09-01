@@ -61,7 +61,7 @@ const Intro = ({ onDone }) => {
       setTimeout(() => {
         onDone?.();
       }, 100);
-    }, 2000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [onDone]);

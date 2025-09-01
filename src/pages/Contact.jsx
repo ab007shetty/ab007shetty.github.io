@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
-  FaEnvelope, FaPhone, FaMapMarkerAlt, FaRocket, FaLightbulb, FaArrowUp, FaHeart, FaReact,
+  FaEnvelope, FaPhone, FaMapMarkerAlt, FaRocket, FaLightbulb, FaHeart, FaReact,
   FaGithub, FaLinkedin, FaInstagram
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
@@ -64,7 +64,7 @@ const contactInfo = [
     label: "Phone",
     value: "+91 8150071512",
     link: "tel:+918150071512",
-    description: "Call may not connect as there’s no balance"
+    description: "Call may not connect as there's no balance"
   },
   {
     icon: <FaMapMarkerAlt />,
@@ -231,36 +231,6 @@ const SocialCard = ({ social, index, theme }) => {
   );
 };
 
-// Scroll To Top
-const ScrollToTop = ({ theme }) => {
-  const [showScrollTop, setShowScrollTop] = useState(false);
-  const styles = themeStyles[theme];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 400);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  if (!showScrollTop) return null;
-
-  return (
-    <button
-      onClick={scrollToTop}
-      className={`fixed bottom-8 right-8 p-3 rounded-full ${styles.primaryButton} shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 z-50`}
-      aria-label="Scroll to top"
-    >
-      <FaArrowUp className="text-lg" />
-    </button>
-  );
-};
-
 export default function Contact() {
   const { theme } = useTheme();
   const styles = themeStyles[theme] || themeStyles.icy;
@@ -313,8 +283,7 @@ export default function Contact() {
         </div>
       </div>
 
-      {/* Footer & Scroll to Top */}
-      <ScrollToTop theme={theme} />
+      {/* Footer */}
       <footer className={`relative mt-20 ${styles.footerBg}`}>
         <div className={`border-t border-opacity-20 ${styles.cardBg} backdrop-blur-xl`}>
           <div className="max-w-7xl mx-auto px-4 py-6">
@@ -335,7 +304,7 @@ export default function Contact() {
             </div>
           </div>
         </div>
-        {/* Custom CSS for animations and horizontal overflow fix */}
+        {/* Custom CSS for animations */}
         <style>{`
           @keyframes spin-slow {
             from { transform: rotate(0deg);}

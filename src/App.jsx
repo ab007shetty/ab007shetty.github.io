@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect, Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { FaArrowUp } from "react-icons/fa";
 
 import Navbar from "./components/Navbar";
 import LandingPage from "./pages/LandingPage";
-import { ThemeProvider } from "./ThemeContext";
+import { ThemeProvider, useTheme } from "./ThemeContext";
 import ThemeBackground from "./components/ThemeBackground";
 import ThemeWheel from "./components/ThemeWheel";
 import ThemeCursors from "./components/ThemeCursors";
@@ -26,6 +27,50 @@ const PageLoader = React.memo(() => (
   </div>
 ));
 
+// Theme styles for ScrollToTop (moved from Contact.js)
+const themeStyles = {
+  icy: {
+    primaryButton: "bg-cyan-500 hover:bg-cyan-600 text-white",
+  },
+  hot: {
+    primaryButton: "bg-yellow-500 hover:bg-yellow-600 text-white",
+  },
+  dark: {
+    primaryButton: "bg-blue-600 hover:bg-blue-700 text-white",
+  }
+};
+
+// ScrollToTop component (moved from Contact.js)
+const ScrollToTop = ({ theme, activeSection }) => {
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const styles = themeStyles[theme] || themeStyles.icy;
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Don't show on landing page
+  if (!showScrollTop || activeSection === "home") return null;
+
+  return (
+    <button
+      onClick={scrollToTop}
+      className={`fixed bottom-8 right-8 p-3 rounded-full ${styles.primaryButton} shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 z-50`}
+      aria-label="Scroll to top"
+    >
+      <FaArrowUp className="text-lg" />
+    </button>
+  );
+};
+
 const SECTIONS = [
   { id: "home", label: "Home" },
   { id: "about", label: "About" },
@@ -35,6 +80,7 @@ const SECTIONS = [
 ];
 
 function Portfolio() {
+  const { theme } = useTheme();
   const sectionRefs = SECTIONS.reduce((acc, { id }) => {
     acc[id] = useRef();
     return acc;
@@ -201,6 +247,9 @@ function Portfolio() {
           <ThemeWheel customCursor={customCursor} setCustomCursor={setCustomCursor} />
         </div>
       )}
+
+      {/* ScrollToTop component - shows in all sections except home */}
+      <ScrollToTop theme={theme} activeSection={activeSection} />
 
       {/* Optimized scrolling container */}
       <div
