@@ -217,7 +217,7 @@ const projects = [
     technologies: ["Node.js", "React", "react-dnd", "Tailwind CSS"],
     status: "Completed",
     github: "https://github.com/ab007shetty/planner",
-    live: "#",
+    live: "https://ab007shetty.github.io/planner/",
     forks: 0,
     stars: 0
   },
