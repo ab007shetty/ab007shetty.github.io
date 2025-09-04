@@ -223,13 +223,13 @@ const projects = [
   },
   {
     id: 13,
-    title: "Learn React",
-    description: "A comprehensive guide to learning React.js. Through Code Snippets and Puzzles.",
+    title: "Learn MERN",
+    description: "A comprehensive guide to learning the MERN stack (MongoDB, Express.js, React.js, Node.js) through code snippets and puzzles.",
     image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=600&q=80",
     technologies: ["Node.js", "React", "Tailwind CSS"],
     status: "Completed",
-    github: "https://github.com/ab007shetty/react-basics",
-    live: "https://ab007shetty.github.io/react-basics/",
+    github: "https://github.com/ab007shetty/learnMERN",
+    live: "https://ab007shetty.github.io/learnMERN/",
     forks: 0,
     stars: 0
   },
