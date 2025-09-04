@@ -22,7 +22,8 @@ const redirects = {
   ad: "https://www.adscientificindex.com/scientist/anirudha-b-shetty/4804035",
   type: "https://monkeytype.com/profile/abshetty",
   search: "https://bit.ly/3IJ8Ds3",
-  vimusic: "https://vimusic.vercel.app/"
+  vimusic: "https://vimusic.vercel.app/",
+  "react-basics": "https://abshetty.in/learnMERN",
 };
 
 
