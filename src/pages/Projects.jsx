@@ -212,7 +212,7 @@ const projects = [
   {
     id: 12,
     title: "Task Planner",
-    description: "A  Month View Task Planner with drag & drop functionality, task scheduling, and filtering capabilities.",
+    description: "A Month View Task Planner with drag & drop functionality, task scheduling, and filtering capabilities.",
     image: "https://plus.unsplash.com/premium_photo-1706544427087-9f8747c5c675?auto=format&fit=crop&w=600&q=80",
     technologies: ["Node.js", "React", "react-dnd", "Tailwind CSS"],
     status: "Completed",
@@ -238,7 +238,7 @@ const projects = [
     title: "Snap 3D",
     description: "Images to 3D model rendering using Meshroom and Open3D.",
     image: "https://images.unsplash.com/photo-1644158767445-79390e879319?auto=format&fit=crop&w=600&q=80",
-    technologies: ["Nvidia CUDA", "Open3D", "Meshroom","Node.js", "React"],
+    technologies: ["Nvidia CUDA", "Open3D", "Meshroom", "Node.js", "React"],
     status: "Ongoing",
     github: "https://github.com/ab007shetty/snap3d",
     live: "https://ab007shetty.github.io/snap3d/",
@@ -264,84 +264,6 @@ function useIsMobile(breakpoint = 768) {
   }, [breakpoint]);
   return isMobile;
 }
-
-const getCardStyle = (index, currentIndex, filteredProjects) => {
-  if (filteredProjects.length === 0) return { display: 'none' };
-  const totalCards = filteredProjects.length;
-  let position = (index - currentIndex + totalCards) % totalCards;
-  if (position > totalCards / 2) position = position - totalCards;
-  const transition = "transform 0.43s cubic-bezier(.7,0,.3,1), opacity 0.33s cubic-bezier(.7,0,.3,1), filter 0.43s";
-
-  // Values can be tweaked for stronger or softer effect
-  if (position === 0) {
-    // Center card
-    return {
-      filter: "none",
-      boxShadow: "0 8px 32px 0 rgba(0,0,0,0.13), 0 2px 12px 0 rgba(0,0,0,0.10)",
-      transform: 'translateX(-50%) scale(1.08) rotateY(0deg) translateZ(40px)',
-      zIndex: 50,
-      opacity: 1,
-      left: '50%',
-      background: "inherit",
-      transition,
-    };
-  } else if (position === 1) {
-    // Right card, bent away
-    return {
-      filter: "blur(1.2px) brightness(0.96)",
-      boxShadow: "0 4px 16px 0 rgba(0,0,0,0.10)",
-      transform: 'translateX(-50%) scale(0.95) rotateY(-38deg) translateZ(-60px)',
-      zIndex: 25,
-      opacity: 0.65,
-      left: '72%',
-      transition,
-    };
-  } else if (position === -1) {
-    // Left card, bent away
-    return {
-      filter: "blur(1.2px) brightness(0.96)",
-      boxShadow: "0 4px 16px 0 rgba(0,0,0,0.10)",
-      transform: 'translateX(-50%) scale(0.95) rotateY(38deg) translateZ(-60px)',
-      zIndex: 25,
-      opacity: 0.65,
-      left: '28%',
-      transition,
-    };
-  } else if (position === 2) {
-    // Far right card, more bent and further back
-    return {
-      filter: "blur(2.3px) brightness(0.92)",
-      boxShadow: "0 2px 8px 0 rgba(0,0,0,0.08)",
-      transform: 'translateX(-50%) scale(0.8) rotateY(-60deg) translateZ(-140px)',
-      zIndex: 10,
-      opacity: 0.30,
-      left: '86%',
-      transition,
-    };
-  } else if (position === -2) {
-    // Far left card, more bent and further back
-    return {
-      filter: "blur(2.3px) brightness(0.92)",
-      boxShadow: "0 2px 8px 0 rgba(0,0,0,0.08)",
-      transform: 'translateX(-50%) scale(0.8) rotateY(60deg) translateZ(-140px)',
-      zIndex: 10,
-      opacity: 0.30,
-      left: '14%',
-      transition,
-    };
-  } else {
-    // Hide any other cards
-    return {
-      filter: "none",
-      boxShadow: "none",
-      transform: 'translateX(-50%) scale(0.5) rotateY(0deg) translateZ(-220px)',
-      zIndex: 1,
-      opacity: 0,
-      left: '50%',
-      transition,
-    };
-  }
-};
 
 // ========== Mobile Card ==========
 const MobileCard = ({ project, onPrev, onNext, isTransitioning, styles, techIcons }) => {
@@ -468,8 +390,42 @@ const MobileCard = ({ project, onPrev, onNext, isTransitioning, styles, techIcon
 
 // ========== Desktop Card ==========
 const DesktopCard = ({ project, index, currentIndex, filteredProjects, styles, techIcons, goToSlide }) => {
-  const cardStyle = getCardStyle(index, currentIndex, filteredProjects);
-  const isCenter = (index - currentIndex + filteredProjects.length) % filteredProjects.length === 0;
+  const totalCards = filteredProjects.length;
+  const normalizedIndex = (index - currentIndex + totalCards) % totalCards;
+  let transform = '';
+  let zIndex = 0;
+  let opacity = 1;
+
+if (normalizedIndex === 0) {
+  transform = 'translateX(-50%) scale(1.1)';
+  zIndex = 10;
+} else if (normalizedIndex === 1 || normalizedIndex === totalCards - 1) {
+  transform = normalizedIndex === 1 
+    ? 'translateX(calc(-50% + 150px)) scale(0.95)' 
+    : 'translateX(calc(-50% - 150px)) scale(0.95)';
+  zIndex = 9;
+  opacity = 0.7;
+} else if (normalizedIndex === 2 || normalizedIndex === totalCards - 2) {
+  transform = normalizedIndex === 2 
+    ? 'translateX(calc(-50% + 300px)) scale(0.8)' 
+    : 'translateX(calc(-50% - 300px)) scale(0.8)';
+  zIndex = 8;
+  opacity = 0.4;
+} else {
+  transform = 'translateX(-50%) scale(0.8)';
+  zIndex = 0;
+  opacity = 0;
+}
+
+  const cardStyle = {
+    transform,
+    zIndex,
+    opacity,
+    transition: 'all 0.5s ease-out',
+    left: '50%',
+  };
+
+  const isCenter = normalizedIndex === 0;
   return (
     <div
       className={`
@@ -611,38 +567,36 @@ const Projects = () => {
       newIndex = revelIdx;
     }
     setCurrentIndexState(Math.min(newIndex, Math.max(filteredProjects.length - 1, 0)));
-    // eslint-disable-next-line
   }, [activeStatus, filteredProjects.length]);
 
   useEffect(() => {
     if (currentIndex >= filteredProjects.length) {
       setCurrentIndexState(Math.max(filteredProjects.length - 1, 0));
     }
-    // eslint-disable-next-line
   }, [filteredProjects.length]);
 
   const nextSlide = () => {
     if (isTransitioning || filteredProjects.length === 0) return;
     setIsTransitioning(true);
     setCurrentIndexState((prev) => (prev + 1) % filteredProjects.length);
-    setTimeout(() => setIsTransitioning(false), isMobile ? 300 : 430);
+    setTimeout(() => setIsTransitioning(false), 500);
   };
 
   const prevSlide = () => {
     if (isTransitioning || filteredProjects.length === 0) return;
     setIsTransitioning(true);
     setCurrentIndexState((prev) => (prev - 1 + filteredProjects.length) % filteredProjects.length);
-    setTimeout(() => setIsTransitioning(false), isMobile ? 300 : 430);
+    setTimeout(() => setIsTransitioning(false), 500);
   };
 
   const goToSlide = (index) => {
     if (isTransitioning || index === currentIndex) return;
     setIsTransitioning(true);
     setCurrentIndexState(index);
-    setTimeout(() => setIsTransitioning(false), 430);
+    setTimeout(() => setIsTransitioning(false), 500);
   };
 
-  // Swipe handlers - do NOT call preventDefault (see earlier answers)
+  // Swipe handlers
   const handleStart = (e) => {
     if (isTransitioning) return;
     isDraggingRef.current = true;
@@ -651,6 +605,7 @@ const Projects = () => {
     startXRef.current = clientX;
     startYRef.current = clientY;
   };
+
   const handleMove = (e) => {
     if (!isDraggingRef.current || isTransitioning) return;
     const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
@@ -658,12 +613,12 @@ const Projects = () => {
     const diffX = startXRef.current - clientX;
     const diffY = startYRef.current - clientY;
     if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
-      // Don't call preventDefault here; mobile warning fix
       if (diffX > 0) nextSlide();
       else prevSlide();
       isDraggingRef.current = false;
     }
   };
+
   const handleEnd = () => { isDraggingRef.current = false; };
 
   useEffect(() => {
@@ -674,7 +629,6 @@ const Projects = () => {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-    // eslint-disable-next-line
   }, [isTransitioning, filteredProjects.length, isMobile]);
 
   return (
@@ -766,11 +720,11 @@ const Projects = () => {
             </div>
           ) : (
             /* Desktop View */
-            <div className="relative mt-16 ">
+            <div className="relative mt-16">
               {/* Desktop Cards Container */}
               <div
                 ref={containerRef}
-                className="w-[1000px] h-[540px] mx-auto"
+                className="w-[1000px] h-[540px] mx-auto relative"
                 onMouseDown={handleStart}
                 onMouseMove={handleMove}
                 onMouseUp={handleEnd}
