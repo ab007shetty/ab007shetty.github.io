@@ -197,11 +197,23 @@ const projects = [
     forks: 0,
     stars: 0
   },
-  {
+    {
     id: 11,
+    title: "ECommerce",
+    description: "Simple Ecommerce Website with nice responsive UI",
+    image: "https://pbs.twimg.com/media/G6f-nMdbgAAOfNG?format=jpg&name=large",
+    technologies: ["Node.js", "React", "MongoDB"],
+    status: "Completed",
+    github: "https://github.com/ab007shetty/ECommerce",
+    live: "https://ecommerce-starlfinx.vercel.app/",
+    forks: 0,
+    stars: 0
+  },
+  {
+    id: 12,
     title: "Revel",
     description: "New Gen Event Booking Platform for Bangalore based Startup.",
-    image: "https://media.licdn.com/dms/image/v2/D4D22AQG8z3H3S5DYsw/feedshare-shrink_2048_1536/B4DZjSyWLAH4A0-/0/1755883089159?e=1758758400&v=beta&t=631R3lMJefAji-o4upccMOg1hmaGnPXklWrS8iVUVKk",
+    image: "https://pbs.twimg.com/media/G6f-k3NasAAlCZT?format=jpg&name=large",
     technologies: ["Node.js", "React", "Firebase", "Tailwind CSS"],
     status: "Completed",
     github: "https://github.com/ab007shetty/revel",
@@ -210,7 +222,7 @@ const projects = [
     stars: 0
   },
   {
-    id: 12,
+    id: 13,
     title: "Task Planner",
     description: "A Month View Task Planner with drag & drop functionality, task scheduling, and filtering capabilities.",
     image: "https://plus.unsplash.com/premium_photo-1706544427087-9f8747c5c675?auto=format&fit=crop&w=600&q=80",
@@ -222,7 +234,7 @@ const projects = [
     stars: 0
   },
   {
-    id: 13,
+    id: 14,
     title: "Learn MERN",
     description: "A comprehensive guide to learning the MERN stack (MongoDB, Express.js, React.js, Node.js) through code snippets and puzzles.",
     image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=600&q=80",
@@ -234,7 +246,7 @@ const projects = [
     stars: 0
   },
   {
-    id: 14,
+    id: 15,
     title: "Snap 3D",
     description: "Images to 3D model rendering using Meshroom and Open3D.",
     image: "https://images.unsplash.com/photo-1644158767445-79390e879319?auto=format&fit=crop&w=600&q=80",
@@ -541,7 +553,7 @@ const Projects = () => {
   
   // Updated to default to Revel (id: 11)
   const getInitialIndex = () => {
-    const revelIndex = projects.findIndex(p => p.id === 11);
+    const revelIndex = projects.findIndex(p => p.id === 12);
     return revelIndex === -1 ? 0 : revelIndex;
   };
 
@@ -562,7 +574,7 @@ const Projects = () => {
 
   useEffect(() => {
     let newIndex = 0;
-    const revelIdx = filteredProjects.findIndex(p => p.id === 11);
+    const revelIdx = filteredProjects.findIndex(p => p.id === 12);
     if (revelIdx !== -1) {
       newIndex = revelIdx;
     }

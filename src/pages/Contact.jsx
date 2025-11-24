@@ -93,14 +93,14 @@ const socialLinks = [
   {
     icon: <FaXTwitter />,
     name: "X",
-    url: "https://x.com/ab007shetty",
+    url: "https://x.com/abshetr",
     color: "text-blue-400",
     description: "Place to pick Fights"
   },
   {
     icon: <FaInstagram />,
     name: "Instagram",
-    url: "https://www.instagram.com/a.b.shetty",
+    url: "https://www.instagram.com/abshetr",
     color: "text-pink-500",
     description: "No life behind the code"
   },

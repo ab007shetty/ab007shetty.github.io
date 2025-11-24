@@ -24,6 +24,7 @@ const redirects = {
   search: "https://bit.ly/3IJ8Ds3",
   vimusic: "https://vimusic.vercel.app/",
   "react-basics": "https://abshetty.in/learnMERN",
+  ecommerce: "https://ecommerce-starlfinx.vercel.app/",
 };
 
 
