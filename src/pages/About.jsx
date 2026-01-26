@@ -115,30 +115,19 @@ const highlights = [
   { emoji: "🎓", text: "Completed 100+ courses on Coursera.", link: "https://www.coursera.org/user/9a1f6f65c70233a4cbf41887f48e0c06" },
   { emoji: "☁️", text: "Google Cloud Arcade Champion — completed 400+ Google Cloud Qwiklabs.", link: "https://www.cloudskillsboost.google/public_profiles/a71f17d6-36af-4e30-b70f-8771bf211324" },
   { emoji: "🏅", text: "Hackothsav National Finalist: Consolation prize winner in a national-level hackathon.", link: "" },
-  { emoji: "🌟", text: "Ranked among Top 6000 GitHub developers (India) with 170+ stars and 50+ forks.", link: "https://stardev.io/developers/ab007shetty#country-badge" },
-  { emoji: "📄", text: 'Authored a research paper: "Facial Recognition Using Haar Cascade and LBP Classifiers", 130+ citations (Elsevier).', link: "https://scholar.google.com/citations?user=i1vJxMYAAAAJ" }
+  { emoji: "🌟", text: "Ranked among Top 6000 GitHub developers (India) with 200+ stars and 70+ forks.", link: "https://stardev.io/developers/ab007shetty#country-badge" },
+  { emoji: "📄", text: 'Authored a research paper: "Facial Recognition Using Haar Cascade and LBP Classifiers", 150+ citations (Elsevier).', link: "https://scholar.google.com/citations?user=i1vJxMYAAAAJ" }
 ];
 
 const experienceGroups = [
   {
     label: "Infosys",
+    icon: <FaBuilding className="text-blue-500" />,
     entries: [
       {
         title: "Systems Engineer",
         company: "Infosys",
         location: "Mangaluru, Karnataka",
-        period: "Aug 2021 – Apr 2023",
-        description: [
-          "Built web applications using React.js across two major international projects, such as Waters and Elanco.",
-          "Integrated product dashboards with search and filter features, shopping cart, and order history components.",
-          "Created interfaces for medicine stock tracking, doctor prescription entry, and report generation using Chart.js.",
-          "Utilized Git, Postman, and JIRA for efficient development, testing, and project management.",
-          "Ensured code quality through ESLint and Prettier, also done unit testing with Jest.",
-          "Resolved UI/API issues through debugging, isolation testing, and effective team collaboration.",
-          "Collaborated with the DevOps team to implement CI/CD pipelines, enabling efficient deployment workflows through GitHub Actions and Jenkins.",
-          "Developed a personal web app to call LLMs to debug and speed up the development process.",
-          "Additionally completed the Full-Stack Web Development with React (by Hong Kong University) via Coursera to enhance technical delivery."
-        ],
         skills: [
           "React.js",
           "Chart.js",
@@ -156,20 +145,12 @@ const experienceGroups = [
   },
   {
     label: "Digitran Technologies",
+    icon: <FaBuilding className="text-green-500" />,
     entries: [
       {
-        title: "Software Developer (Part-Time)",
+        title: "Senior Solution Architect (Part-Time)",
         company: "Digitran Technologies",
         location: "Udupi, Karnataka",
-        period: "2023 – 2025",
-        description: [
-          "Handled full-stack web application development for logistics and healthcare SaaS products.",
-          "Developed and maintained core features while ensuring scalability and performance improvements.",
-          "Integrated REST APIs and optimized data flow for smooth user experience.",
-          "Actively participated in Agile ceremonies, including sprint planning and retrospectives.",
-          "Conducted code reviews and improved overall code quality.",
-          "Gave product demos to US-based clients and incorporated feedback effectively."
-        ],
         skills: [
           "Node.js",
           "React.js",
@@ -177,33 +158,49 @@ const experienceGroups = [
           "Firebase",
           "MySQL",
           "GCP",
-          "Firebase",
           "REST APIs",
           "Agile",
-          "Code Reviews",
-          "Client Demos"
+          "Code Reviews"
         ]
       }
     ]
-  }
+  },
+    {
+    label: "Starlfinx",
+    icon: <FaBuilding className="text-purple-500" />,
+    entries: [
+      {
+        title: "Senior UI Developer",
+        company: "Starlfinx",
+        location: "Chennai, Tamil Nadu",
+        skills: [
+          "React.js",
+          "Node.js",
+          "Cloudflare",
+          "AWS",
+          "REST APIs",
+          "GSAP"
+        ]
+      }
+    ]
+  },
 ];
-
 
 const educationGroups = [
   {
     label: "SSLC (10th Grade)",
     icon: <FaSchool className="text-cyan-500" />,
-    entries: [{  institution: "Maryknoll High School, Udupi", period: "2015", location: "Udupi, Karnataka", grade: "96.16% – Secured 6th place at the district level in Kannada medium." }]
+    entries: [{  institution: "Maryknoll High School, Udupi", location: "Udupi, Karnataka", grade: "96.16% – Secured 6th place at the district level in Kannada medium." }]
   },
   {
     label: "PU Course (PCMB)",
     icon: <FaGraduationCap className="text-yellow-600" />,
-    entries: [{  institution: "Viveka PU College, Udupi", period: "2017", location: "Udupi, Karnataka", grade: "87.83% – PCMB" }]
+    entries: [{  institution: "Viveka PU College, Udupi", location: "Udupi, Karnataka", grade: "87.83% – PCMB" }]
   },
   {
     label: "B.E. – Computer Science",
     icon: <FaUniversity className="text-blue-500" />,
-    entries: [{  institution: "Shri Madhwa Vadiraja Institute of Technology and Management, Udupi", period: "2021", location: "Udupi, Karnataka", grade: "7.38 CGPA" }]
+    entries: [{  institution: "Shri Madhwa Vadiraja Institute of Technology and Management, Udupi", location: "Udupi, Karnataka", grade: "7.38 CGPA" }]
   }
 ];
 
@@ -336,10 +333,7 @@ export default function About() {
   const styles = themeStyles[theme] || themeStyles.icy;
   const [activeTab, setActiveTab] = useState("skills");
   const [skillsTab, setSkillsTab] = useState(0);
-  const [expTab, setExpTab] = useState(0);
-  const [eduTab, setEduTab] = useState(0);
 
-  const experienceIcons = { Infosys: <FaBuilding />, "Digitran Technologies": <FaBuilding /> };
   const skillGroupIcons = {};
   skillSections.forEach(s => { skillGroupIcons[s.group] = s.icon; });
 
@@ -354,7 +348,7 @@ export default function About() {
           About <span className={styles.accent}>Me</span>
         </h1>
         <p className={`text-lg md:text-xl ${styles.textSecondary} max-w-3xl mx-auto leading-relaxed`}>
-          Passionate Full-Stack Developer with 2 years of Professional Experience and 4+ Overall.
+          Solving bugs is my passion as well as my profession.
         </p>
       </div>
       {/* Main Tabs */}
@@ -434,52 +428,37 @@ export default function About() {
         )}
         {/* Experience */}
         {activeTab === "experience" && (
-          <div className="flex flex-col md:flex-row gap-6 md:gap-10 animate-fadein">
-            <SideTabBar
-              groups={experienceGroups}
-              activeIndex={expTab}
-              setActiveIndex={setExpTab}
-              iconMap={experienceIcons}
-            />
-            <div className="flex-1">
-              {experienceGroups[expTab].entries.map((exp, idx) => (
-                <div
-                  key={idx}
-                  className={`mb-6 md:mb-8 p-4 md:p-6 rounded-2xl border ${styles.cardBg} ${styles.cardHover} ${styles.glow} shadow-lg animate-slideup`}
-                  style={{ animationDelay: `${idx * 0.12}s` }}
-                >
-                  <div className="flex flex-col md:flex-row md:flex-wrap gap-2 mb-3 md:items-center">
-                    <span className={`text-lg md:text-lg font-bold ${styles.text}`}>{exp.title}</span>
-                    <span className={`text-base font-semibold ${styles.accent}`}>{exp.company}</span>
-                    <span className={`flex items-center gap-2 text-sm ${styles.textSecondary}`}>
-                      <FaCalendarAlt className="text-xs" />
-                      {exp.period}
-                    </span>
-                    <span className={`flex items-center gap-2 text-sm ${styles.textSecondary}`}>
-                      <FaMapMarkerAlt className="text-xs" />
-                      {exp.location}
-                    </span>
-                  </div>
-                  <ul className={`mb-3 pl-0 flex flex-col gap-2`}>
-                    {exp.description.map((item, i) => (
-                      <li key={i} className="flex gap-2 items-start">
-                        <span className="mt-1 text-cyan-400">
-                          <FaCheckCircle className="text-sm md:text-base" />
-                        </span>
-                        <span className={`${styles.textSecondary} text-sm md:text-base`}>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="flex flex-wrap gap-2">
-                    {exp.skills.map((skill, i) => (
-                      <span key={i} className={`px-2 md:px-3 py-1 rounded-full text-xs ${styles.button} border`}>
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
+          <div className="flex flex-col md:flex-row gap-4 md:gap-7 items-stretch animate-fadein">
+            {experienceGroups.map((expGroup, idx) => (
+              <div
+                key={expGroup.label}
+                className={`flex-1 min-w-[200px] mb-6 md:mb-0 p-4 md:p-6 rounded-2xl border ${styles.cardBg} ${styles.cardHover} ${styles.glow} shadow-lg flex flex-col gap-3 md:gap-4 animate-slideup`}
+                style={{ animationDelay: `${idx * 0.16}s` }}
+              >
+                <div className="mb-2 flex items-center gap-2 justify-center">
+                  {expGroup.icon}
+                  <span className={edulabelStyle}>{expGroup.label}</span>
                 </div>
-              ))}
-            </div>
+                {expGroup.entries.map((exp, idy) => (
+                  <div key={idy} className="flex flex-col items-center">
+                    <div className={`text-base md:text-lg font-bold mb-3 text-center ${styles.accent}`}>
+                      {exp.title}
+                    </div>
+                    <div className="flex items-center gap-2 mb-4 justify-center">
+                      <FaMapMarkerAlt className={`text-xs ${styles.textSecondary}`} />
+                      <span className={`text-xs md:text-sm ${styles.textSecondary}`}>{exp.location}</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {exp.skills.map((skill, i) => (
+                        <span key={i} className={`px-2 md:px-3 py-1 rounded-full text-xs ${styles.button} border`}>
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
         )}
         {/* Education */}
@@ -501,16 +480,10 @@ export default function About() {
                       <FaGraduationCap className="text-cyan-500" />
                       {entry.degree}
                     </div>
-                    <div className={`text-sm md:text-base font-semibold ${styles.accent}`}>{entry.institution}</div>
-                    <div className="flex flex-wrap gap-2 md:gap-3 justify-center text-xs md:text-sm items-center my-2">
-                      <span className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
-                        <FaCalendarAlt className="text-xs" />
-                        {entry.period}
-                      </span>
-                      <span className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
-                        <FaMapMarkerAlt className="text-xs" />
-                        {entry.location}
-                      </span>
+                    <div className={`text-sm md:text-base font-semibold ${styles.accent} mb-2`}>{entry.institution}</div>
+                    <div className="flex items-center gap-2 mb-2 justify-center">
+                      <FaMapMarkerAlt className={`text-xs ${styles.textSecondary}`} />
+                      <span className={`text-xs md:text-sm ${styles.textSecondary}`}>{entry.location}</span>
                     </div>
                     <div className={`text-sm md:text-base font-semibold ${styles.text} mt-2`}>
                       {entry.grade}

@@ -69,7 +69,7 @@ const contactInfo = [
   {
     icon: <FaMapMarkerAlt />,
     label: "Location",
-    value: "Udupi, Karnataka",
+    value: "Bennekudru, Karnataka",
     link: "https://maps.google.com/?q=Udupi,Karnataka",
     description: "Technically not an island anymore"
   }

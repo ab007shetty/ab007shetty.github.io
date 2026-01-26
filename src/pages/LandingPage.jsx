@@ -271,7 +271,7 @@ function LandingPage() {
                           {/* Description */}
             <div className={`space-y-4 mb-10 ${accents.text} text-center md:text-left`}>
               <p className="text-lg md:text-xl leading-relaxed animate-fade-in-up">
-                 <span className={`${accents.highlight} font-semibold`}>Full Stack Developer</span> - MERN, Firebase, Tailwind
+                 <span className={`${accents.highlight} font-semibold`}>Full Stack Developer</span> - MERN, Tailwind, Cloudflare
               </p>
             </div>
 
